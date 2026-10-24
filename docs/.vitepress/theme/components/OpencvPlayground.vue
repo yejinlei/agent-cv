@@ -906,9 +906,9 @@ function loadOpencv() {
         c.then(finish).catch(fail)
         return
       }
-      if (tries >= 240) { // 约 60 秒仍未就绪，给出明确提示而不是无限转圈
-        clearInterval(poll)
-        fail(new Error('OpenCV.js 初始化超时，请刷新页面重试'))
+      if (tries >= 720) { // 约 3 分钟仍未就绪（11MB 资源在慢网络下也需要时间），
+        clearInterval(poll) // 给出明确提示，而不是让用户对着无限转圈干等
+        fail(new Error('OpenCV.js 初始化超时，请检查网络后刷新页面重试'))
       }
     }, 250)
 
