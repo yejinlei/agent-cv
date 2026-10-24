@@ -5,3 +5,11 @@ docs/.vitepress/cache/
 .DS_Store
 nohup.out
 /tmp/
+__pycache__/
+*.pyc
+
+# 开发用生成脚本，不进仓库
+gen_*.py
+generate_*.py
+fix_*.py
+rebuild_*.py
