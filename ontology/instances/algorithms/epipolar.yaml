@@ -1,0 +1,68 @@
+id: algo-epipolar
+type: Algorithm
+name: "对极几何与基础矩阵"
+nameEn: "Epipolar Geometry & Fundamental Matrix"
+year: 1981
+branch: branch-geometry
+
+plainTalk: >
+  你有两只眼睛，同一个东西在左右两眼的成像位置不一样。
+  对极几何给出了一条"搜索线"：在左眼看到某个点后，
+  这个点在右眼里一定落在某条确定的直线上，不用满图乱找。
+  这条线把"二维搜索"降成了"一维搜索"，是三维重建的关键。
+
+concepts:
+  - concept-epipolar-geometry
+  - concept-fundamental-matrix
+  - concept-triangulation
+  - concept-degenerate-configuration
+  - concept-ransac
+
+evolvedFrom: null
+
+dependsOn:
+  - algo-sift
+
+replacedBy: []
+
+inheritedBy:
+  - "深度学习自监督深度估计中仍用对极约束作为训练损失"
+
+papers:
+  - paper-longuet-higgins-1981
+  - paper-hartley-1997
+  - paper-hartley-zisserman-2003
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.findFundamentalMat / cv2.findEssentialMat"
+    since: "OpenCV 2.4"
+  - lib: "OpenCV"
+    func: "cv2.stereoRectify"
+  - lib: "OpenCV"
+    func: "cv2.triangulatePoints"
+
+metrics:
+  - name: "求解所需最少点对"
+    value: "8 点法 / 5 点法"
+  - name: "精度"
+    value: "归一化 8 点法重投影误差 < 1 px"
+
+applications:
+  - app-sfm-reconstruction
+
+caseStudies: []
+
+painPoints:
+  - pp-epipolar-no-normalize
+  - pp-epipolar-planar-scene
+  - pp-epipolar-threshold
+
+tricks:
+  - trick-epipolar-model-select
+  - trick-epipolar-triangulation-filter
+
+layer: L3
+docsPath: "/algorithms/epipolar-geometry/"
+status: stable
+tags: ["几何", "对极约束", "三维重建"]

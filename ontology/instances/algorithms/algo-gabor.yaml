@@ -1,0 +1,26 @@
+id: algo-gabor
+type: Algorithm
+name: Gabor 纹理滤波
+year: 1985
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/gabor/
+plainTalk: 高斯×正弦波的多方向多尺度滤波器组，指纹/虹膜/纹理分析的黄金标准
+concepts:
+- concept-gabor
+- concept-gaussian-blur
+tags:
+- classic-cv
+- texture
+- filter-bank
+- biometrics
+papers:
+- paper-daugman-1985-gabor
+replacedBy: []
+dependsOn:
+- op-gaussian-blur
+inheritedBy:
+- algo-lbp
+painPoints: []
+tricks: []
+layer: L1

@@ -1,0 +1,6 @@
+id: concept-morphology
+type: Concept
+name: 形态学操作
+plainTalk: 用结构元素像印章一样扫过图像，通过局部最大/最小值实现腐蚀、膨胀等形状操作
+layer: L1
+formalDefinition: 基于集合论和格论的图像处理框架，通过结构元素与图像的 min/max 卷积实现形状变换

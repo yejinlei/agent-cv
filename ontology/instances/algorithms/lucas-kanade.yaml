@@ -1,0 +1,26 @@
+id: algo-lucas-kanade
+type: Algorithm
+name: "Lucas-Kanade 光流"
+year: 1981
+branch: branch-feature-matching
+status: stable
+docsPath: "/algorithms/lucas-kanade/"
+
+plainTalk: >
+  「视频里追点跑」：在第 1 帧选一批好跟踪的角点（通常是 Harris 角点），
+  它自动在第 2 帧找到这些点去了哪，再在第 3 帧继续追……不需要检测整个物体，
+  只需要追 100~1000 个点，就能得到物体运动、相机运动、甚至三维重建。
+  OpenCV 里的 calcOpticalFlowPyrLK 就是它，视频稳像、SLAM、动作捕捉都靠它。
+
+tags: ["classic-cv", "optical-flow", "tracking"]
+papers: ["paper-lucas-kanade-1981"]
+chapters: ["ch-11-motion", "ch-13-matching"]
+
+dependsOn: [
+  "op-gaussian-blur",
+  "op-sobel",
+  "op-harris-response",
+  "op-lk-solve"
+]
+
+replacedBy: []

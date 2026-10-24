@@ -1,0 +1,46 @@
+id: op-taylor-expansion
+type: Operator
+name: "泰勒展开（亚像素定位）"
+nameEn: "Taylor Expansion for Sub-pixel Refinement"
+category: statistical
+
+plainTalk: >
+  「用抛物线找谷底」：你在一格一格的地图上找到了「附近最矮的地方」，
+  但真正的最低点可能在格子中间。怎么办？
+  用多项式把那几个格子的高度拟合成一条平滑曲线，再求它的最低点在哪。
+  这样就能得到比「一个格子」精确得多的位置——精确到零点几个格子。
+  在图像里，这意味着特征点位置可以精确到亚像素。
+
+formula: "D(x) ≈ D + (∂D/∂x)ᵀx + ½xᵀ(∂²D/∂x²)x，极值点 x̂ = -(∂²D/∂x²)⁻¹(∂D/∂x)"
+
+params:
+  - name: "邻域"
+    meaning: "拟合用的邻域大小"
+    typical: "3×3×3（空间 + 尺度）"
+    effect: "SIFT 在 DoG 金字塔中用它判断极值"
+  - name: "对比度阈值"
+    meaning: "剔除低对比度点的阈值"
+    typical: "0.03（SIFT 默认）"
+    effect: "越大剔除越多，越稳但可能漏"
+
+opencvFunc: "（SIFT 内部实现）"
+usedBy:
+  - algo-sift
+
+complexity: "O(n)"
+separability: false
+inplace: false
+noiseRobustness: medium
+edgePreserve: false
+
+useCases:
+  - "SIFT 的关键点亚像素定位（第 3 步）"
+  - "剔除低对比度的不稳定特征点"
+  - "亚像素级角点精化（cornerSubPix）"
+
+pitfalls:
+  - "展开只用二阶项，对噪声敏感（所以还要做对比度筛选）"
+  - "解出的偏移量如果超过 0.5 像素，说明该点不是真正的极值，应该丢弃"
+
+docsPath: "/algorithms/sift/concepts"
+tags: ["数值方法", "亚像素", "SIFT核心"]

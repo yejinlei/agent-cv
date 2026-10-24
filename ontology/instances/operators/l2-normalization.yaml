@@ -1,0 +1,43 @@
+id: op-l2-normalization
+type: Operator
+name: "L2 归一化"
+nameEn: "L2 Normalization"
+category: point-operation
+
+plainTalk: >
+  「把一盏灯泡的亮度整体调成固定的」：
+  一个向量除以它自己的「长度」，结果向量的长度就变成 1，但各分量的比例不变。
+  在特征描述子里，这样做的好处是：
+  如果现场光线整体变亮一倍，所有梯度都乘 2，
+  但归一化之后还是同一个向量——于是「光线变化」就被自动消掉了。
+
+formula: "v' = v / ||v||₂ = v / sqrt(Σvi²)"
+
+params:
+  - name: "epsilon"
+    meaning: "防止除零的小量"
+    typical: "1e-6"
+    effect: "避免全零向量导致 NaN"
+
+opencvFunc: "cv2.normalize(v, None, 1, 0, cv2.NORM_L2) 或 numpy 手算"
+usedBy:
+  - algo-hog-svm
+  - algo-sift
+
+complexity: "O(n)"
+separability: false
+inplace: true
+noiseRobustness: high
+edgePreserve: false
+
+useCases:
+  - "HOG 的块内归一化（消除光照整体缩放）"
+  - "SIFT 描述子归一化 + 幅值截断（消除光照变化）"
+  - "特征向量标准化（机器学习预处理）"
+
+pitfalls:
+  - "忘了加 epsilon 会除零"
+  - "只对梯度向量做归一化还不够（SIFT 还要截断大值，以抗局部强光）"
+
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["归一化", "光照不变", "HOG核心"]

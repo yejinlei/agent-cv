@@ -1,0 +1,22 @@
+id: algo-kmeans
+type: Algorithm
+name: K-Means 颜色聚类
+year: 1967
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/kmeans/
+plainTalk: 把所有像素按颜色分成 K 堆，每堆一个代表色，图像立刻变卡通海报，是最简单的聚类算法。
+layer: L1
+tags:
+- classic-cv
+- clustering
+- color-quantization
+papers:
+- paper-lloyd-1982-kmeans
+inheritedBy:
+- algo-bovw
+dependsOn: []
+concepts:
+- concept-kmeans
+painPoints: []
+tricks: []

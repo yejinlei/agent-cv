@@ -1,0 +1,33 @@
+id: paper-bolme-2010-mosse
+type: Paper
+title: "Visual Object Tracking using Adaptive Correlation Filters"
+authors:
+  - David S. Bolme
+  - J. Ross Beveridge
+  - Bruce A. Draper
+  - Yui Man Lui
+year: 2010
+venue: "IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"
+venueType: conference
+contribution: "提出最小输出平方误差相关滤波 MOSSE，用少量样本在频域训练跟踪滤波器，达到 600+ FPS 的实时稳健跟踪。"
+keyInsight: "相关滤波可以在频域里一秒解出最优滤波器，跟踪难题变成一次除法。"
+novelty:
+  - MOSSE 频域闭式解
+  - PSR 峰值旁瓣比置信度
+  - 仿射与光照的在线自适应
+limitations:
+  - 对快速运动/严重遮挡鲁棒性弱
+  - 尺度变化需额外处理
+relatedAlgorithms:
+  - algo-mosse
+  - algo-kcf
+  - algo-csrt
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - tracking
+  - correlation-filter
+doi: 10.1109/CVPR.2010.5539960
+citationCount: 3000

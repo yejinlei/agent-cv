@@ -1,0 +1,30 @@
+id: paper-lukezic-2017-csrt
+type: Paper
+title: Discriminative Correlation Filter with Channel and Spatial Reliability
+authors:
+- Alan Lukežič
+- Tomáš Vojíř
+- Luka Čehovin
+- Jiří Matas
+- Matej Kristan
+year: 2017
+venue: CVPR
+tags:
+- tracking
+- correlation-filter
+- dcff
+contribution: 空间可靠性掩膜 + 通道可靠性权重的 DCF，VOT 2017 实时冠军
+keyInsight: 用颜色分割自动学空间掩膜；按 PSR 给每个通道加权
+novelty:
+- 空间可靠性图自动估计掩膜
+- 通道可靠性权重按 PSR 降权
+- 掩膜 DCF 的共轭梯度迭代求解
+limitations:
+- CG 迭代求解慢于 KCF 闭式解
+- 无内置重检测模块
+- 需要 opencv-contrib
+influencedBy:
+- paper-henriques-2015-kcf
+influenced: []
+docsPath: /algorithms/csrt/paper
+doi: 10.1109/CVPR.2017.514

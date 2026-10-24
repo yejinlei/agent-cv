@@ -1,0 +1,19 @@
+id: pp-epipolar-planar-scene
+type: PainPoint
+name: "对着平面拍，基础矩阵退化"
+severity: medium
+symptom: >
+  拍摄一面墙、桌面、白板（所有特征点近似共面）做双视图重建，
+  findFundamentalMat 返回的 F 每次运行都不一样，极线约束几乎不起作用，
+  重建出的点云深度全乱。
+rootCause: >
+  当场景中所有三维点共面时，两视图之间的关系存在无穷多个基础矩阵解，
+  八点法的方程组秩亏，解不唯一；这是几何退化，不是代码 bug。
+fix: >
+  先判断场景是平面还是非平面：用 4 对点求 H 与用 8 对点求 F，比较两者
+  重投影误差，误差接近就按平面处理（用 H 做单应，不要用 F）。
+  若必须做非平面重建，拍摄时刻意加入前后景深（放个杯子、站个人）。
+relatedAlgorithms:
+  - algo-epipolar
+  - algo-homography
+tags: ["踩坑", "退化", "对极几何"]

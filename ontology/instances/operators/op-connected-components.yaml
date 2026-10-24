@@ -1,0 +1,35 @@
+id: op-connected-components
+type: Operator
+name: "连通域标记"
+nameEn: "Connected Components"
+category: statistical
+plainTalk: "二值图上黑底白块，连通域标记就是给每个独立的白块编个号：挨着的白像素算同一块（4 邻域），连对角也算同一块（8 邻域）。标完之后，数一数有几个物体、每个物体多大、重心在哪、外框多大，全都是一次遍历就拿到。它是所有『先分割再统计』任务（数硬币、数细胞、检缺陷）的收尾动作。"
+formula: "对每个前景像素 p，label(p) = min{ label(q) | q ∈ N(p) 且 q 已标记 }，合并等价标签"
+params:
+  - name: "connectivity"
+    meaning: "邻域连通方式"
+    typical: "4 / 8"
+    effect: "8 邻域会把对角接触的块并成一个，容易多连"
+  - name: "ltype"
+    meaning: "标签图类型"
+    typical: "CV_32S"
+    effect: "标签数超过 65535 时不能用 CV_16U"
+opencvFunc: "cv2.connectedComponentsWithStats"
+usedBy:
+  - algo-connected-components
+  - algo-watershed
+  - algo-otsu
+complexity: "O(n·α(n))（并查集近似线性）"
+edgePreserve: false
+useCases:
+  - "统计物体个数与面积"
+  - "剔除过小的噪点区域"
+  - "提取每个目标的包围框与重心"
+pitfalls:
+  - "输入必须是单通道二值图（0/1 或 0/255 都行）"
+  - "4/8 邻域选择会改变物体个数"
+  - "结果标签从 0（背景）开始，别把 0 当成第一个物体"
+separability: true
+inplace: false
+noiseRobustness: low
+tags: ["算子", "统计"]

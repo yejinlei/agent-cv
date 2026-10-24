@@ -1,0 +1,20 @@
+id: concept-binary-descriptor
+type: Concept
+name: "二进制描述子"
+plainTalk: >
+  传统描述子像「记录 128 个精确数值」，占地方也难比较。
+  二进制描述子像「问 256 个是非题」：每个问题的答案只有 0 或 1。
+  比较两个描述子像不像是做「有多少题答案不同」的统计——
+  用计算机的位运算一次就能算完，快得离谱。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-orb
+prerequisites:
+  - concept-fast-detector
+keyFormula: "d = HammingDistance(D1, D2)"
+usedIn:
+  - "ORB、BRIEF、BRISK 等实时特征"
+  - "移动端与嵌入式视觉"
+docsPath: "/branches/feature-matching/descriptors"
+tags: ["概念", "描述子", "二进制"]

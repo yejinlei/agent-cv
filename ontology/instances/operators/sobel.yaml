@@ -1,0 +1,52 @@
+id: op-sobel
+type: Operator
+name: "Sobel 算子"
+nameEn: "Sobel Operator"
+category: edge
+
+plainTalk: >
+  「找明暗突变处」：比较每个像素跟它左右邻居谁亮谁暗，
+  亮度差得多的地方就是「竖着的边」，上下差得多的地方就是「横着的边」。
+  它像个左右（或上下）比较的秤，能让边缘的地方数值变大、
+  平坦的地方数值接近零。
+  因为它带了一点点模糊（中心权重更大），所以比「硬相减」对噪点更宽容。
+
+formula: "Gx = [[-1,0,1],[-2,0,2],[-1,0,1]] * I,  Gy = Gxᵀ * I"
+
+params:
+  - name: "ddepth"
+    meaning: "输出数据类型"
+    typical: "cv2.CV_16S（避免负值被截断）/ cv2.CV_32F"
+    effect: "用 CV_8U 会丢掉负梯度的一半信息"
+  - name: "ksize"
+    meaning: "核大小"
+    typical: "3（最常用）"
+    effect: "1 表示用 3×1 或 1×3 核（更快），越大越平滑"
+  - name: "dx / dy"
+    meaning: "求导的阶数"
+    typical: "(1,0) 求 x 方向 / (0,1) 求 y 方向"
+    effect: "决定求的是哪种边缘"
+
+opencvFunc: "cv2.Sobel"
+usedBy:
+  - algo-canny
+  - algo-hog-svm
+
+complexity: "O(n · k²)"
+separability: true
+inplace: false
+noiseRobustness: medium
+edgePreserve: true
+
+useCases:
+  - "边缘检测的第一步（求梯度）"
+  - "HOG 特征中的梯度计算"
+  - "纹理分析"
+
+pitfalls:
+  - "ddepth 用 CV_8U → 负梯度被截断成 0，一半边缘丢失"
+  - "忘了对结果取绝对值（cv2.convertScaleAbs）"
+  - "x/y 方向搞反（dx=1 求的是竖直边缘）"
+
+docsPath: "/branches/feature-detection/edges"
+tags: ["边缘", "梯度", "基础算子"]

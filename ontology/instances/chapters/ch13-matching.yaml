@@ -1,0 +1,22 @@
+id: ch-13-image-matching
+type: Chapter
+number: 13
+name: 图像匹配
+plainTalk: 在两张图里找到相同的东西——就像找不同游戏里先找相同的部分。
+level: 高层
+branches:
+  - branch-feature-matching
+  - branch-geometry
+concepts:
+  - concept-homography
+  - concept-ransac
+  - concept-inlier-outlier
+  - concept-sift
+  - concept-binary-descriptor
+papers:
+  - paper-lowe-2004
+  - paper-rublee-2011
+coreQuestion: 两张图里，哪一块指的是同一个东西？
+docsPath: /chapters/ch13-matching
+prevChapter: ch-12-object-recognition
+nextChapter: ch-14-activity-understanding

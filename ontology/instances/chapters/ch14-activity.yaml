@@ -1,0 +1,19 @@
+id: ch-14-activity-understanding
+type: Chapter
+number: 14
+name: 行为理解
+plainTalk: 看出人在做什么动作——就像监考老师看考生有没有小动作。
+level: 高层
+branches:
+  - branch-detection
+  - branch-engineering
+concepts:
+  - concept-hog
+  - concept-gradient-orientation-histogram
+  - concept-sliding-window
+papers:
+  - paper-dalal-triggs-2005
+coreQuestion: 视频里的人，正在做什么动作？
+docsPath: /chapters/ch14-activity
+prevChapter: ch-13-image-matching
+nextChapter: ch-15-scene-understanding

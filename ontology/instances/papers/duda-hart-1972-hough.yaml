@@ -1,0 +1,30 @@
+id: paper-duda-hart-1972-hough
+type: Paper
+title: "Use of the Hough Transformation to Detect Lines and Curves in Pictures"
+authors:
+  - Richard O. Duda
+  - Peter E. Hart
+year: 1972
+venue: "Communications of the ACM"
+venueType: journal
+contribution: "把霍夫变换从直线推广到任意参数化曲线（含圆），并给出极坐标参数化，成为形状检测的通用投票框架。"
+keyInsight: "曲线检测 = 参数空间里的峰值查找：每个边缘点都为所有可能曲线投票。"
+novelty:
+  - 极坐标 ρ-θ 参数化
+  - 圆/椭圆等任意曲线推广
+  - 累加器峰值检测
+limitations:
+  - 参数维度升高时内存与计算量爆炸
+  - 需要预设半径范围
+relatedAlgorithms:
+  - algo-hough
+  - algo-hough-circles
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - hough
+  - shape
+doi: 10.1145/361237.361242
+citationCount: 9000

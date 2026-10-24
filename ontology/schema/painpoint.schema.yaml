@@ -1,0 +1,38 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/painpoint.schema.yaml"
+title: PainPoint
+description: 踩坑记录（症状 → 根因 → 解法）
+type: object
+required: [id, type, name, severity, symptom, rootCause, fix]
+additionalProperties: true
+properties:
+  id:
+    type: string
+    pattern: "^pp-[a-z0-9-]+$"
+    description: 全局唯一 ID，前缀 pp-
+  type:
+    const: PainPoint
+  name:
+    type: string
+    minLength: 2
+  severity:
+    enum: [low, medium, high]
+  symptom:
+    type: string
+    minLength: 2
+  rootCause:
+    type: string
+    minLength: 2
+  fix:
+    type: string
+    minLength: 2
+  detection:
+    type: string
+  relatedAlgorithms:
+    type: array
+    items: {type: string}
+  docsPath:
+    type: string
+  tags:
+    type: array
+    items: {type: string}

@@ -1,0 +1,13 @@
+id: concept-nearest-neighbor
+type: Concept
+name: "最近邻搜索"
+layer: L1
+plainTalk: "在一大堆东西里找出跟目标最像的那一个。数据集越大，一个个比对就越慢，所以要靠索引结构（如 kd 树）来少翻几页就找到答案。"
+formal: "在度量空间中给定查询点 q，寻找使距离 d(q,x) 最小的 x；近似最近邻（ANN）在允许小误差的前提下换取亚线性查询复杂度。"
+usedBy:
+  - algo-flann
+docsPath: /algorithms/flann/concepts
+tags:
+  - matching
+  - search
+  - index

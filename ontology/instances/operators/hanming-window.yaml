@@ -1,0 +1,47 @@
+id: op-hanming-window
+type: Operator
+name: "汉宁/汉明窗加窗"
+nameEn: "Hann / Hamming Window"
+category: transform
+
+plainTalk: >
+  给图像 patch 边缘乘一个余弦窗，中心权重为 1、边缘衰减到 0，
+  抑制 FFT 循环卷积的边界伪影（频谱泄露）。
+  就像给照片套一个软边画框，边上的像素被淡化，FFT 就不会把边缘硬切当高频。
+
+formula: "Hann: w[i]=0.5(1-cos(2πi/(N-1))); Hamming: w[i]=0.54-0.46cos(2πi/(N-1))"
+
+params:
+  - name: "N"
+    meaning: "窗口长度"
+    typical: "patch 大小（如 128/256）"
+    effect: "固定与 patch 等大"
+  - name: "type"
+    meaning: "Hann 或 Hamming"
+    typical: "Hann（相关滤波常用）"
+    effect: "Hann 旁瓣更低"
+
+opencvFunc: "np.hanning / np.hamming（numpy）"
+usedBy:
+  - algo-kcf
+  - algo-csrt
+  - algo-mosse
+
+complexity: "O(N) 生成窗口，O(N) 逐像素相乘"
+separability: true
+inplace: true
+noiseRobustness: medium
+edgePreserve: false
+
+useCases:
+  - "相关滤波训练前的 patch 加窗（MOSSE/KCF/CSRT）"
+  - "STFT 短时傅里叶变换的窗函数"
+  - "音频信号处理的频谱分析"
+
+pitfalls:
+  - "不加窗 → 相关滤波训练出现严重边缘效应"
+  - "窗太大 → 目标边缘信息被削弱"
+  - "窗加错维度 → 2D 窗必须外积生成"
+
+docsPath: "/algorithms/kcf/concepts"
+tags: ["窗函数", "FFT", "频域处理"]

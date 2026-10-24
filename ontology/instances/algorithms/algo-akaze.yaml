@@ -1,0 +1,26 @@
+id: algo-akaze
+type: Algorithm
+name: AKAZE 加速 KAZE 特征
+year: 2013
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/akaze/
+plainTalk: 非线性扩散尺度空间 + M-LDB 二进制描述子，免费特征里性能最强
+concepts:
+- concept-nonlinear-diffusion
+- concept-fed
+- concept-mldb
+tags:
+- classic-cv
+- feature
+- nonlinear
+- binary-descriptor
+papers:
+- paper-alcantarilla-2013-akaze
+evolvedFrom: algo-surf
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

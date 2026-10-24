@@ -1,0 +1,26 @@
+id: algo-freak
+type: Algorithm
+name: "FREAK 仿生二进制描述子"
+nameEn: "Fast Retina Keypoint"
+year: 2012
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/freak/
+plainTalk: "模仿人眼视网膜的构造：越靠中心的地方看得越清楚、采样越密，往外就越来越粗。FREAK 沿着这种『由密到疏』的采样图案比较亮度，用一串 0/1 描述关键点长相，又快又省内存。"
+concepts:
+  - concept-binary-descriptor
+  - concept-concentric-pattern
+tags:
+  - classic-cv
+  - feature
+  - binary-descriptor
+  - bio-inspired
+papers:
+  - paper-alahi-2012-freak
+evolvedFrom: algo-brisk
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

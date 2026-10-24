@@ -1,0 +1,30 @@
+id: paper-serra-1982-morphology
+type: Paper
+title: Image Analysis and Mathematical Morphology
+authors:
+- Jean Serra
+year: 1982
+venue: Academic Press, London
+venueType: technical-report
+contribution: 系统建立数学形态学代数框架：膨胀、腐蚀、开、闭、击中击不中、骨架化等操作及其代数性质。
+keyInsight: 形状可以用『结构元素』去探测——像用不同模具盖印章，看哪些地方能完全贴合。
+novelty:
+- 完备格上的形态学代数
+- 结构元素探测形状
+- 开闭运算作为形态学滤波基础
+limitations:
+- 结构元素大小/形状依赖人为设计
+- 灰度形态学推广需更多处理
+relatedAlgorithms:
+- algo-morphology
+influencedBy:
+- Minkowski 和/差
+- Matheron 随机集
+influenced:
+- OpenCV morphologyEx 全套算子
+- 工业视觉缺陷检测、文字 OCR 预处理
+readStatus: skimmed
+tags:
+- classic
+citationCount: 25000
+url: https://books.google.com/books?id=6R8_AQAAIAAJ

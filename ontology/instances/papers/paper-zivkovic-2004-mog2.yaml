@@ -1,0 +1,22 @@
+id: paper-zivkovic-2004-mog2
+type: Paper
+title: "Improved Adaptive Gaussian Mixture Model for Background Subtraction"
+authors: ["Zoran Zivkovic"]
+year: 2004
+venue: ICPR
+url: "https://ieeexplore.ieee.org/document/1333992"
+doi: "10.1109/ICPR.2004.1333992"
+
+contribution: "每个像素的高斯分量个数 K 自适应选择，并集成阴影检测"
+keyInsight: "背景不一定是单一颜色，像素颜色分布往往是多峰的"
+novelty:
+  - "Dirichlet 先验正则化"
+  - "在线学习率自动估计"
+  - "高斯分量个数 K 自动选择"
+limitations:
+  - "不能处理相机运动"
+  - "突发光照变化误检"
+  - "静态新物体会被吸收为背景"
+influencedBy: []
+influenced: ["algo-vi-be", "algo-knn-bg"]
+docsPath: "/algorithms/mog2/paper"

@@ -1,0 +1,34 @@
+id: op-canny-threshold
+type: Operator
+name: "Canny 双阈值与滞后跟踪"
+nameEn: "Canny Double Thresholding with Hysteresis"
+category: edge
+
+plainTalk: >
+  「用两道门槛分强弱边」：高门槛之上的一定是真边（强边），
+  高低门槛之间的是弱边，但只要弱边和强边连在一起，就也算真边。
+  就像招工：正式员工（强边）直接录用，实习生（弱边）要跟着老员工才算数。
+
+formula: >
+  strong = |∇I| > T_high；weak = T_low < |∇I| ≤ T_high；
+  输出 = strong ∪ { weak 中与 strong 八连通的像素 }
+
+params:
+  - name: "threshold1"
+    meaning: "低阈值"
+    typical: "50（通常是 threshold2 的一半或 1/3）"
+    effect: "太低 → 噪声边多；太高 → 弱边丢失"
+  - name: "threshold2"
+    meaning: "高阈值"
+    typical: "150"
+    effect: "太高 → 边缘断裂；太低 → 假边多"
+  - name: "apertureSize"
+    meaning: "Sobel 核大小"
+    typical: "3"
+    effect: "5 更平滑但定位略差"
+
+opencvFunc: "cv2.Canny"
+
+usedBy:
+  - algo-canny
+  - algo-hough

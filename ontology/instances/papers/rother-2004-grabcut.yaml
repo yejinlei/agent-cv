@@ -1,0 +1,33 @@
+id: paper-rother-2004-grabcut
+type: Paper
+title: 'GrabCut: Interactive Foreground Extraction using Iterated Graph Cuts'
+authors:
+- Carsten Rother
+- Vladimir Kolmogorov
+- Andrew Blake
+year: 2004
+venue: ACM SIGGRAPH
+venueType: conference
+contribution: 一个矩形框即可精确抠图，GMM+迭代 GraphCut 让交互式前景提取从画 trimap 简化成画方框。
+keyInsight: GraphCut 的能量最小化可以和 GMM 颜色模型迭代：一次切分→重估颜色模型→再切分，收敛即抠出。
+novelty:
+- GMM（前景/背景各 K 个高斯）迭代更新
+- 矩形框替代 trimap 作为先验
+- 边界 matting 优化边缘细节
+limitations:
+- 颜色相近时易漏分
+- 多次迭代耗 CPU
+- 依赖初始框的位置
+relatedAlgorithms:
+- algo-grabcut
+influencedBy:
+- Boykov GraphCut 分割（2001）
+- Blobworld、Magic Wand
+influenced:
+- Office/PS/手机相册的一键抠图
+- 肖像分割、证件照自动抠背景
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1145/1015706.1015720
+citationCount: 7500

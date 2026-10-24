@@ -1,0 +1,18 @@
+id: concept-pyramid
+type: Concept
+name: "图像金字塔"
+layer: L2
+plainTalk: >
+  「把照片依次缩小，像金字塔一样一层叠一层」：原图是最底层，
+  每次按 0.5 倍缩小得到上一层；或者反过来从原图向上放大。
+  做目标检测时，大物体在低层（原图）上响应明显，小物体在高层（缩小的图）上会变成"合适大小"。
+  金字塔让检测器能在同一个滑窗大小下，找到不同距离、不同大小的物体——
+  这就是"多尺度检测"的基础。
+formal: "I_0 = I;  I_{s+1} = (I_s * G_σ) ↓2  （高斯平滑 + 2 倍下采样）"
+usedBy:
+  - algo-sift
+  - algo-hog-svm
+  - algo-dpm
+  - algo-viola-jones
+docsPath: "/branches/detection/sliding-window"
+tags: ["多尺度", "金字塔", "尺度不变", "检测基础"]

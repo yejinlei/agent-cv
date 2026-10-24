@@ -1,0 +1,18 @@
+id: concept-hysteresis
+type: Concept
+name: "滞后效应（连通性）"
+plainTalk: >
+  「一次决定不算数，要看邻居」：某个点自己不够格，但如果它旁边有够格的点，
+  它就被「带上来」。反过来，孤零零一个点没人给它作证，就被丢掉。
+  这一招治好了「噪声点点」和「边缘断裂」两个毛病。
+layer: L2
+relatedAlgorithms:
+  - algo-canny
+prerequisites:
+  - concept-double-threshold
+keyFormula: "保留 ⟺ 与强边缘 8-连通可达"
+usedIn:
+  - "Canny 边缘连接"
+  - "连通域分析"
+docsPath: "/algorithms/canny/concepts"
+tags: ["概念", "连通性", "Canny核心"]

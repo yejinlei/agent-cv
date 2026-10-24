@@ -1,0 +1,6 @@
+id: concept-background-model
+type: Concept
+name: "背景建模 Background Modeling"
+layer: L1
+plainTalk: "对「没有目标时画面长什么样」建立数学描述"
+docsPath: "/algorithms/"

@@ -1,0 +1,32 @@
+id: paper-lepetit-2009-epnp
+type: Paper
+title: 'EPnP: An Accurate O(n) Solution to the PnP Problem'
+authors:
+- Vincent Lepetit
+- Francesc Moreno-Noguer
+- Pascal Fua
+year: 2009
+venue: International Journal of Computer Vision
+venueType: journal
+contribution: 首个 O(n) 复杂度且精度不逊于迭代法的 PnP 算法，用 4 个虚拟控制点表示所有 3D 点。
+keyInsight: 任意 3D 点都可以表示成 4 个虚拟控制点的加权和——PnP 问题从求解 n 个点降为求解 4 个点。
+novelty:
+- 4 个虚拟控制点表示，O(n) 复杂度
+- 非迭代闭式解+可选 Gauss-Newton 精化
+- 支持 n≥4 的任意点数
+limitations:
+- 平面退化情况需特殊处理
+- 在噪声大时需迭代精化
+relatedAlgorithms:
+- algo-pnpsolver
+influencedBy:
+- DLT（Direct Linear Transform）
+- POSIT 算法
+influenced:
+- OpenCV solvePnP 默认实现（SOLVEPNP_EPNP）
+- AR、无人机位姿估计标准
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1007/s11263-008-0152-6
+citationCount: 4500

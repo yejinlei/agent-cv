@@ -1,0 +1,12 @@
+id: pp-hog-window-mismatch
+type: PainPoint
+name: "HOG 窗口尺寸与训练时不一致"
+severity: high
+symptom: "自己训练出的 SVM，检测时怎么扫都检测不出目标。"
+rootCause: "HOG 描述的向量维度由窗口/块/胞元参数决定；检测时的参数必须与训练时完全一致，否则向量长度不匹配或语义错位。"
+fix: "把训练用的 HOGDescriptor 参数固化下来（写入配置文件），检测时读同一份参数。"
+detection: "打印训练与检测时的 HOG 特征维度，比对是否一致。"
+relatedAlgorithms:
+  - algo-hog-svm
+docsPath: "/algorithms/hog-svm/painpoints"
+tags: ["踩坑", "HOG", "训练"]

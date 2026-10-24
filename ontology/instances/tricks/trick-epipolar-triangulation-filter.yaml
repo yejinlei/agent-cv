@@ -1,0 +1,14 @@
+id: trick-epipolar-triangulation-filter
+type: Trick
+name: "重建后按视差与重投影误差双向过滤"
+difficulty: medium
+scenario: "三角化出来的点云里混着大量远处或背后飞点，直接用会让三维模型脏得没法看。"
+how: >
+  三角化后对每个三维点做两道筛：① 视差/深度检查——若点在相机前方（正深度）
+  且两视图视角变化足够（夹角 > 1°~2°）才保留，否则说明它几乎是无穷远点；
+  ② 重投影误差检查——把三维点投影回两张图，误差超过 2~3 px 的丢掉。
+  两步合起来可去掉 80% 以上的飞点。
+effect: "点云干净可用，后续做 BA 或建网格时不会被野点带偏。"
+relatedAlgorithms:
+  - algo-epipolar
+tags: ["技巧", "三角化", "点云过滤"]

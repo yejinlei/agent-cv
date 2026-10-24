@@ -1,0 +1,33 @@
+id: paper-comaniciu-2002-meanshift
+type: Paper
+title: 'Mean Shift: A Robust Approach toward Feature Space Analysis'
+authors:
+- Dorin Comaniciu
+- Peter Meer
+year: 2002
+venue: IEEE Transactions on Pattern Analysis and Machine Intelligence
+venueType: journal
+contribution: 把 Mean Shift 密度估计算法系统引入视觉，统一解决特征空间聚类、图像分割与跟踪问题。
+keyInsight: 每个点沿密度梯度方向『爬山』到局部峰值（模态），同模态点归为一类——无需指定类别数。
+novelty:
+- 非参数核密度估计，自动确定簇数
+- Epanechnikov 核+自适应带宽
+- 统一框架做分割+跟踪
+limitations:
+- 带宽 h 选择敏感
+- 大图像上速度慢
+- 对窗内多模态不鲁棒
+relatedAlgorithms:
+- algo-meanshift
+- algo-camshift
+influencedBy:
+- Fukunaga-Hostetler Mean Shift（1975）
+influenced:
+- MeanShift 视频跟踪
+- CamShift（Bradski）
+- 图像分割研究
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/34.1000236
+citationCount: 17000

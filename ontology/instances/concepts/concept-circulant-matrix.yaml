@@ -1,0 +1,6 @@
+id: concept-circulant-matrix
+type: Concept
+name: "循环矩阵 Circulant Matrix"
+layer: L1
+plainTalk: "所有行都是第一行的循环移位，能被傅里叶矩阵对角化"
+docsPath: "/algorithms/"

@@ -1,0 +1,35 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/concept.schema.yaml"
+title: Concept
+description: 理论概念（算法背后的原理）
+type: object
+required: [id, type, name, plainTalk, layer]
+additionalProperties: true
+properties:
+  id:
+    type: string
+    pattern: "^concept-[a-z0-9-]+$"
+    description: 全局唯一 ID，前缀 concept-
+  type:
+    const: Concept
+  name:
+    type: string
+    minLength: 2
+  layer:
+    enum: [L0, L1, L2, L3, L4]
+    description: 所属本体层（L2=理论层）
+  plainTalk:
+    type: string
+    minLength: 2
+    description: 通俗解释（老奶奶也听得懂）
+  formal:
+    type: string
+    description: 形式化描述（公式/定义）
+  usedBy:
+    type: array
+    items: {type: string}
+  docsPath:
+    type: string
+  tags:
+    type: array
+    items: {type: string}

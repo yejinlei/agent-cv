@@ -1,0 +1,56 @@
+id: op-hog
+type: Operator
+name: "HOG 梯度方向直方图"
+nameEn: "Histogram of Oriented Gradients"
+category: statistical
+
+plainTalk: >
+  把窗口切成小块（cell），每个小块里统计「梯度都朝哪个方向」的直方图，
+  再把多个 cell 组成 block 做归一化，拼起来就是一个能描述「形状长啥样」的向量。
+  就像在每个小格子里数「这几根毛朝哪梳」，拼出整张脸的轮廓。
+
+formula: "对 cell 内像素按梯度方向 θ=atan2(gy,gx)、梯度幅值 m=√(gx²+gy²) 加权投票到 9 个方向 bin"
+
+params:
+  - name: "winSize"
+    meaning: "检测窗口大小"
+    typical: "64×128（行人）"
+    effect: "覆盖一个完整目标"
+  - name: "cellSize"
+    meaning: "单个 cell 像素尺寸"
+    typical: "8×8"
+    effect: "越小定位越细、维度越大"
+  - name: "blockSize"
+    meaning: "归一化 block 大小"
+    typical: "16×16（2×2 cell）"
+    effect: "越大对光照越鲁棒"
+  - name: "nbins"
+    meaning: "方向 bin 数"
+    typical: "9"
+    effect: "9 个方向足够描述形状"
+
+opencvFunc: "cv2.HOGDescriptor"
+usedBy:
+  - algo-hog-svm
+  - algo-kcf
+  - algo-csrt
+  - algo-dpm
+
+complexity: "O(W·H)，每个像素做 Sobel + 投票"
+separability: false
+inplace: false
+noiseRobustness: medium
+edgePreserve: true
+
+useCases:
+  - "行人检测（Dalal-Triggs 2005 经典方案）"
+  - "相关滤波跟踪的特征通道（KCF/CSRT）"
+  - "DPM 形变部件模型的底层特征"
+
+pitfalls:
+  - "没做 gamma 归一化 → 光照敏感"
+  - "block stride 不等于 cellSize → 维度暴涨"
+  - "彩色图三通道都算 → 取三个通道中梯度最大者即可"
+
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["特征", "形状描述", "梯度"]

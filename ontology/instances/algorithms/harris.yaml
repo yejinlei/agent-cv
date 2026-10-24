@@ -1,0 +1,24 @@
+id: algo-harris
+type: Algorithm
+name: "Harris 角点检测"
+year: 1988
+branch: branch-feature-detection
+status: stable
+docsPath: "/algorithms/harris/"
+
+plainTalk: >
+  「窗户四角探测器」：在图上放一个小窗口往上下左右挪，不管往哪个方向挪像素都变化很大——那就是角点。它数学上看自相关矩阵的两个特征值，都大就是角、一个大就是边、都小就是平坦区。
+
+tags: ["classic-cv"]
+papers: ["paper-harris-1988"]
+
+chapters: ["ch-04-primitives", "ch-06-representation"]
+
+dependsOn: [
+  "op-gaussian-blur",
+  "op-sobel",
+  "op-non-max-suppression",
+  "op-taylor-expansion"
+]
+
+replacedBy: ["algo-sift"]

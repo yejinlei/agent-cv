@@ -1,0 +1,32 @@
+id: paper-shi-tomasi-1994
+type: Paper
+title: Good Features to Track
+authors:
+- Jianbo Shi
+- Carlo Tomasi
+year: 1994
+venue: IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
+venueType: conference
+contribution: 把 Harris 响应函数从 det(H)-k·tr(H)² 改为 min(λ1,λ2)，成为光流跟踪最可靠的角点选择标准。
+keyInsight: 判断一个点是否好跟踪，应该看两个方向上最小的纹理变化量——两个方向都够强，光流才不会漂。
+novelty:
+- 新的响应函数 R=min(λ1,λ2)，无需调参 k
+- 专为 Kanade-Lucas-Tomasi 光流设计
+- 一致性验证保证跨帧稳定
+limitations:
+- 仍是单一尺度，不抗缩放
+- 对光照变化未作显式处理
+relatedAlgorithms:
+- algo-shi-tomasi
+- algo-lucas-kanade
+influencedBy:
+- Harris-Stephens 角点（1988）
+influenced:
+- OpenCV goodFeaturesToTrack 标准
+- 光流跟踪的工业标配角点
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/CVPR.1994.323794
+url: https://ieeexplore.ieee.org/document/323794
+citationCount: 18000

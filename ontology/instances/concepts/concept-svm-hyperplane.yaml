@@ -1,0 +1,19 @@
+id: concept-svm-hyperplane
+type: Concept
+name: "SVM 超平面与支持向量"
+plainTalk: >
+  「画一条最宽的分界线」：能分开两类的线有无数条，选离两边最近的点都最远的。
+  决定这条线的只有「最靠近它的几个点」，那几个点叫支持向量。
+  这保证了分寸感——不会因为某一个点画得太偏而让分界线歪掉。
+layer: L2
+relatedAlgorithms:
+  - algo-hog-svm
+  - algo-viola-jones
+prerequisites:
+  - op-svm-training
+keyFormula: "max 2/||w|| s.t. y_i(wᵀx_i+b) ≥ 1"
+usedIn:
+  - "HOG+SVM 行人检测"
+  - "任何高维小样本分类"
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["概念", "分类器", "HOG配套"]

@@ -1,0 +1,80 @@
+id: algo-canny
+type: Algorithm
+name: "Canny 边缘检测"
+nameEn: "Canny Edge Detector"
+year: 1986
+branch: branch-feature-detection
+
+plainTalk: >
+  「自动描边小画家」：把照片里所有东西的轮廓，用细黑笔描出来。
+  它会先用橡皮擦掉照片上的噪点（高斯模糊），再看哪里的明暗变化最剧烈（梯度），
+  然后只保留变化最剧烈的那一条线（非极大值抑制），
+  最后用「宽松门槛 + 严格门槛」两道关卡筛选，得到又细又连的轮廓。
+  就像描眉毛——只描眉毛本身，不会把旁边的雀斑也描成眉毛。
+
+concepts:
+  - concept-optimal-edge-criteria
+  - concept-gradient-magnitude
+  - concept-non-maximum-suppression
+  - concept-double-threshold
+  - concept-hysteresis
+
+evolvedFrom: "algo-sobel"
+
+dependsOn:
+  - op-gaussian-blur
+  - op-sobel
+  - op-non-max-suppression
+  - op-double-threshold
+  - op-hysteresis-tracking
+
+replacedBy: []
+inheritedBy:
+  - "深度学习中的边缘辅助监督（如边缘感知损失）"
+
+papers:
+  - paper-canny-1986
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.Canny"
+    since: "OpenCV 1.0"
+  - lib: "scikit-image"
+    func: "skimage.feature.canny"
+  - lib: "MATLAB"
+    func: "edge(I, 'Canny')"
+
+metrics:
+  - name: "对比 Sobel 的定位精度"
+    value: "边缘定位误差降低约 50%"
+    dataset: "合成边缘 + 含噪图像"
+    hardware: "论文时代硬件"
+  - name: "单响应"
+    value: "同一真实边缘只产生一条响应（Sobel 会产生多条）"
+    dataset: "合成阶跃边缘"
+  - name: "速度（1080p，OpenCV，i5）"
+    value: "约 3 ms"
+    hardware: "Intel i5"
+
+applications:
+  - app-industrial-defect
+  - app-document-scan
+  - app-edge-deployment
+
+caseStudies:
+  - case-industrial-defect
+
+painPoints:
+  - pp-canny-threshold-guess
+  - pp-canny-aperture-size
+  - pp-canny-not-blur
+
+tricks:
+  - trick-canny-threshold-ratio
+  - trick-canny-otsu-auto
+  - trick-canny-for-drawing-contour
+
+layer: L3
+docsPath: "/algorithms/canny/"
+status: stable
+tags: ["边缘检测", "经典算法", "1986", "标杆"]

@@ -1,0 +1,29 @@
+id: paper-huang-1979-median
+type: Paper
+title: "A Fast Two-Dimensional Median Filtering Algorithm"
+authors:
+  - Thomas S. Huang
+  - George J. Yang
+  - Gregory Y. Tang
+year: 1979
+venue: "IEEE Transactions on Acoustics, Speech, and Signal Processing"
+venueType: journal
+contribution: "给出二维中值滤波的快速实现，把朴素排序的复杂度从 O(k²logk) 降到与窗口尺寸近似线性，使中值滤波真正可用于图像。"
+keyInsight: "滑动窗口之间大量像素重叠，可以复用上一步的排序结果，只需增删列。"
+novelty:
+  - 基于直方图的增量中值更新
+  - 二维滑动窗口快速实现
+limitations:
+  - 大窗口或浮点图像仍偏慢
+  - 对高斯噪声效果一般
+relatedAlgorithms:
+  - algo-median-filter
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - median
+  - nonlinear-filter
+doi: 10.1109/TASSP.1979.1163188
+citationCount: 1400

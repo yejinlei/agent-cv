@@ -1,0 +1,24 @@
+id: concept-reprojection-error
+type: Concept
+name: "重投影误差"
+layer: L2
+plainTalk: >
+  用估出来的相机参数，把3D点重新投影回图像，和实际检测到的角点比一比——
+  差几个像素就是重投影误差。就像用尺子量完东西再量一遍，看误差有多大。
+  <0.1px 是优秀，<0.2px 是可用，>0.5px 说明标定有问题。
+
+formal: >
+  RMSE = sqrt(1/(N·M) · Σ ||m_ij - m̂(K,dist,R_i,t_i,M_j)||²)，
+  即所有点的投影点与观测点欧氏距离的均方根。这是 LM 优化的目标函数。
+
+solutions: [
+  "整体RMSE：评估整个标定质量",
+  "单图误差：找坏图（误差明显偏大的图）",
+  "单点误差：找检测错误的角点",
+  "LM优化最小化该误差得到最大似然估计"
+]
+
+usedBy: ["algo-zhang-calibration", "algo-ransac"]
+related: ["concept-lm-optimization", "concept-camera-model"]
+docsPath: "/algorithms/zhang-calibration/concepts"
+tags: ["geometry", "camera-calibration", "metric"]

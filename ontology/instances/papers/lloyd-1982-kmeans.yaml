@@ -1,0 +1,29 @@
+id: paper-lloyd-1982-kmeans
+type: Paper
+title: Least Squares Quantization in PCM
+authors:
+- Stuart Lloyd
+year: 1982
+venue: IEEE Transactions on Information Theory
+venueType: journal
+contribution: 提出用于脉冲编码调制（PCM）量化的最小二乘迭代算法，成为 K-Means 聚类的标准实现。
+keyInsight: 把『聚类』看成一个量化问题：交替执行『分配最近中心』和『更新中心为均值』，必然收敛。
+novelty:
+- 经典 EM 风格迭代：分配→更新两步
+- 收敛到局部最优
+- 矢量量化奠基
+limitations:
+- 对初始中心敏感（K-Means++ 改进）
+- 必须指定 K
+- 对非球形簇无能为力
+relatedAlgorithms:
+- algo-kmeans
+influencedBy:
+- Linde-Buzo-Gray 矢量量化
+influenced:
+- 图像颜色量化、SLIC 超像素、词袋模型（BoVW）视觉词汇构建
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/TIT.1982.1056489
+citationCount: 22000

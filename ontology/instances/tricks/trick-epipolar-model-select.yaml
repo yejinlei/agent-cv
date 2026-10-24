@@ -1,0 +1,15 @@
+id: trick-epipolar-model-select
+type: Trick
+name: "H 还是 F：用重投影误差自动选模型"
+difficulty: medium
+scenario: "拿到一堆匹配点，不确定场景是平面还是非平面，选错模型会导致重建失败。"
+how: >
+  同时求 H（cv2.findHomography，RANSAC）和 F（cv2.findFundamentalMat，RANSAC），
+  分别计算内点的对称重投影误差（H 用 transfer error，F 用 Sampson error）。
+  若 H 的内点比例 ≥ 0.7 且误差与 F 相当，判定为平面场景，用 H；
+  否则用 F/E。工业上常用「H 内点率 > 0.6 则先试纯旋转/平面假设」这套经验阈值。
+effect: "自动规避平面退化导致的 F 求解失败，SLAM/重建初始化成功率显著提升。"
+relatedAlgorithms:
+  - algo-epipolar
+  - algo-homography
+tags: ["技巧", "模型选择", "对极几何"]

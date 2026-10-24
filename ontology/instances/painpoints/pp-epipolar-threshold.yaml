@@ -1,0 +1,19 @@
+id: pp-epipolar-threshold
+type: PainPoint
+name: "RANSAC 阈值设错，内点被当外点清光"
+severity: medium
+symptom: >
+  基础矩阵估计的外点比例明明只有 30%，RANSAC 却收敛不到正确解，
+  或者内点数远少于预期；把阈值改大一点结果又变糊。
+rootCause: >
+  对极几何的残差是「点到极线的距离」（像素单位），阈值必须以像素为单位
+  设定，通常 1~3 px。很多人照搬单应矩阵（H）的阈值，或者用了归一化坐标下的
+  阈值（0.001~0.01），尺度完全不匹配。
+fix: >
+  F/E 估计的 RANSAC 阈值按像素给：一般 1.0~3.0 px（取决于特征点定位精度，
+  SIFT/ORB 用 1~2 px 即可）。先固定阈值跑一遍，用极线可视化抽查 10 对点，
+  确认内点确实落在极线上再调。
+relatedAlgorithms:
+  - algo-epipolar
+  - algo-ransac
+tags: ["踩坑", "参数", "对极几何", "RANSAC"]

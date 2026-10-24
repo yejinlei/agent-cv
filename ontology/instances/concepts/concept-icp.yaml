@@ -1,0 +1,6 @@
+id: concept-icp
+type: Concept
+name: 迭代最近点
+plainTalk: 两片点云互相找最近点配对，算刚体变换让它们对齐，反复迭代
+layer: L3
+formalDefinition: 交替进行最近点对应和 SVD 刚体变换估计，直到两片点云收敛到对齐

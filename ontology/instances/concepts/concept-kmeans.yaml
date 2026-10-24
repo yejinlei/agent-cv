@@ -1,0 +1,14 @@
+id: concept-kmeans
+type: Concept
+name: "K-Means 聚类"
+layer: L2
+plainTalk: >
+  「物以类聚」：给你一大堆点，要分成 K 堆，让每堆里的点都挤在一起、堆和堆之间尽量分开。
+  做法是：先随便挑 K 个"中心"；每轮把每个点归给最近的中心；再把每堆的中心重新算成这一堆点的平均值；
+  重复直到中心不再动。
+  在 BoVW 里它被用来把几百万个局部特征聚成"视觉单词"——一堆相似的 SIFT 描述子就叫一个词。
+formal: "min Σ_{k=1..K} Σ_{x∈C_k} ||x - μ_k||²，μ_k = (1/|C_k|)Σ_{x∈C_k}x"
+usedBy:
+  - algo-bovw
+docsPath: "/branches/detection/bovw"
+tags: ["聚类", "无监督学习", "视觉字典", "BoVW基础"]

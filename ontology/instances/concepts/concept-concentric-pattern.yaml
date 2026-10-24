@@ -1,0 +1,13 @@
+id: concept-concentric-pattern
+type: Concept
+name: 同心圆采样模式
+enName: Concentric Sampling Pattern
+field: feature-descriptor
+plainTalk: 在关键点周围画若干同心圆，每个圆上均匀取点做高斯模糊采样
+explain: BRISK/FREAK 二进制描述子的采样策略：覆盖均匀、天然适合旋转、模糊半径随半径变大避免混叠。
+appearsIn:
+- algo-brisk
+related:
+- concept-brief
+docsPath: /algorithms/brisk/concepts
+layer: L2

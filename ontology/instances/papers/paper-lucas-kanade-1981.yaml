@@ -1,0 +1,29 @@
+id: paper-lucas-kanade-1981
+type: Paper
+title: 'An Iterative Image Registration Technique with an Application to Stereo Vision'
+authors:
+  - Bruce D. Lucas
+  - Takeo Kanade
+year: 1981
+venue: IJCAI
+venueType: conference
+url: https://www.ri.cmu.edu/pub_files/pub3/lucas_bruce_d_1981_1/lucas_bruce_d_1981_1.pdf
+doi: null
+relatedAlgorithms:
+  - algo-lucas-kanade
+tags:
+  - classic-cv
+  - optical-flow
+keyInsight: 在局部窗口内，光流约束方程成为超定方程组，可用最小二乘得到最优位移估计。
+novelty:
+  - 提出基于亮度差最小化的迭代图像配准方法
+  - 用局部窗口解决孔径问题
+  - 给出牛顿法迭代求解框架
+limitations:
+  - 仅能处理小位移（需金字塔扩展）
+  - 亮度恒常假设在实际中常被违反
+  - 对非刚体/大形变不适用
+readStatus: deep-read
+citationCount: 23000
+contribution: 提出基于图像亮度差最小二乘的迭代配准方法，开创稀疏光流算法；后经 Bouguet 扩展为金字塔 LK（KLT 跟踪器），成为视频稳像、SLAM、动作捕捉、光流跟踪的工业标准。
+docsPath: /algorithms/lucas-kanade/paper

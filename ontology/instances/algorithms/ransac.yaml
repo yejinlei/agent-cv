@@ -1,0 +1,63 @@
+id: algo-ransac
+type: Algorithm
+name: "RANSAC 随机采样一致"
+nameEn: "Random Sample Consensus"
+year: 1981
+branch: branch-feature-matching
+chapters:
+  - ch-13-matching
+
+plainTalk: >
+  「一群外点里的投票找真相」：数据里混着捣乱的外点，与其硬算，
+  不如随机抽几组最小样本猜模型，谁猜出的模型能招揽到最多「同意者」（内点），
+  谁就是真模型。它是所有几何估计的默认收尾步骤。
+
+concepts:
+  - concept-ransac
+  - concept-inlier-outlier
+  - concept-reprojection-error
+
+evolvedFrom: null
+
+dependsOn: []
+
+replacedBy: []
+
+inheritedBy:
+  - "PROSAC / LO-RANSAC / MLESAC / USAC 等大量变体"
+  - "深度学习时代的可微 RANSAC 与神经引导采样"
+
+papers:
+  - paper-ransac-1981
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.findHomography(..., cv2.RANSAC, t)"
+  - lib: "OpenCV"
+    func: "cv2.findFundamentalMat / cv2.solvePnPRansac"
+  - lib: "Open3D"
+    func: "registration_ransac_based_on_feature_matching"
+
+metrics:
+  - name: "可容忍内点率"
+    value: "稳定区间 > 50%，极端可到 20%"
+  - name: "所需迭代次数"
+    value: "k = log(1-p) / log(1-w^s)"
+
+applications:
+  - app-panorama
+  - app-sfm-reconstruction
+
+caseStudies: []
+
+painPoints:
+  - pp-ransac-threshold-unit
+  - pp-ransac-no-refit
+
+tricks:
+  - trick-ransac-prescreen
+
+layer: L3
+docsPath: "/algorithms/ransac/"
+status: stable
+tags: ["鲁棒估计", "几何", "剔外点"]

@@ -1,0 +1,18 @@
+id: ch-11-motion
+type: Chapter
+number: 11
+name: 运动分析
+plainTalk: 在连续帧里跟踪物体怎么动——就像体育裁判看慢动作回放判断球的轨迹。
+level: 高层
+branches:
+  - branch-feature-matching
+  - branch-geometry
+concepts:
+  - concept-optical-flow
+  - concept-pyramidal-lk
+papers:
+  - paper-lucas-kanade-1981
+coreQuestion: 画面里什么东西在动，往哪个方向动、动得多快？
+docsPath: /chapters/ch11-motion
+prevChapter: ch-10-3d-reconstruction
+nextChapter: ch-12-object-recognition

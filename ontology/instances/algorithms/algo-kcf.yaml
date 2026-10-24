@@ -1,0 +1,31 @@
+id: algo-kcf
+type: Algorithm
+name: "KCF 核相关滤波跟踪"
+year: 2015
+branch: branch-detection
+status: stable
+docsPath: "/algorithms/kcf/"
+
+plainTalk: >
+  拿模板在频域里做全场滑动匹配，一个元素乘就出响应图，CPU 上跑 150 FPS。循环矩阵 + 核技巧 + HOG 特征。
+
+concepts:
+  - concept-correlation-filter
+  - concept-circulant-matrix
+  - concept-kernel-trick
+  - concept-fourier-transform
+  - concept-hog
+
+tags: ["classic-cv", "tracking", "correlation-filter", "real-time"]
+papers: ["paper-henriques-2015-kcf"]
+evolvedFrom: "algo-mosse"
+replacedBy: ["algo-csrt"]
+dependsOn:
+  - op-hog
+  - op-hanming-window
+inheritedBy:
+  - algo-dsst
+  - algo-csrt
+painPoints: []
+tricks: []
+layer: L2

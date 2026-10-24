@@ -1,0 +1,51 @@
+id: app-document-scan
+type: Application
+name: "文档扫描与矫正"
+domain: consumer
+
+plainTalk: >
+  用手机拍一张歪着、带着桌面背景的纸质文件，
+  App 自动找出纸的四个角、把它「拉正」成标准的 A4 矩形，
+  再把阴影去掉、文字变黑底变白，看起来就像扫描仪扫的。
+
+algorithmStack:
+  - op-gaussian-blur
+  - algo-canny
+  - algo-homography
+  - op-adaptive-threshold
+
+hardware:
+  device: "手机 / 平板（纯 CPU）"
+  needsGPU: false
+  fps: "单张处理 < 1 s"
+  resolution: "1200×1600 或更高"
+
+constraints:
+  - "手机端算力有限，算法要轻"
+  - "拍摄角度任意（透视畸变严重）"
+  - "桌面背景复杂、光照不均"
+  - "需要实时预览（取景框提示）"
+
+metrics:
+  - name: "四角定位准确率"
+    target: "> 95%（背景干净时）"
+    note: "背景杂乱是主要失败来源"
+  - name: "端到端耗时"
+    target: "< 1 s（手机）"
+    note: "含边缘检测、轮廓筛选、透视变换、二值化"
+
+whyClassic: >
+  ① 纯 CPU 可在手机实时运行，无需加载模型；
+  ② 流程完全可解释，每个环节都能可视化调试（四角画出来就知道对不对）；
+  ③ 不需要训练数据（只用几何先验：纸是矩形）；
+  ④ 对任意纸张尺寸都成立（不依赖固定尺寸的先验）。
+
+substituteByDL: >
+  深度学习方案（如文档边缘分割网络）在背景极杂乱时更鲁棒，
+  但需要模型文件、推理耗时更高，且处理"纸张这种强几何先验"问题属于用大炮打蚊子。
+
+caseStudies:
+  - case-heritage
+
+docsPath: "/cases/"
+tags: ["文档扫描", "几何变换", "手机端"]

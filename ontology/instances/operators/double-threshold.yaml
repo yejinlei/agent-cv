@@ -1,0 +1,46 @@
+id: op-double-threshold
+type: Operator
+name: "双阈值判定"
+nameEn: "Double Threshold"
+category: point-operation
+
+plainTalk: >
+  「两道门槛筛选」：设一个高门槛和一个低门槛。
+  比高门槛还强的（很明显的边缘），直接确定是边缘；
+  比低门槛还弱的（很淡的痕迹），直接扔掉；
+  介于两者之间的（不太确定的），先放着，等后面看它旁边有没有确定边缘再决定。
+  就像筛米：大石头直接扔，好米直接留，中间大小的要看它周围是什么。
+
+formula: "strong: M ≥ T_high;  weak: T_low ≤ M < T_high;  reject: M < T_low"
+
+params:
+  - name: "T_high"
+    meaning: "高阈值"
+    typical: "T_low 的 2–3 倍"
+    effect: "越高越保守，可能漏掉弱边缘"
+  - name: "T_low"
+    meaning: "低阈值"
+    typical: "Canny 中常取 T_high 的 1/2 或 1/3"
+    effect: "越低越敏感，可能引入噪声"
+
+opencvFunc: "（Canny 内部实现）"
+usedBy:
+  - algo-canny
+
+complexity: "O(n)"
+separability: false
+inplace: false
+noiseRobustness: high
+edgePreserve: true
+
+useCases:
+  - "Canny 的第三、四步（阈值 + 滞后连接）"
+  - "任何「需要在噪声和漏检之间权衡」的判定"
+  - "目标检测中的置信度筛选（两个阈值 + 中间区域待定）"
+
+pitfalls:
+  - "两个阈值都要调，比单阈值更难（但效果更好）"
+  - "T_high 与 T_low 的比例比绝对数值更重要"
+
+docsPath: "/algorithms/canny/concepts"
+tags: ["阈值", "判定", "Canny核心"]

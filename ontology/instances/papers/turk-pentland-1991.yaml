@@ -1,0 +1,31 @@
+id: paper-turk-pentland-1991
+type: Paper
+title: Eigenfaces for Recognition
+authors:
+- Matthew Turk
+- Alex Pentland
+year: 1991
+venue: Neural Computation
+venueType: journal
+doi: "10.1162/neco.1991.3.1.71"
+url: "https://doi.org/10.1162/neco.1991.3.1.71"
+contribution: 提出「特征脸」方法：用 PCA 把人脸图像从几万维像素空间压缩到几十维「主成分脸」子空间，识别与检测都在低维空间做最近邻，使人脸识别首次变得可行且可实时。
+keyInsight: 人脸之间的差异并不均匀地分布在每个像素上——绝大部分变化集中在极少数几个方向上（主成分），抓住这几十个方向就等于抓住了整张脸。
+novelty:
+- 将 PCA/KL 变换用于人脸表征并命名 Eigenfaces
+- 用残差能量（到脸子空间的距离）直接做人脸/非人脸判别
+- 免去了逐像素模板匹配的暴力搜索
+limitations:
+- 对姿态、光照、表情敏感，需先做几何与灰度归一化
+- 线性子空间无法表达非线性外观变化
+- 人脸数量增大时训练代价高、区分度下降
+relatedAlgorithms:
+- algo-face-detection-prev
+influenced:
+- 线性判别分析人脸识别（Fisherfaces）
+- 后续所有基于子空间与深度学习嵌入的人脸表征
+readStatus: skimmed
+citationCount: 20000
+tags:
+- classic
+- face

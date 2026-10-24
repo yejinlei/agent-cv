@@ -1,0 +1,16 @@
+id: trick-sift-lowe-ratio
+type: Trick
+name: "Lowe 比值阈值的取舍"
+difficulty: easy
+scenario: "SIFT/SURF/ORB 等任何基于描述子距离的特征匹配。"
+how: >
+  用 knnMatch(k=2) 得到最近邻与次近邻，
+  只保留 distance(1st) < ratio × distance(2nd) 的匹配。
+  ratio 常用 0.75；要求严格时用 0.6–0.7（匹配少但准），
+  匹配点不够时放宽到 0.8–0.85。
+effect: "误匹配大幅减少，几何验证（F/E 求解）的内点率通常明显上升。"
+caveat: "ratio 太严会导致匹配数骤减，对需要足够点数的几何求解不利——要找平衡。"
+relatedAlgorithms:
+  - algo-sift
+docsPath: "/algorithms/sift/tricks"
+tags: ["技巧", "SIFT", "匹配"]

@@ -1,0 +1,29 @@
+id: algo-csrt
+type: Algorithm
+name: CSRT 通道与空间可靠性跟踪
+year: 2017
+branch: branch-detection
+status: stable
+docsPath: /algorithms/csrt/
+plainTalk: KCF 升级版，加空间掩膜和通道权重，OpenCV 传统跟踪器里精度最高
+concepts:
+- concept-correlation-filter
+- concept-spatial-reliability
+- concept-channel-reliability
+- concept-circulant-matrix
+- concept-fourier-transform
+- concept-hog
+tags:
+- classic-cv
+- tracking
+- correlation-filter
+papers:
+- paper-lukezic-2017-csrt
+evolvedFrom: algo-kcf
+replacedBy: []
+dependsOn:
+- op-hog
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

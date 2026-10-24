@@ -1,0 +1,20 @@
+id: concept-histogram-equalization
+type: Concept
+name: "直方图均衡化"
+layer: L1
+plainTalk: >
+  把一张灰蒙蒙、全挤在中间灰阶的照片，重新『摊开』到 0~255 整条灰阶上。做法是先数出每个灰度值出现了多少次（直方图），再按累积比例把原来的灰度搬到新位置——原来最暗的一小撮被拉到纯黑，最亮的一小撮拉到纯白，中间按照密集程度均匀铺开。结果是暗部和亮部的细节一下子都看得见了。
+
+formal: >
+  s_k = T(r_k) = (L-1)·Σ_{j=0}^{k} p_r(r_j)，其中 p_r 为归一化直方图，L 为灰度级数
+
+solutions: [
+  "统计直方图并归一化",
+  "求累积分布函数 CDF",
+  "按 CDF 做灰度映射，用查表加速",
+]
+
+usedBy: ["algo-clahe", "algo-otsu"]
+related: ["concept-histogram", "concept-cdf"]
+docsPath: "/algorithms/clahe/concepts"
+tags: ["enhancement", "histogram"]

@@ -1,0 +1,48 @@
+id: op-gaussian-blur
+type: Operator
+name: "高斯模糊"
+nameEn: "Gaussian Blur"
+category: filter
+
+plainTalk: >
+  「给照片磨皮」：让每个像素跟它周围的邻居「平均一下」，
+  但离得近的邻居说话权重大、离得远的权重小——权重按一个钟形曲线分配。
+  结果是照片变得柔和，噪点（那些突兀的小点）被抹掉了。
+  就像隔着磨砂玻璃看东西，细节糊了，但脏点也看不见了。
+
+formula: "G(x,y;σ) = (1/(2πσ²)) · exp(-(x²+y²)/(2σ²))"
+
+params:
+  - name: "ksize"
+    meaning: "卷积核大小（必须是奇数）"
+    typical: "3×3 / 5×5 / 9×9"
+    effect: "越大越模糊"
+  - name: "sigmaX"
+    meaning: "X 方向标准差"
+    typical: "0（由 ksize 自动推算）或 1.0–3.0"
+    effect: "越大越模糊，细节丢失越多"
+
+opencvFunc: "cv2.GaussianBlur"
+usedBy:
+  - algo-canny
+  - algo-sift
+
+complexity: "O(n · k²)，可分离时为 O(n · 2k)"
+separability: true
+inplace: true
+noiseRobustness: high
+edgePreserve: false
+
+useCases:
+  - "去除高斯噪声"
+  - "降采样前的抗混叠"
+  - "边缘检测的前置平滑（Canny 第一步）"
+  - "尺度空间的构造（SIFT 的每个 octave）"
+
+pitfalls:
+  - "ksize 用偶数 → OpenCV 直接报错"
+  - "sigma 设太大 → 细小特征全丢"
+  - "先边缘检测后模糊 → 完全错误，顺序反了"
+
+docsPath: "/branches/image-processing/filtering"
+tags: ["滤波", "平滑", "基础算子"]

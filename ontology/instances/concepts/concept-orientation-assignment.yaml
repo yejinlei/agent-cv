@@ -1,0 +1,18 @@
+id: concept-orientation-assignment
+type: Concept
+name: "方向分配（主方向）"
+plainTalk: >
+  「给这个点定一个朝向」：就像给每个人拍照时先让他站正，
+  这个点也要先知道「它周围花纹的主要方向」。
+  之后所有的描述都是相对这个方向来记的，这样照片转多少度都认得出来。
+layer: L2
+relatedAlgorithms:
+  - algo-sift
+prerequisites:
+  - op-histogram
+keyFormula: "主方向 = argmax_θ h(θ)，h 为邻域梯度方向直方图"
+usedIn:
+  - "SIFT 旋转不变性"
+  - "方向直方图用于描述子构建"
+docsPath: "/algorithms/sift/concepts"
+tags: ["概念", "旋转不变", "SIFT核心"]

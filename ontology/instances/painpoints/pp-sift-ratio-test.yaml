@@ -1,0 +1,12 @@
+id: pp-sift-ratio-test
+type: PainPoint
+name: "不做 Lowe 比值检验"
+severity: high
+symptom: "匹配结果里大量连线乱飞，几何验证内点率很低。"
+rootCause: "直接取「最近邻」会把很多相似纹理（如重复图案）错误匹配。"
+fix: "用 k=2 的 knn 匹配，只保留 m.distance < 0.75 * n.distance 的匹配对。"
+detection: "统计比值分布；或看 RANSAC 内点率是否明显提升。"
+relatedAlgorithms:
+  - algo-sift
+docsPath: "/algorithms/sift/painpoints"
+tags: ["踩坑", "SIFT", "匹配"]

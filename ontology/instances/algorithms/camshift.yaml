@@ -1,0 +1,22 @@
+id: algo-camshift
+type: Algorithm
+name: CamShift 连续自适应 MeanShift
+year: 1998
+branch: branch-detection
+status: stable
+docsPath: /algorithms/camshift/
+plainTalk: MeanShift 的视频版，窗口大小和方向自动跟随目标变，肤色人脸跟踪教学级经典算法。
+layer: L2
+tags:
+- classic-cv
+- tracking
+- color
+- mean-shift
+papers:
+- paper-bradski-1998-camshift
+dependsOn:
+- algo-meanshift
+concepts:
+- concept-histogram
+painPoints: []
+tricks: []

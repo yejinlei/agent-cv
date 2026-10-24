@@ -1,0 +1,18 @@
+id: concept-fast-detector
+type: Concept
+name: "FAST 角点判据"
+plainTalk: >
+  判断一个点是不是角点，只要看它周围一圈（16 个像素）的亮度：
+  如果这圈里连续有很长一段（比如 9 个）都比中心亮得多，或者都比中心暗得多，
+  那这个点就是角点。整个过程只有比较大小，没有乘除法，所以特别快。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-orb
+prerequisites: []
+keyFormula: "圆周上连续 N 个像素 全部 > I(p)+t 或 全部 < I(p)−t"
+usedIn:
+  - "ORB 的关键点检测"
+  - "实时 SLAM 与 VR 的特征前端"
+docsPath: "/branches/feature-matching/descriptors"
+tags: ["概念", "角点", "实时"]

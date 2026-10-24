@@ -1,0 +1,13 @@
+id: concept-contour-approximation
+type: Concept
+name: "轮廓逼近"
+layer: L1
+plainTalk: "用尽量少的顶点去描出一条曲线或物体边界的过程。就像画简笔画——只保留拐弯处的关键点，其它点丢掉，形状看起来还一样。"
+formal: "在给定最大偏差 ε 的约束下求折线最少顶点表示，常用道格拉斯-普克递归分治或最小误差多边形拟合。"
+usedBy:
+  - algo-contour-fitting
+docsPath: /algorithms/contour-fitting/concepts
+tags:
+  - contour
+  - simplification
+  - shape

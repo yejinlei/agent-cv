@@ -1,0 +1,29 @@
+id: op-bfmatcher
+type: Operator
+name: "暴力匹配器"
+nameEn: "Brute-Force Matcher"
+category: statistical
+plainTalk: "拿着每个特征点，去另一张图的特征点里挨个比一遍『谁最像我』，比完所有组合后挑出最像的。最笨但最可靠，特征不多时足够用。"
+formula: "对每个描述子 d_i，遍历所有 d'_j 求最小距离 argmin_j dist(d_i, d'_j)"
+params:
+  - name: "normType"
+    meaning: "距离度量"
+    typical: "NORM_L2 / NORM_HAMMING"
+    effect: "浮点描述子用 L2，二进制描述子用 Hamming"
+  - name: "crossCheck"
+    meaning: "交叉验证"
+    typical: "True / False"
+    effect: "双向互选，可过滤大量误匹配"
+opencvFunc: "cv2.BFMatcher"
+usedBy:
+  - algo-flann
+complexity: "O(N·M·d)，N/M 为两图特征数，d 为描述子维度"
+useCases:
+  - "小规模特征匹配基线"
+  - "与 FLANN 对比精度上限"
+  - "交叉验证过滤误匹配"
+pitfalls:
+  - "特征多时极慢，应改用 FLANN"
+  - "二进制描述子必须用 NORM_HAMMING"
+  - "未做比值检验会混入大量错配"
+tags: ["算子", "基础"]

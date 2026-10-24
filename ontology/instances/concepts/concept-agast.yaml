@@ -1,0 +1,13 @@
+id: concept-agast
+type: Concept
+name: AGAST 角点
+enName: Adaptive and Generic Accelerated Segment Test
+field: feature-detection
+plainTalk: FAST 的改良版，用多棵决策树组合提速并提升泛化
+explain: AGAST 把不同邻域配置下训练的决策树融合，让角点检测速度比 FAST 快约 15%，且无需针对场景重训。
+appearsIn:
+- algo-brisk
+related:
+- concept-fast-corner
+docsPath: /algorithms/brisk/concepts
+layer: L2

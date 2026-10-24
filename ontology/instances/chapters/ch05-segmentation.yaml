@@ -1,0 +1,17 @@
+id: ch-05-segmentation
+type: Chapter
+number: 5
+name: 图像分割
+plainTalk: 把整张图切成几块不同区域——就像切生日蛋糕：奶油、水果、蛋糕胚分开，各管各的。
+level: 中层
+branches:
+  - branch-segmentation
+concepts:
+  - concept-kmeans
+  - concept-hough-transform
+  - concept-parameter-space
+papers: []
+coreQuestion: 怎么把整张图切成一块块有意义的目标区域？
+docsPath: /chapters/ch05-segmentation
+prevChapter: ch-04-primitives
+nextChapter: ch-06-representation

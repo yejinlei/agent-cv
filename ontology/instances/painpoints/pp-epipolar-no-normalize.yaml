@@ -1,0 +1,18 @@
+id: pp-epipolar-no-normalize
+type: PainPoint
+name: "不做归一化，八点法解出来的 F 完全不可用"
+severity: high
+symptom: >
+  cv2.findFundamentalMat 自己手写版本时，匹配点都是像素坐标（x 到 500~2000），
+  解出的 F 矩阵元素动辄 10⁴~10⁶ 与 10⁻⁶ 混在一起，极线画出来乱飞，
+  重建点云炸成一片散沙。
+rootCause: >
+  像素坐标量级差异大（x 轴 ~1000、y 轴 ~1000），构造的系数矩阵各列量级相差
+  10⁶ 以上，条件数接近 10¹²，SVD 解在浮点精度下已经失真。
+fix: >
+  求解前先做 Hartley 归一化：把所有点平移使质心在原点，再整体缩放使到原点
+  的平均距离为 √2；解出 F 后用 T'ᵀ F T 反归一化。cv2.findFundamentalMat 内部
+  已默认做这一步，手写实现必须自己补。
+relatedAlgorithms:
+  - algo-epipolar
+tags: ["踩坑", "数值稳定", "对极几何"]

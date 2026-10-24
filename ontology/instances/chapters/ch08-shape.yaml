@@ -1,0 +1,17 @@
+id: ch-08-shape-description
+type: Chapter
+number: 8
+name: 形状描述与分析
+plainTalk: 画出轮廓，数出形状特征——就像描红：沿着苹果边缘描一圈，就知道它是圆形的。
+level: 中层
+branches:
+  - branch-segmentation
+  - branch-feature-detection
+concepts:
+  - concept-hough-transform
+  - concept-parameter-space
+papers: []
+coreQuestion: 一个东西长什么形状，怎么让机器把它量出来、认出来？
+docsPath: /chapters/ch08-shape
+prevChapter: ch-07-texture
+nextChapter: ch-09-stereo-vision

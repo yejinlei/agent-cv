@@ -1,0 +1,55 @@
+id: app-edge-deployment
+type: Application
+name: "嵌入式边缘设备视觉"
+domain: robotics
+
+plainTalk: >
+  把视觉算法塞进一个手掌大小的盒子里（或者一块几百元的板子），
+  没有显卡、内存也不多，还要每秒处理几十张图。
+  就像让一个只会算术的小学生，在很短时间里心算出结果。
+
+algorithmStack:
+  - algo-canny
+  - algo-hog-svm
+
+hardware:
+  device: "树莓派 / RK3588 / ESP32-CAM / 工控机"
+  needsGPU: false
+  fps: "25–30 fps"
+  resolution: "320×240 → 640×480（低分辨率处理）"
+
+constraints:
+  - "内存只有几百 MB 到几 GB"
+  - "功耗与散热受限（不能长时间满负荷）"
+  - "端到端延迟要小（含相机缓冲）"
+  - "必须 24 小时稳定运行（不能内存泄漏）"
+
+metrics:
+  - name: "单帧耗时"
+    target: "< 33 ms（30 fps）"
+    note: "在目标硬件上实测，不能只看开发机"
+  - name: "P99 耗时"
+    target: "< 50 ms"
+    note: "抖动量决定体感流畅度"
+  - name: "内存占用"
+    target: "稳定不增长"
+    note: "24 小时长跑验证"
+
+whyClassic: >
+  边缘设备是传统 CV 的主场：
+  ① 没有 GPU，深度学习方案跑不动或太慢；
+  ② OpenCV 已针对 ARM NEON 优化，Canny/ORB 等算子可直接实时；
+  ③ 内存占用小（不需要加载几十 MB 的模型权重）；
+  ④ 行为可预测（延时稳定，不会偶发卡顿）；
+  ⑤ 无训练需求，改场景只需改几个阈值。
+
+substituteByDL: >
+  有 NPU 的设备（如 RK3588、Jetson）可以跑轻量深度学习模型，
+  但仍有模型更新、量化、算子兼容等工程成本。
+  在「目标明确、光照可控、追求确定性延时」的场景，传统 CV 依然是首选。
+
+caseStudies:
+  - case-edge-deployment
+
+docsPath: "/cases/edge-deployment"
+tags: ["嵌入式", "边缘计算", "无GPU", "实时"]

@@ -1,0 +1,21 @@
+id: algo-face-detection-prev
+type: Algorithm
+name: "前深度学习人脸检测（模板匹配 / 特征脸）"
+nameEn: "Pre-Deep-Learning Face Detection (Template Matching / Eigenfaces)"
+year: 1991
+branch: branch-detection
+status: legacy
+layer: L3
+plainTalk: >
+  Viola-Jones 之前，人们检测人脸靠两招：一是「拿一张标准人脸当模板，在图上到处滑，看哪块最像」（模板匹配），
+  二是「把一堆人脸照片压成几个主要变化方向，看哪个窗口投到这组方向上最像人脸」（特征脸 + 线性判别）。
+  这两招的共同死穴是：人脸一转头、一换光照、一戴眼镜，模板就对不上了，因为它们学的是「像素长什么样」，
+  而不是「脸上哪块比哪块亮」这类更稳的结构。Viola-Jones 用 Haar 特征正是为了换掉这个死穴。
+tags: ["classic-cv", "face-detection", "legacy"]
+papers: ["paper-turk-pentland-1991"]
+concepts:
+  - concept-sliding-window
+  - concept-template-matching
+  - concept-principal-component
+painPoints:
+  - pp-viola-profile-face

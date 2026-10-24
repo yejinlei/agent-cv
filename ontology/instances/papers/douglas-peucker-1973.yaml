@@ -1,0 +1,30 @@
+id: paper-douglas-peucker-1973
+type: Paper
+title: "Algorithms for the Reduction of the Number of Points Required to Represent a Digitized Line or its Caricature"
+authors:
+  - David H. Douglas
+  - Thomas K. Peucker
+year: 1973
+venue: "Cartographica: The International Journal for Geographic Information and Geovisualization"
+venueType: journal
+contribution: "提出道格拉斯-普克折线简化算法，用递归分治在给定误差内用最少顶点近似曲线，成为轮廓逼近与地图综合的经典方法。"
+keyInsight: "距离首末连线最远的点一定是必须保留的拐点，递归切分即可得到最简表示。"
+novelty:
+  - 递归分治简化
+  - 误差带阈值控制
+  - 与 Ramer 独立提出
+limitations:
+  - 需自定误差阈值
+  - 对闭合轮廓需特殊处理
+  - 不自带形状语义
+relatedAlgorithms:
+  - algo-contour-fitting
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - contour
+  - simplification
+doi: 10.3138/FM57-6770-U75U-7727
+citationCount: 4200

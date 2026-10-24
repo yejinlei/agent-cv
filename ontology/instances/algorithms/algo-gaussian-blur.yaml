@@ -1,0 +1,28 @@
+id: algo-gaussian-blur
+type: Algorithm
+name: "高斯滤波"
+nameEn: "Gaussian Blur"
+year: 1990
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/gaussian-blur/
+plainTalk: "给图像蒙一层半透明的磨砂玻璃，每个像素都去问邻居『你们平均是多少』，结果画面变柔和、噪点被抹平；摄影师在镜头前贴的柔焦镜就是这个效果。"
+concepts:
+  - concept-gaussian-blur
+  - concept-image-pyramid
+tags:
+  - classic-cv
+  - filter
+  - linear
+  - denoise
+  - separability
+papers:
+  - paper-lindeberg-1990-scale-space
+evolvedFrom: null
+replacedBy: []
+dependsOn: []
+inheritedBy:
+  - CNN 卷积核初始化为高斯核
+painPoints: []
+tricks: []
+layer: L2

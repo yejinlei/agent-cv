@@ -1,0 +1,12 @@
+id: concept-union-find
+type: Concept
+name: 并查集 DSU
+enName: Disjoint Set Union / Union-Find
+field: data-structure
+plainTalk: 用路径压缩+按秩合并管理等价类，均摊几乎常数时间
+explain: 连通域标记中用于合并标签等价类；支持 find（找根，路径压缩）和 union（合并），均摊 O(alpha(N))。
+appearsIn:
+- algo-connected-components
+related: []
+docsPath: /algorithms/connected-components/concepts
+layer: L2

@@ -1,0 +1,23 @@
+id: paper-rosenfeld-1966-cc
+type: Paper
+title: Sequential Operations in Digital Picture Processing (Connected Components)
+authors:
+- Azriel Rosenfeld
+- John L. Pfaltz
+year: 1966
+venue: JACM
+tags:
+- connected-components
+- binary
+contribution: 首次系统提出两次扫描（Two-Pass）连通域标记算法，用等价表管理标签合并，奠定现代连通域算法基础。
+keyInsight: 第一遍贴临时标签 + 等价表，第二遍替换为根标签
+novelty:
+- 两次扫描框架：第一遍贴临时标签，第二遍替换为根标签
+- 用等价类表管理标签合并
+limitations:
+- 等价合并实现效率低（后被 BBDT/SAUF 优化）
+- 未给出完整数据结构优化
+influencedBy: []
+influenced: []
+docsPath: /algorithms/connected-components/paper
+doi: 10.1145/321356.321357

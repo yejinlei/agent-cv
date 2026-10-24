@@ -1,0 +1,21 @@
+id: concept-anisotropy
+type: Concept
+name: "各向异性（方向响应不均）"
+plainTalk: >
+  「同一道边，换个方向量出来强弱不一样」：理想的边缘算子对任何朝向的边
+  应该给出同样的响应，但 Sobel 这类 3×3 差分核对横边、竖边最敏感，
+  对 45° 斜边却只给出约七成的响应。
+  结果就是——同一个圆，正上正下的弧检测到了，斜方向的弧却弱到过不了阈值。
+  各向同性（isotropic）正是 Sobel 论文标题里追求的、却没完全实现的目标。
+layer: L2
+relatedAlgorithms:
+  - algo-sobel
+prerequisites:
+  - op-sobel
+keyFormula: "Sobel 对 45° 斜边的响应 ≈ 轴向响应的 1/√2 ≈ 0.71"
+usedIn:
+  - "边缘检测的方向一致性"
+  - "圆/斜向目标的检测阈值设计"
+  - "Scharr 算子的改进动机"
+docsPath: "/branches/image-processing/filtering"
+tags: ["概念", "各向异性", "梯度", "Sobel 缺陷"]

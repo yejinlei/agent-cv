@@ -1,0 +1,24 @@
+id: algo-clahe
+type: Algorithm
+name: CLAHE 限制对比度自适应直方图均衡
+year: 1994
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/clahe/
+plainTalk: 分小块做带 clip 限制的直方图均衡，双线性插值拼回去，低对比度增强首选
+concepts:
+- concept-histogram-equalization
+- concept-clip-limit
+tags:
+- classic-cv
+- enhancement
+- preprocessing
+papers:
+- paper-zuiderveld-1994-clahe
+replacedBy: []
+dependsOn:
+- op-gaussian-blur
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L1

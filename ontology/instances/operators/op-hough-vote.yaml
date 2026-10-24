@@ -1,0 +1,32 @@
+id: op-hough-vote
+type: Operator
+name: "霍夫投票"
+nameEn: "Hough Voting"
+category: transform
+
+plainTalk: >
+  「让每个边缘像素投票」：遍历边缘点，对每个可能过它的直线参数（ρ,θ）投一票，
+  累加器里票数最高的 bin 就是直线。就像开选举，每个选民把票投给自己看到的线候选人。
+
+formula: >
+  对每个边缘点 (x,y)，对所有 θ_k：ρ_k = x cosθ_k + y sinθ_k；
+  A[⌊(ρ_k+ρ_max)/Δρ⌋, k] += 1；最后取 A 的局部极大值作为直线。
+
+params:
+  - name: "rho"
+    meaning: "ρ 分辨率（像素）"
+    typical: "1"
+    effect: "越小越精细，越大越快但可能合并近线"
+  - name: "theta"
+    meaning: "θ 分辨率（弧度）"
+    typical: "π/180（1°）"
+    effect: "越小角度精度越高，但峰值会被稀释"
+  - name: "threshold"
+    meaning: "累加器峰值阈值"
+    typical: "50–200"
+    effect: "越小检出越多假线，越大漏检"
+
+opencvFunc: "cv2.HoughLines / cv2.HoughLinesP / cv2.HoughCircles"
+
+usedBy:
+  - algo-hough

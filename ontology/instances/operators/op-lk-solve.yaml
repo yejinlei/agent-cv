@@ -1,0 +1,46 @@
+id: op-lk-solve
+type: Operator
+name: "LK 最小二乘解"
+nameEn: "Lucas-Kanade Least-Squares Solver"
+category: statistical
+
+plainTalk: >
+  「邻域投票决定位移」：把窗口内 N² 个像素的光流约束方程堆成超定方程组 Ad = b，
+  用最小二乘法解出 (u,v)，本质是"用邻域像素集体投票决定运动方向"。
+  M 矩阵的特征值双大=角点（可跟）、一大一小=边缘（孔径问题）、双小=平坦（不可跟）。
+  每个特征点独立求解，天然可并行。
+
+formula: "M = Σ_W [[I_x²,I_x I_y],[I_x I_y,I_y²]], b = -Σ_W [I_x,I_y]ᵀ·I_t, [u,v]ᵀ = M⁻¹·b"
+
+params:
+  - name: "winSize"
+    meaning: "局部窗口大小"
+    typical: "15~31（奇数）"
+    effect: "太小易受噪点影响，太大在不连续运动处失效"
+  - name: "maxLevel"
+    meaning: "金字塔层数"
+    typical: "3~5"
+    effect: "越多越能处理大位移"
+
+opencvFunc: "cv2.calcOpticalFlowPyrLK"
+usedBy:
+  - algo-lucas-kanade
+
+complexity: "O(N²) per point"
+separability: false
+inplace: false
+noiseRobustness: medium
+edgePreserve: false
+
+useCases:
+  - "稀疏光流跟踪（KLT）"
+  - "图像配准的迭代求解"
+  - "视频稳像、SLAM 特征跟踪"
+
+pitfalls:
+  - "在边缘/平坦区跟踪：M 不可逆，结果漂移"
+  - "不做金字塔：大位移直接失败"
+  - "不判 status/err：丢失点没剔除导致越跟越偏"
+
+docsPath: "/algorithms/lucas-kanade/architecture"
+tags: ["光流", "最小二乘", "配准"]

@@ -1,0 +1,18 @@
+id: pp-dpm-slow
+type: PainPoint
+name: "DPM 检测极慢"
+severity: high
+symptom: >
+  一张图要跑几秒甚至十几秒，根本做不到实时；内存占用大，嵌入式设备跑不了。
+rootCause: >
+  每个尺度都要做根滤波器 + N 个部件滤波器的卷积，还要做变形代价动态规划。
+  金字塔有几十层，部件又有空间搜索，复杂度是 HOG 的数十倍。
+fix: >
+  1） cascade DPM：把部件检测也做成级联（Cascade DPM，2010 后），速度快一个数量级；
+  2）降采样到较低分辨率再检测；
+  3）若允许，直接换深度学习检测器（YOLO/SSD）。
+detection: "计时打印；profiling 看瓶颈在 convolution（HOG 计算）还是 deformation（DP）"
+relatedAlgorithms:
+  - algo-dpm
+docsPath: "/branches/detection/dpm"
+tags: ["速度", "性能", "DPM"]

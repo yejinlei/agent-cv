@@ -1,0 +1,49 @@
+id: app-pedestrian-detection
+type: Application
+name: "行人检测"
+domain: automotive
+
+plainTalk: >
+  在画面里找出所有人，并用方框标出来。
+  早期用于监控摄像头和辅助驾驶，是传统目标检测最经典的任务。
+
+algorithmStack:
+  - op-sobel
+  - op-histogram
+  - op-l2-normalization
+  - op-svm-training
+  - algo-hog-svm
+
+hardware:
+  device: "工控机 / 车载 CPU"
+  needsGPU: false
+  fps: "1–10 fps（多尺度 HOG 较慢）"
+  resolution: "640×480 起"
+
+constraints:
+  - "行人是非刚性目标，姿态多样"
+  - "遮挡（人群）常见"
+  - "多尺度（远近都有人）"
+  - "传统 HOG 方案速度有限"
+
+metrics:
+  - name: "漏检率 @ FPPW=10⁻⁴"
+    target: "约 10%（INRIA 数据集）"
+    note: "HOG+SVM 的经典数值"
+  - name: "误报率 FPPW"
+    target: "10⁻⁴ 量级"
+
+whyClassic: >
+  ① HOG+SVM 是行人检测的经典 baseline，至今用于性能对比；
+  ② 纯 CPU 可运行，适合低成本设备；
+  ③ 行为可预测，适合嵌入式。
+
+substituteByDL: >
+  当前主流已换为深度学习（YOLO、Faster R-CNN、CenterNet 等），
+  精度与速度都远超 HOG；但在无 GPU 的低成本场景，HOG+SVM 仍有实用价值。
+
+caseStudies:
+  - case-edge-deployment
+
+docsPath: "/branches/detection/classic-detectors"
+tags: ["行人检测", "HOG", "经典检测"]

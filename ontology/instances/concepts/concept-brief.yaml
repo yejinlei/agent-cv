@@ -1,0 +1,20 @@
+id: concept-brief
+type: Concept
+name: "BRIEF 描述子"
+layer: L2
+plainTalk: >
+  在关键点周围随机挑 256 对像素点，逐对比较『谁更亮』，亮记 1 暗记 0，就得到一个 256 位的二进制串。两张图的特征点比相似度时，只要数一数这串 01 有几个位置不同（汉明距离）即可，用异或指令一拍就能算完，比 SIFT 的浮点向量快几十倍。代价是它只比较像素亮度，不抗旋转和尺度。
+
+formal: >
+  τ(p; a, b) = 1 if I(p+a) < I(p+b) else 0；描述子 = Σ 2^i · τ(p; a_i, b_i)，i=1..256
+
+solutions: [
+  "在 31×31 的平滑后邻域内按高斯分布采样点对",
+  "用短、快、抗旋转的位串替代浮点描述子",
+  "配合汉明距离做暴力匹配",
+]
+
+usedBy: ["algo-brief", "algo-orb"]
+related: ["concept-binary-descriptor", "concept-hamming-distance"]
+docsPath: "/algorithms/brief/concepts"
+tags: ["descriptor", "binary"]

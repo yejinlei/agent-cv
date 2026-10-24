@@ -1,0 +1,29 @@
+id: paper-hartley-1997
+type: Paper
+title: In Defense of the Eight-Point Algorithm
+authors:
+  - Richard I. Hartley
+year: 1997
+venue: IEEE Trans. Pattern Analysis and Machine Intelligence
+venueType: journal
+doi: 10.1109/34.601246
+relatedAlgorithms:
+  - algo-epipolar
+  - algo-homography
+tags:
+  - classic-cv
+  - geometry
+keyInsight: 八点法本身没有问题，问题在于没有做坐标归一化；加一步 Hartley 归一化即可让八点法稳定可靠，无需复杂的非线性方法。
+novelty:
+  - "提出 Hartley 归一化：平移居中 + 缩放到平均距离 √2"
+  - "证明归一化后八点法条件数从 10¹² 降到个位数，精度媲美非线性方法"
+  - "给出强制秩 2 的 SVD 投影步骤，并比较多种归一化策略"
+limitations:
+  - "归一化会引入坐标变换，反归一化时需保证数值精度"
+  - "对初始匹配的外点仍无免疫，需配 RANSAC"
+readStatus: skimmed
+citationCount: 4500
+contribution: >
+  用「归一化」这一步救活了理论漂亮却工程难用的八点法，
+  使其成为两视图几何求解的标准方法；今天的 cv2.findFundamentalMat 内部默认
+  就执行 Hartley 归一化。

@@ -1,0 +1,12 @@
+id: concept-chamfer-distance
+type: Concept
+name: 倒角距离
+enName: Chamfer Distance
+field: morphology
+plainTalk: 用局部整数权重（横竖 3、对角 4）两次扫描近似欧氏距离，误差约 5%
+explain: Borgefors 提出的局部权重模板近似欧氏距离，两次扫描 O(N) 完成，比精确欧氏距离简单快速。
+appearsIn:
+- algo-distance-transform
+related: []
+docsPath: /algorithms/distance-transform/concepts
+layer: L2

@@ -1,0 +1,21 @@
+id: concept-brightness-constancy
+type: Concept
+name: 亮度恒常性假设（Brightness Constancy）
+layer: L2
+plainTalk: >
+  视频里一个物体在移动，从第 1 帧到第 2 帧，它本身的亮度（像素灰度值）不变——
+  变的只是它所在的像素位置。这是所有光流算法（LK、Horn-Schunck、Farneback、RAFT）共同的起点，
+  就像警察盯人时假设"人在移动但脸不变"一样。
+formal: >
+  图像序列 I(x,y,t) 中 I(x, y, t) = I(x+dx, y+dy, t+dt)，
+  一阶泰勒展开得光流约束方程 I_x·u + I_y·v + I_t = 0。
+violationCases: [
+  "光照突变：开关灯、云遮太阳",
+  "镜面反射/高光随视角移动",
+  "阴影移动",
+  "遮挡/新像素进入视野",
+  "自动曝光/AWB 调整"
+]
+usedBy: ["algo-lucas-kanade", "algo-horn-schunck"]
+related: ["concept-optical-flow", "concept-aperture-problem"]
+docsPath: "/algorithms/lucas-kanade/concepts#亮度恒常性"

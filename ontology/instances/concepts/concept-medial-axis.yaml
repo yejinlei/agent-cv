@@ -1,0 +1,13 @@
+id: concept-medial-axis
+type: Concept
+name: 中轴/骨架
+enName: Medial Axis / Skeleton
+field: morphology
+plainTalk: 距离图局部极大点连起来就是区域的骨架，骨架上的值=区域在该处的宽度
+explain: 距离变换图上比所有邻居都大的点连成线就是中轴，相当于区域内到所有边界距离相等的点的集合。
+appearsIn:
+- algo-distance-transform
+related:
+- concept-morphology
+docsPath: /algorithms/distance-transform/concepts
+layer: L2

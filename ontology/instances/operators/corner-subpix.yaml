@@ -1,0 +1,45 @@
+id: op-corner-subpix
+type: Operator
+name: "亚像素角点定位"
+nameEn: "Subpixel Corner Refinement"
+category: geometric
+
+plainTalk: >
+  角点粗检测只能给整数像素坐标（比如320,240），精度只有±0.5像素；
+  亚像素定位通过在角点邻域内拟合灰度梯度的方向约束，把角点精确到0.01像素。
+  就像用放大镜把刻度读到毫米以下的0.1毫米，是张氏标定精度的关键。
+
+formula: "ε_i · (p - q_i) = 0，其中 q_i 是邻域点，p 是亚像素角点，ε_i 是 q_i 处灰度梯度，所有邻域点的加权最小二乘解给出 p"
+
+params:
+  - name: "winSize"
+    meaning: "搜索窗口半宽"
+    typical: "(11, 11)"
+    effect: "格子小用(7,7)，大用(15,15)"
+  - name: "zeroZone"
+    meaning: "搜索死区（避免奇异性）"
+    typical: "(-1,-1) 不设"
+    effect: "一般无需改"
+  - name: "criteria"
+    meaning: "终止条件"
+    typical: "30次迭代或0.001px"
+    effect: "提高到0.0001px会更准但更慢"
+
+useCases:
+  - "张氏标定的角点精度提升（从±0.5px到±0.01px）"
+  - "Harris/Shi-Tomasi角点精定位后用于KLT跟踪"
+  - "立体匹配中的关键点亚像素细化"
+
+pitfalls:
+  - "winSize太大容易把邻近角点拉偏"
+  - "对模糊图像无效（梯度不可靠）"
+  - "必须在浮点图像上运行"
+
+usedBy:
+  - algo-zhang-calibration
+  - algo-harris
+  - algo-lucas-kanade
+
+opencvFunc: "cv2.cornerSubPix"
+docsPath: "/algorithms/zhang-calibration/architecture"
+tags: ["subpixel", "corner", "refinement"]

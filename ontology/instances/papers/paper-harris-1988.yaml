@@ -1,0 +1,24 @@
+id: paper-harris-1988
+type: Paper
+title: A Combined Corner and Edge Detector
+authors:
+- Chris Harris
+- Mike Stephens
+year: 1988
+venue: Proc. 4th Alvey Vision Conference
+relatedAlgorithms:
+- algo-harris
+doi: —
+tags:
+- classic-cv
+venueType: conference
+keyInsight: 用自相关矩阵的特征值结构判断角/边/平坦区，比 Moravec 算子方向鲁棒。
+novelty:
+- 提出角点响应函数 R=det(M)-k·tr(M)²
+- 引入高斯窗口提升抗噪
+limitations:
+- 不具备尺度不变性
+- 对光照剧烈变化敏感
+readStatus: deep-read
+citationCount: 16000
+contribution: 提出用自相关矩阵 M 的两个特征值判断角点，比 Moravec 对方向和噪声更鲁棒，并给出了简洁的角点响应函数 R=det(M)-k·tr(M)²。

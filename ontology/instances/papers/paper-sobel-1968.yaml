@@ -1,0 +1,24 @@
+id: paper-sobel-1968
+type: Paper
+title: A 3x3 Isotropic Gradient Operator for Image Processing
+authors:
+- Irwin Sobel
+- Gary Feldman
+year: 1968
+venue: Stanford AI Project Technical Report
+relatedAlgorithms:
+- algo-sobel
+doi: —
+tags:
+- classic-cv
+venueType: technical-report
+keyInsight: 把梯度分解成横纵两个方向的加权差，兼顾精度与抗噪。
+novelty:
+- 提出分离 x/y 方向梯度的 3×3 卷积核
+- 核中加入高斯加权，比纯差分更抗噪
+limitations:
+- 各向异性——对角方向响应弱
+- 没有亚像素精度
+readStatus: skimmed
+citationCount: 8000
+contribution: 提出用 3×3 的 Sobel 核在 x/y 两方向同时计算梯度，对噪声比简单差分更鲁棒，成为后续 40 年边缘检测的标准前置算子。

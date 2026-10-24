@@ -1,0 +1,21 @@
+id: concept-epipolar-geometry
+type: Concept
+name: "对极几何"
+plainTalk: >
+  你闭上一只眼只用左眼看，再换右眼看，同一个点在两次看到的画面里位置不一样。
+  对极几何发现了一条规律：给定左眼看的一个点，
+  它在右眼画面里的对应点一定落在某条固定的直线上。
+  于是找对应点不用满图搜索，只要沿着这条线找就行——搜索从二维降到一维。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-epipolar
+prerequisites:
+  - concept-ransac
+keyFormula: "x'ᵀ F x = 0（F 为基础矩阵）"
+usedIn:
+  - "立体匹配的搜索范围约束"
+  - "SFM 的相机位姿求解"
+  - "立体校正与深度图"
+docsPath: "/branches/geometry/epipolar"
+tags: ["概念", "几何", "三维重建"]

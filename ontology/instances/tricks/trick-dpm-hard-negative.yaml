@@ -1,0 +1,20 @@
+id: trick-dpm-hard-negative
+type: Trick
+name: "DPM 难例挖掘（Latent SVM + Hard Negative Mining）"
+difficulty: medium
+scenario: "训练 DPM 时假阳性（误检）太多，尤其在纹理背景上乱框"
+how: >
+  1）先用初始正负样本训练根滤波器 + 部件滤波器；
+  2）用当前模型在负样本图上跑一遍检测，把"得分高但实际是负样本"的窗口收集起来——这些就是 hard negative；
+  3）把它们加到负样本池，重新训练（更新 latent 变量 + SVM 权重）；
+  4）重复 2–3 轮，直到负样本上不再产生高分误检。
+effect: >
+  显著降低误检率，mAP 能涨 5–10 个点。这是 DPM 2010 PAMI 版相比 2008 CVPR 版的核心改进之一。
+caveat: >
+  不要把 hard negative 无限加下去——每轮负样本池加倍会让训练越来越慢；
+  通常 3 轮就够了；另外数据不要打乱，保持正负样本比大致在 1:3。
+relatedAlgorithms:
+  - algo-dpm
+  - algo-hog-svm
+docsPath: "/branches/detection/dpm"
+tags: ["训练技巧", "难例挖掘", "DPM"]

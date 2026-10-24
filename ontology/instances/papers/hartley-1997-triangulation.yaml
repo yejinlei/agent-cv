@@ -1,0 +1,31 @@
+id: paper-hartley-1997-triangulation
+type: Paper
+title: "Triangulation"
+authors:
+  - Richard I. Hartley
+  - Peter Sturm
+year: 1997
+venue: "Computer Vision and Image Understanding"
+venueType: journal
+contribution: "系统比较多种三角化方法，提出归一化 DLT 与最优几何三角化，为三维点重建给出可复现的标准解法。"
+keyInsight: "三角化不应简单求两条射线的交点，而应在代数或几何误差意义下求最优逼近。"
+novelty:
+  - 多视图三角化统一框架
+  - 最优几何三角化解法
+  - 误差与退化分析
+limitations:
+  - 最优解法计算量较大
+  - 病态配置下仍不稳定
+relatedAlgorithms:
+  - algo-triangulation
+  - algo-essential-matrix
+  - algo-bundle-adjustment
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - triangulation
+  - 3d
+doi: 10.1006/cviu.1997.0547
+citationCount: 2500

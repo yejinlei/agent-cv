@@ -1,0 +1,18 @@
+id: concept-cascade-classifier
+type: Concept
+name: "级联分类器"
+plainTalk: >
+  「层层递进的关卡」：第一关只用几个最简单的问题，绝大多数「明显不是」的窗口一秒钟就被刷掉；
+  过关的进入第二关（问题更多、更严）；以此类推。
+  因为大部分窗口在第一关就被淘汰，平均下来每个窗口只花极少时间，所以整体就快了。
+layer: L2
+relatedAlgorithms:
+  - algo-viola-jones
+prerequisites:
+  - concept-haar-feature
+keyFormula: "级联：stage 1 → stage 2 → ... → stage N，全部通过才算正样本"
+usedIn:
+  - "Viola-Jones 人脸检测"
+  - "Cascade R-CNN（深度学习中的复现）"
+docsPath: "/branches/detection/classic-detectors"
+tags: ["概念", "级联", "加速"]

@@ -1,0 +1,17 @@
+id: trick-sobel-scale-abs
+type: Trick
+name: "Sobel 结果的正确处理链路"
+difficulty: easy
+scenario: "手写边缘检测流程时。"
+how: >
+  ① cv2.Sobel(src, cv2.CV_16S, 1, 0) 得到带符号梯度 Gx；
+  ② 同样得到 Gy；
+  ③ 幅度图：cv2.magnitude(gx.astype(np.float32), gy.astype(np.float32))；
+  ④ 方向图：cv2.phase(gx, gy, angleInDegrees=True)；
+  ⑤ 可视化用 cv2.convertScaleAbs(gx) 分别显示 Gx、Gy。
+effect: "得到正确的幅值与方向，后续 NMS 才有依据。"
+caveat: "不要用 cv2.addWeighted(abs(gx), 0.5, abs(gy), 0.5) 代替 magnitude——那是 L1 近似，不是真正的梯度幅值。"
+relatedAlgorithms:
+  - algo-sobel
+docsPath: "/branches/feature-detection/edges"
+tags: ["技巧", "Sobel", "梯度"]

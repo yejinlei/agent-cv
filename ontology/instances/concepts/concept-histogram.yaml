@@ -1,0 +1,19 @@
+id: concept-histogram
+type: Concept
+name: "直方图"
+plainTalk: >
+  把一张黑白照片里每个灰度值出现多少次数出来，画成柱状图。
+  「哪里堆得高」就说明画面里这种亮度的像素最多。
+  它是判断图像整体明暗分布最直观的工具，也是自动阈值、直方图均衡等操作的基础。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-otsu
+prerequisites: []
+keyFormula: "h(k) = #{像素 | 灰度 = k}, k = 0..255"
+usedIn:
+  - "Otsu 自动阈值"
+  - "直方图均衡化（CLAHE）"
+  - "HOG 的胞元方向统计"
+docsPath: "/branches/image-processing/thresholding"
+tags: ["概念", "统计", "基础"]

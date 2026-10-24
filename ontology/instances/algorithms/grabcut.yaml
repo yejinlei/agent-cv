@@ -1,0 +1,20 @@
+id: algo-grabcut
+type: Algorithm
+name: GrabCut 抠图
+year: 2004
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/grabcut/
+plainTalk: 画一个框就能抠出目标，GMM 给颜色建模，GraphCut 做迭代分割，Photoshop 快速选择的算法原型。
+layer: L2
+tags:
+- classic-cv
+- segmentation
+- interactive
+- matting
+papers:
+- paper-rother-2004-grabcut
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

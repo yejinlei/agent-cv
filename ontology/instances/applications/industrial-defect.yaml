@@ -1,0 +1,58 @@
+id: app-industrial-defect
+type: Application
+name: "工业零件表面缺陷检测"
+domain: industrial
+
+plainTalk: >
+  产线上的金属零件一个接一个经过相机，电脑要在零点几秒内判断
+  「这个零件表面有没有划痕、凹坑、毛刺」。
+  就像质检员拿放大镜看零件，但电脑看得快得多、也不会累。
+
+algorithmStack:
+  - op-gaussian-blur
+  - op-histogram
+  - algo-canny
+  - algo-hog-svm
+
+hardware:
+  device: "工业相机 + 工控机（i5，无 GPU）"
+  needsGPU: false
+  fps: "10 件/秒（100 ms/件）"
+  resolution: "1280×960 或更高"
+
+constraints:
+  - "节拍 100 ms/件，不能超时"
+  - "无 GPU，纯 CPU"
+  - "车间照明有波动，必须做光照校正"
+  - "误检率 < 1%，漏检率 < 0.1%"
+  - "必须能追溯（保存每件的图像与判定）"
+
+metrics:
+  - name: "单件耗时"
+    target: "< 100 ms"
+    note: "含采集、预处理、配准、差分、判定"
+  - name: "误检率"
+    target: "< 1%"
+    note: "阈值用合格样品标定，不拍脑袋"
+  - name: "P99 耗时"
+    target: "< 150 ms"
+    note: "抖动量控制，避免偶发超时"
+
+whyClassic: >
+  这个场景传统 CV 至今是性价比之王：
+  ① 缺陷类型明确（划痕/凹坑/毛刺），不需要「通用智能」；
+  ② 节拍要求高，传统 CV 在 CPU 上就能做到 10–50 ms；
+  ③ 样本极少（新产线拿不到几千张缺陷图），深度学习训不出来；
+  ④ 必须可解释——出了错要知道为什么，深度学习是黑盒；
+  ⑤ 硬件成本低——几百元的工控机搞定，不需要 GPU。
+
+substituteByDL: >
+  在「缺陷类型多、形变大、样本充足」的场景（如 PCB 复杂缺陷）
+  深度学习方案效果更好；但需要 GPU 且样本收集成本高。
+  实践中常见做法是「传统 CV 做粗筛 + 深度学习做细判」的混合方案。
+
+caseStudies:
+  - case-industrial-defect
+
+docsPath: "/cases/industrial-defect"
+tags: ["工业质检", "无GPU", "实时"]

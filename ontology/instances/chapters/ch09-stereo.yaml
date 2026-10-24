@@ -1,0 +1,17 @@
+id: ch-09-stereo-vision
+type: Chapter
+number: 9
+name: 立体视觉
+plainTalk: 用两只眼睛（两个相机）判断距离——就像人眼，左眼看到的和右眼看到的稍微错开，错开越大物体越近。
+level: 高层
+branches:
+  - branch-geometry
+concepts:
+  - concept-epipolar-geometry
+  - concept-fundamental-matrix
+papers:
+  - paper-hartley-zisserman-2003
+coreQuestion: 两个相机看到的同一场景，怎么算出物体离我们还有多远？
+docsPath: /chapters/ch09-stereo
+prevChapter: ch-08-shape-description
+nextChapter: ch-10-3d-reconstruction

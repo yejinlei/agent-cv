@@ -1,0 +1,122 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/operator.schema.yaml"
+title: Operator
+description: >
+  Operator（算子）：比算法更小的原子操作——一次卷积、一次阈值、一次形态学。
+  算法是「多个算子按流程串起来」，算子是「不可再分的计算单元」。
+type: object
+
+required:
+  - id
+  - type
+  - name
+  - category
+  - plainTalk
+  - formula
+
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: "^op-[a-z0-9-]+$"
+
+  type:
+    const: Operator
+
+  name:
+    type: string
+
+  nameEn:
+    type: string
+
+  category:
+    type: string
+    enum:
+      - point-operation
+      - filter
+      - edge
+      - morphology
+      - geometric
+      - statistical
+      - transform
+    description: 算子类别（点运算 / 滤波 / 边缘 / 形态学 / 几何 / 统计 / 变换）
+
+  plainTalk:
+    type: string
+    minLength: 10
+    description: 通俗解释，必须生活化，不能只是公式的中文翻译
+
+  formula:
+    type: string
+    description: 数学表达式（可用 LaTeX），这是算子与算法的关键区别：算子有明确的闭式定义
+
+  params:
+    type: array
+    items:
+      type: object
+      required: [name, meaning]
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        meaning:
+          type: string
+        typical:
+          type: string
+          description: 典型取值
+        effect:
+          type: string
+          description: 调大调小的效果
+
+  opencvFunc:
+    type: string
+    description: OpenCV 对应函数，如 cv2.GaussianBlur
+
+  usedBy:
+    type: array
+    items:
+      type: string
+      pattern: "^algo-[a-z0-9-]+$"
+    description: 被哪些算法使用（反向依赖）
+
+  complexity:
+    type: string
+    description: 计算复杂度，如 O(n·k²)
+
+  separability:
+    type: boolean
+    description: 是否可分离（可分离意味着可拆成横竖两次一维运算，大幅加速）
+
+  inplace:
+    type: boolean
+    description: 是否支持原地运算（OpenCV 的 dst=src）
+
+  noiseRobustness:
+    type: string
+    enum: [very-low, low, medium, high, very-high]
+    description: 抗噪能力
+
+  edgePreserve:
+    type: boolean
+    description: 是否保边
+
+  useCases:
+    type: array
+    items:
+      type: string
+    description: 典型使用场景
+
+  pitfalls:
+    type: array
+    items:
+      type: string
+    description: 常见误用
+
+  docsPath:
+    type: string
+
+  tags:
+    type: array
+    items:
+      type: string

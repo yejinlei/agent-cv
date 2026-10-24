@@ -1,0 +1,60 @@
+id: paper-rublee-2011
+type: Paper
+title: "ORB: An Efficient Alternative to SIFT or SURF"
+authors:
+  - "Ethan Rublee"
+  - "Vincent Rabaud"
+  - "Kurt Konolige"
+  - "Gary Bradski"
+year: 2011
+venue: "IEEE International Conference on Computer Vision (ICCV)"
+venueType: conference
+doi: "10.1109/ICCV.2011.6126544"
+url: "https://ieeexplore.ieee.org/document/6126544"
+citationCount: 12000
+
+contribution: >
+  把当时最快的两个「免费」部件组装成一个完整特征：
+  FAST 角点检测 + BRIEF 二进制描述子，并补上两者各自缺失的两块拼图——
+  给 FAST 加方向（用灰度质心法）、把 BRIEF 转成旋转不变的 rBRIEF（用贪心选择不相关的测试对）。
+  结果是一个速度约为 SIFT 十倍、且没有专利限制的特征。
+
+keyInsight: >
+  「不需要新发明，把已有免费零件补齐短板就能得到实用最优解。」
+
+novelty:
+  - "提出旋转不变的 BRIEF（rBRIEF）：用贪心算法挑选低相关性的像素对"
+  - "提出用灰度质心（intensity centroid）为 FAST 关键点赋方向"
+  - "二进制描述子用汉明距离匹配，可用 SIMD 位运算极快完成"
+
+limitations:
+  - "尺度不变性依赖图像金字塔，扩展性不如 SIFT 连续尺度空间"
+  - "匹配精度在大视角变化下低于 SIFT"
+  - "二进制描述子对噪声与模糊的鲁棒性弱于浮点描述子"
+
+relatedAlgorithms:
+  - algo-orb
+
+influencedBy:
+  - "Rosten & Drummond 的 FAST 角点检测（2006）"
+  - "Calonder 等的 BRIEF 描述子（2010）"
+  - "SIFT 的旋转不变性设计思路"
+
+influenced:
+  - "ORB-SLAM 系列（SLAM 领域事实标准前端）"
+  - "AR 应用中的实时平面追踪"
+
+readStatus: skimmed
+
+bibtex: |
+  @inproceedings{rublee2011orb,
+    title={ORB: An efficient alternative to SIFT or SURF},
+    author={Rublee, Ethan and Rabaud, Vincent and Konolige, Kurt and Bradski, Gary},
+    booktitle={IEEE International Conference on Computer Vision},
+    pages={2564--2571},
+    year={2011},
+    organization={IEEE}
+  }
+
+docsPath: "/branches/feature-matching/descriptors"
+tags: ["特征", "ORB", "2011", "无专利", "SLAM"]

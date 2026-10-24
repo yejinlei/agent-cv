@@ -1,0 +1,26 @@
+id: algo-orb
+type: Algorithm
+name: "ORB 实时特征点"
+year: 2011
+branch: branch-feature-detection
+status: stable
+docsPath: "/algorithms/orb/"
+
+plainTalk: >
+  「免费开源版 SIFT」：把 FAST 角点加方向（oFAST，灰度质心法），再把 BRIEF 描述子做旋转不变（rBRIEF，
+  学习低相关点对），输出 256 bit 二进制描述子，用 Hamming 距离匹配，速度比 SIFT 快两个数量级，
+  还彻底免费。SLAM、AR、手机端至今都是它，是 OpenCV 内置的默认特征点算法。
+
+concepts:
+  - concept-fast-detector
+  - concept-integral-image
+  - concept-image-pyramid
+  - concept-binary-descriptor
+
+tags: ["classic-cv", "feature", "binary-descriptor", "real-time"]
+papers: ["paper-rublee-2011"]
+evolvedFrom: "algo-surf"
+dependsOn: []
+painPoints: []
+tricks: []
+layer: L2

@@ -1,0 +1,6 @@
+id: concept-gmm-segmentation
+type: Concept
+name: GMM 颜色建模
+plainTalk: 前景背景各用几个高斯云朵描述颜色分布，判断像素属于哪一边
+layer: L2
+formalDefinition: 用 K 个高斯分量的混合模型对 RGB 颜色分布建模，通过 EM 迭代估计参数

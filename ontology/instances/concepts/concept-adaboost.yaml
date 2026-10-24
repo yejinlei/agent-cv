@@ -1,0 +1,19 @@
+id: concept-adaboost
+type: Concept
+name: "AdaBoost 自适应增强"
+brief: "一种把多个弱分类器（弱学习器）加权组合成一个强分类器的集成学习方法，Viola-Jones 用它挑选和组合 Haar 特征。"
+layer: L3
+plainTalk: >
+  AdaBoost 就像一群学生一起做判断：第一轮每人各说各的，错的样本下一轮权重加大，
+  答对的弱分类器在最终投票中占更大权重；一轮轮把之前答错的题「重点学习」，最后
+  合起来就是一个很强的老师。它在 Viola-Jones 里负责从十几万 Haar 特征中挑出
+  最有区分度的少数几十个，组成级联的每一层。
+detail: >
+  输入样本带权重 w_i；每轮训练一个二分类弱分类器 h_t(x) ∈ {-1,+1}，按错误率 ε_t
+  给 h_t 分配权重 α_t = ½ ln((1-ε_t)/ε_t)，然后更新 w_i 让错分样本权重增加。
+  最终强分类器 H(x) = sign(Σ α_t h_t(x))。
+related:
+  - op-adaboost
+  - concept-cascade-classifier
+docsPath: "/branches/detection/viola-jones"
+tags: ["机器学习", "分类器"]

@@ -1,0 +1,25 @@
+id: paper-ransac-1981
+type: Paper
+title: 'Random Sample Consensus: A Paradigm for Model Fitting with Applications to
+  Image Analysis and Automated Cartography'
+authors:
+- Martin A. Fischler
+- Robert C. Bolles
+year: 1981
+venue: Communications of the ACM
+relatedAlgorithms:
+- algo-ransac
+doi: 10.1145/358669.358692
+tags:
+- classic-cv
+venueType: journal
+keyInsight: 与其试图拟合所有点（含外点），不如找一个与最大内点集一致的模型。
+novelty:
+- 提出随机采样一致范式
+- 给出内点比例决定的迭代次数上界
+limitations:
+- 迭代次数不确定，最坏情况无收敛保证
+- 内点阈值需手动设定
+readStatus: deep-read
+citationCount: 25000
+contribution: 提出随机采样一致范式：在含大量外点的数据中通过随机采样最小子集→拟合→统计内点的迭代，鲁棒地估计模型参数，开创鲁棒估计在视觉中的应用。

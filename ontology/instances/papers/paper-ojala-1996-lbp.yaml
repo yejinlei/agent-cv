@@ -1,0 +1,22 @@
+id: paper-ojala-1996-lbp
+type: Paper
+title: "A Comparative Study of Texture Measures with Classification Based on Featured Distributions"
+authors: ["Timo Ojala", "Matti Pietikäinen", "David Harwood"]
+year: 1996
+venue: Pattern Recognition
+url: "https://ieeexplore.ieee.org/document/5763036"
+doi: "10.1016/0031-3203(95)00067-4"
+
+contribution: "提出 LBP 算子，仅用局部二值模式直方图做纹理分类，性能超越 Gabor、MRF"
+keyInsight: "纹理本质是局部亮度对比的统计分布，与绝对亮度无关"
+novelty:
+  - "局部二值模式编码"
+  - "块直方图统计"
+  - "后续扩展多分辨率/旋转不变/Uniform LBP"
+limitations:
+  - "对噪声敏感"
+  - "大尺度纹理需多分辨率扩展"
+  - "方向敏感"
+influencedBy: []
+influenced: ["algo-lbp-face", "algo-mb-lbp"]
+docsPath: "/algorithms/lbp/paper"

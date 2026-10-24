@@ -1,0 +1,39 @@
+id: algo-bovw
+type: Algorithm
+name: "词袋模型 BoVW"
+nameEn: "Bag of Visual Words"
+year: 2004
+branch: branch-detection
+status: legacy
+docsPath: "/algorithms/bovw/"
+chapters:
+  - ch-12-recognition
+
+plainTalk: >
+  「把图像看成一袋视觉单词」：人类读文章时看到"进球""犯规""裁判"就知道是体育新闻——
+  不关心它们顺序，只要看到这些词就懂了。BoVW 把同样的思路搬到图像上：
+  先用 SIFT 从图像里抽出一堆局部特征（像"单词字母"），
+  再用 K-Means 把这些特征聚成几百/几千类（像一本"视觉字典"，每类是一个"单词"），
+  最后整张图就统计"每种单词出现了多少次"——一个 K 维直方图就代表整张图。
+  配合 TF-IDF 加权、SPM 空间金字塔、线性 SVM，是深度学习之前图像分类和检索的主流方法。
+
+concepts:
+  - concept-sift
+  - concept-kmeans
+  - concept-histogram
+  - concept-gradient-histogram-descriptor
+
+tags: ["classic-cv", "image-classification", "image-retrieval", "bag-of-words"]
+papers:
+  - paper-csurka-2004
+  - paper-sivic-zisserman-2003
+evolvedFrom: algo-sift
+dependsOn:
+  - op-histogram
+painPoints:
+  - pp-bovw-dict
+  - pp-bovw-spatial
+tricks:
+  - trick-bovw-spm
+  - trick-bovw-tfidf
+layer: L3

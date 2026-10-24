@@ -1,0 +1,85 @@
+id: case-edge-deployment
+type: CaseStudy
+name: "树莓派上的实时视觉部署"
+sector: iot
+
+plainTalk: >
+  用一块几百块的树莓派（信用卡大小的电脑）接摄像头，
+  在没有 GPU 的情况下跑出每秒十几帧的视觉处理。
+  关键技巧是"降分辨率 + 用整数运算 + 少做全图操作"。
+
+scenario: >
+  智能门禁场景：树莓派 4B（4 GB 内存，无 GPU）接 CSI 摄像头，
+  需要实时检测门口是否有人脸并触发开门。要求端到端延迟 < 500 ms，
+  功耗 < 5 W，成本 < 500 元。
+
+pipeline:
+  - step: "采集与降采样"
+    detail: "从 1080p 直接降到 640×480 做检测，避免全分辨率逐像素处理"
+  - step: "灰度与均衡"
+    detail: "转灰度 + 直方图均衡化（CLAHE），提升逆光下的人脸对比度"
+  - step: "人脸检测"
+    detail: "Haar 级联 detectMultiScale（scaleFactor=1.1，minNeighbors=5，minSize=60×60）"
+  - step: "人脸确认"
+    detail: "可选：LBPH 识别器比对已注册人脸的直方图特征"
+  - step: "触发"
+    detail: "识别通过后通过 GPIO 驱动门锁继电器"
+
+hardware:
+  device: "Raspberry Pi 4B（4 GB）"
+  os: "Raspberry Pi OS (64-bit)"
+  camera: "Raspberry Pi Camera v2（800 万像素）"
+  extra: "GPIO 继电器模块、红外补光（夜间）"
+
+settings:
+  - name: "处理分辨率"
+    value: "640×480"
+  - name: "scaleFactor"
+    value: "1.1"
+  - name: "minNeighbors"
+    value: "5"
+  - name: "minSize"
+    value: "60×60"
+  - name: "帧率上限"
+    value: "15 fps（主动跳帧节约功耗）"
+
+results:
+  - metric: "人脸检出率"
+    value: "正脸 > 95%"
+    note: "逆光/侧脸明显下降"
+  - metric: "端到端延迟"
+    value: "约 220 ms"
+    note: "含检测 + GPIO 触发"
+  - metric: "CPU 占用"
+    value: "单核约 70%"
+    note: "640×480 下"
+  - metric: "整机功耗"
+    value: "约 3.5 W"
+
+lessons:
+  - lesson: "分辨率是第一优化旋钮"
+    detail: "1080p 降到 480p，耗时降到约 1/5，而人脸检测精度几乎不变（人脸本身够大）。"
+  - lesson: "用 OpenCV 而不是自己写循环"
+    detail: "Python 逐像素循环会把 CPU 跑满还只有 1 fps；改用 OpenCV 内置函数后到 15 fps。"
+  - lesson: "编译优化有意义但要权衡"
+    detail: "开启 NEON SIMD 后 Haar 检测快约 1.6 倍，但交叉编译更麻烦。"
+  - lesson: "散热会限制持续性能"
+    detail: "树莓派长时间满载会降频，加散热片后持续帧率更稳定。"
+
+whyClassic: >
+  ① 树莓派无 GPU（或 GPU 不可用于通用计算），传统 CV 是首选；
+  ② 功耗与发热可控，适合 7×24 常开设备；
+  ③ 部署简单，不需要模型文件与推理框架；
+  ④ 成本极低，可大批量铺设。
+
+substituteByDL: >
+  树莓派可用 NCNN / TFLite 跑轻量网络（如 MobileNet-SSD），
+  精度更高但需模型文件、依赖更多、冷启动更慢；
+  对"人脸门禁"这类简单任务，Haar 仍是性价比最高的方案。
+
+relatedAlgorithms:
+  - algo-viola-jones
+  - op-histogram
+
+docsPath: "/cases/edge-deployment"
+tags: ["嵌入式", "树莓派", "低功耗", "部署"]

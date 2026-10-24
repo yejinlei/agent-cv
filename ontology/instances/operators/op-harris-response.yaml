@@ -1,0 +1,51 @@
+id: op-harris-response
+type: Operator
+name: "Harris 角点响应"
+nameEn: "Harris Corner Response"
+category: statistical
+
+plainTalk: >
+  「算每个像素像不像角点」：对每个像素看它周围小窗口里的梯度分布，
+  用 R = det(M) - k·tr(M)² 给出"角点分数"——R 很大就是角点，
+  R 绝对值小是平坦区，R 是大负数是边。这是 Harris 角点检测的核心一步，
+  也被 KLT 光流/Shi-Tomasi 选点复用。
+
+formula: "M = Σ_{W} w(x,y)·[[I_x², I_x I_y],[I_x I_y, I_y²]],  R = det(M) - k·tr(M)²"
+
+params:
+  - name: "k"
+    meaning: "Harris 灵敏度常数"
+    typical: "0.04 ~ 0.06"
+    effect: "越小越容易把边缘当角点，越大会漏掉真角点；经验值 0.04"
+  - name: "blockSize"
+    meaning: "邻域窗口大小"
+    typical: "3 或 5"
+    effect: "越大抗噪越强但定位越差"
+  - name: "ksize"
+    meaning: "Sobel 核大小"
+    typical: "3"
+    effect: "越大梯度越平滑"
+
+opencvFunc: "cv2.cornerHarris"
+usedBy:
+  - algo-harris
+  - algo-lucas-kanade
+
+complexity: "O(H·W·k²)"
+separability: false
+inplace: false
+noiseRobustness: medium
+edgePreserve: false
+
+useCases:
+  - "Harris 角点检测"
+  - "KLT 光流的特征点挑选"
+  - "Shi-Tomasi 角点检测（基于 M 最小特征值）"
+
+pitfalls:
+  - "不先转 float32 直接算：二次项溢出导致全黑/全白"
+  - "k 值乱调：0.04 是文献默认值，基本不要改"
+  - "不做高斯预平滑：噪点会产生大量假角点"
+
+docsPath: "/algorithms/harris/architecture"
+tags: ["角点", "结构张量", "特征点"]

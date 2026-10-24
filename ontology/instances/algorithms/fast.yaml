@@ -1,0 +1,24 @@
+id: algo-fast
+type: Algorithm
+name: FAST 角点检测
+year: 2006
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/fast/
+plainTalk: 圆周 16 邻居连续亮/暗 12 个就是角点，速度比 Harris 快 10 倍，SLAM/AR 实时前端首选检测器。
+layer: L2
+tags:
+- classic-cv
+- corner
+- real-time
+papers:
+- paper-rosten-2006-fast
+evolvedFrom: algo-harris
+replacedBy:
+- algo-orb
+dependsOn: []
+concepts:
+- concept-fast-detector
+- concept-non-maximum-suppression
+painPoints: []
+tricks: []

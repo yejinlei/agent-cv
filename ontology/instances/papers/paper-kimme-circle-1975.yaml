@@ -1,0 +1,26 @@
+id: paper-kimme-circle-1975
+type: Paper
+title: Finding Circles by an Array of Accumulators
+authors:
+  - C. Kimme
+  - D. H. Ballard
+  - J. Sklansky
+year: 1975
+venue: Communications of the ACM, Vol.18 No.2
+venueType: journal
+doi: "10.1145/360666.360670"
+relatedAlgorithms:
+  - algo-hough
+keyInsight: 圆检测用三维累加器 (a,b,r)，利用边缘梯度方向把圆心投票从 3D 降到 2D，速度大幅提升。
+novelty:
+  - 圆霍夫变换 CHT
+  - 梯度方向降维
+  - 圆心+半径两阶段投票
+limitations:
+  - 对半径范围敏感
+  - 同心圆/近邻圆易混淆
+readStatus: read
+citationCount: 3500
+contribution: OpenCV HoughCircles（21HT 改进版）的思想源头，工业圆检测标准方法。
+tags:
+  - classic-cv

@@ -1,0 +1,25 @@
+id: paper-duda-hart-1972
+type: Paper
+title: Use of the Hough Transformation to Detect Lines and Curves in Pictures
+authors:
+  - Richard O. Duda
+  - Peter E. Hart
+year: 1972
+venue: Communications of the ACM, Vol.15 No.1
+venueType: journal
+doi: "10.1145/361237.361242"
+relatedAlgorithms:
+  - algo-hough
+keyInsight: 把霍夫原始 y=kx+b 参数化改为极坐标 ρ=xcosθ+ysinθ，解决垂直直线和参数无界问题，成为标准 HT。
+novelty:
+  - 极坐标参数化，参数有界
+  - 系统分析累加器量化步长
+  - 扩展到圆/曲线检测
+limitations:
+  - 仍需遍历所有边缘点
+  - 复杂度高
+readStatus: read
+citationCount: 14000
+contribution: 现代霍夫变换的标准版本，OpenCV HoughLines 即此实现。
+tags:
+  - classic-cv

@@ -1,0 +1,30 @@
+id: paper-lindeberg-1990-scale-space
+type: Paper
+title: "Scale-Space for Discrete Signals"
+authors:
+  - Tony Lindeberg
+year: 1990
+venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+venueType: journal
+contribution: "把高斯核从「随手拿来平滑」提升为尺度空间唯一的正规化核，为高斯滤波、多尺度金字塔与 SIFT 奠定了数学根据。"
+keyInsight: "只有当平滑核是高斯时，尺度空间才满足因果性——不会凭空造出新的极值结构。"
+novelty:
+  - 离散尺度空间公理化
+  - 高斯核唯一性证明
+  - 尺度归一化微分算子
+limitations:
+  - 只讨论线性尺度空间
+  - 未涉及各向异性扩散
+relatedAlgorithms:
+  - algo-gaussian-blur
+  - algo-sift
+  - algo-akaze
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - scale-space
+  - gaussian
+doi: 10.1109/34.56208
+citationCount: 3200

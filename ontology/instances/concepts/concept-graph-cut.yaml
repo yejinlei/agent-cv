@@ -1,0 +1,6 @@
+id: concept-graph-cut
+type: Concept
+name: 图割最小割
+plainTalk: 把图像建模成带边权的图，一刀割断前景和背景的联系，割断的边总权重最小
+layer: L3
+formalDefinition: 通过构造包含源点 S 和汇点 T 的图，用 max-flow/min-cut 算法求能量函数全局最优分割

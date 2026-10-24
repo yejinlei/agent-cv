@@ -1,0 +1,11 @@
+id: paper-sivic-zisserman-2003
+type: Paper
+title: "Video Google: A Text Retrieval Approach to Object Matching in Videos"
+authors: ["Josef Sivic", "Andrew Zisserman"]
+year: 2003
+venue: "ICCV 2003"
+contribution: >
+  首次把文本检索的"词袋+TF-IDF"范式引入视觉领域：
+  对视频帧抽取局部特征，用 K-means 聚类成"视觉词"，再用倒排索引快速检索。
+  BoVW 思想的奠基之作。
+doi: "10.1109/ICCV.2003.1238663"

@@ -1,0 +1,26 @@
+id: paper-rosenfeld-1966-dt
+type: Paper
+title: Sequential Operations in Digital Picture Processing
+authors:
+- Azriel Rosenfeld
+- John L. Pfaltz
+year: 1966
+venue: JACM
+tags:
+- morphology
+- distance-transform
+- binary
+contribution: 提出两次扫描的序贯距离变换，在线性时间得到 L1/L∞ 距离
+keyInsight: 前向+后向两次光栅扫描即可让距离信息传遍全图
+novelty:
+- 两次光栅扫描即可 O(N) 得到精确 L1/L∞ 距离
+- 前向+后向两趟递推框架
+- 序贯操作思想奠基
+limitations:
+- 只精确计算 L1 和 L∞ 距离
+- 对欧氏距离是近似
+influencedBy: []
+influenced:
+- paper-borgefors-1986-chamfer
+docsPath: /algorithms/distance-transform/paper
+doi: 10.1145/321356.321357

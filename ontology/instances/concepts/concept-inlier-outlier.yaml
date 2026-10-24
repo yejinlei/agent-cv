@@ -1,0 +1,16 @@
+id: concept-inlier-outlier
+type: Concept
+name: "内点与外点（Inlier / Outlier）"
+plainTalk: >
+  数据里两种点：内点是「真数据+小噪声」（比如真正对应的匹配点），
+  外点是「完全错的数据」（错配、遮挡、噪声点）。
+  RANSAC 的全部工作就是区分它们——先猜模型，然后看哪些点投票支持。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-ransac
+keyFormula: "残差 r(M,p) < 阈值 t ⇒ 内点；否则外点"
+usedIn:
+  - "RANSAC 模型投票"
+  - "所有鲁棒估计问题"
+tags: ["概念", "鲁棒估计", "RANSAC"]

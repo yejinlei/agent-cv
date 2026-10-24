@@ -1,0 +1,18 @@
+id: concept-dog
+type: Concept
+name: "高斯差分（DoG）"
+plainTalk: >
+  「两个模糊程度不同的照片相减」——留下来的正好是「某个尺寸的特征」。
+  就像用两个网眼大小不同的筛子过一遍，再对比两次筛出来的东西，
+  就能知道你筛的是哪个尺寸的颗粒。
+layer: L2
+relatedAlgorithms:
+  - algo-sift
+prerequisites:
+  - op-gaussian-blur
+keyFormula: "DoG = G(kσ)*I - G(σ)*I ≈ (k-1)σ²∇²G*I"
+usedIn:
+  - "SIFT 尺度空间极值检测"
+  - "斑点检测"
+docsPath: "/algorithms/sift/concepts"
+tags: ["概念", "尺度空间", "SIFT核心"]

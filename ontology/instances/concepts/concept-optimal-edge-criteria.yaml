@@ -1,0 +1,18 @@
+id: concept-optimal-edge-criteria
+type: Concept
+name: "最优边缘检测的三条判据"
+plainTalk: >
+  「什么才叫好描边」的三条标准：
+  ① 别把没边的地方当成边（低误检）；
+  ② 边要描在真正的位置上，别偏（高定位精度）；
+  ③ 一条边只描一条线，别描成三条（单响应）。
+  Canny 就是先定下这三条，再去求满足它们的公式。
+layer: L2
+relatedAlgorithms:
+  - algo-canny
+prerequisites: []
+keyFormula: "SNR × 定位精度 × 单响应 三者权衡"
+usedIn:
+  - "Canny 论文的立论基础"
+docsPath: "/algorithms/canny/concepts"
+tags: ["概念", "边缘检测", "Canny核心"]

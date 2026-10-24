@@ -1,0 +1,20 @@
+id: concept-gaussian-mixture
+type: Concept
+name: "高斯混合模型"
+layer: L2
+plainTalk: >
+  一个像素的灰度分布常常不是一个『包』，而是好几个『包』叠在一起——比如背景是深灰一个包、前景是浅灰另一个包。高斯混合模型就是『用若干个钟形曲线拼出整个分布』，每个钟形曲线有自己的中心、胖瘦和占多少比重。判断某个像素属于前景还是背景，就看它更可能来自哪个钟形曲线。
+
+formal: >
+  p(x) = Σ_{k=1}^{K} π_k · N(x | μ_k, Σ_k)，且 Σπ_k = 1；参数用 EM 算法迭代求解
+
+solutions: [
+  "初始化各分量的均值/方差/权重",
+  "E 步：计算每个样本归属各分量的后验概率",
+  "M 步：用后验概率加权重估参数，迭代至收敛",
+]
+
+usedBy: ["algo-mog2"]
+related: ["concept-em-algorithm", "concept-background-model"]
+docsPath: "/algorithms/mog2/concepts"
+tags: ["statistics", "background-model"]

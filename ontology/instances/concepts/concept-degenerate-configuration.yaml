@@ -1,0 +1,20 @@
+id: concept-degenerate-configuration
+type: Concept
+name: "退化配置（Degenerate Configuration）"
+plainTalk: >
+  「让几何约束失效的特殊取景方式」：如果拍摄时所有点都在同一个平面上
+  （比如对着一面墙拍），或者相机只是原地转头而没有平移，
+  那么两视图之间的几何关系就会退化——基础矩阵有无穷多个解，
+  解出来的结果不可信。这时候要么改拍法，要么换用单应矩阵。
+layer: L2
+relatedAlgorithms:
+  - algo-epipolar
+  - algo-homography
+prerequisites:
+  - concept-epipolar-geometry
+keyFormula: "退化条件：所有点共面（F 有无穷多解）或基线 ‖t‖ ≈ 0（等价于纯旋转）"
+usedIn:
+  - "重建前的场景判断（H 还是 F/E）"
+  - "SLAM 初始化失败的原因诊断"
+docsPath: "/branches/geometry/epipolar"
+tags: ["概念", "几何", "退化", "对极几何"]

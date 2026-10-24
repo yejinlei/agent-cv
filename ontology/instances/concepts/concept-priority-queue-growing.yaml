@@ -1,0 +1,13 @@
+id: concept-priority-queue-growing
+type: Concept
+name: 优先队列区域生长
+enName: Priority-Queue Region Growing
+field: segmentation
+plainTalk: 用最小堆让最像当前区域的邻域像素优先被归并，边界自然形成
+explain: SRG 核心：heap 按 |I-mu| 排序，每次 pop 最小差异像素归并，保证扩张沿最相似方向推进。
+appearsIn:
+- algo-region-growing
+related:
+- concept-watershed
+docsPath: /algorithms/region-growing/concepts
+layer: L2

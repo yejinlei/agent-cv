@@ -1,0 +1,27 @@
+id: algo-lbp
+type: Algorithm
+name: "LBP 局部二值模式"
+year: 1996
+branch: branch-image-processing
+status: stable
+docsPath: "/algorithms/lbp/"
+
+plainTalk: >
+  每个像素和 8 个邻居比亮暗，拼出一个 8 位二进制「纹理指纹」；分块统计直方图就是纹理描述子。
+
+concepts:
+  - concept-texture
+  - concept-uniform-pattern
+  - concept-histogram
+
+tags: ["classic-cv", "texture", "face-recognition", "local-feature"]
+papers: ["paper-ojala-1996-lbp"]
+dependsOn:
+  - op-grayscale
+inheritedBy:
+  - algo-lbp-face
+  - algo-mb-lbp
+  - algo-lbp-top
+painPoints: []
+tricks: []
+layer: L1

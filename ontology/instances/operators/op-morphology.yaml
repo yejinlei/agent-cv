@@ -1,0 +1,39 @@
+id: op-morphology
+type: Operator
+name: "形态学运算"
+nameEn: "Morphology"
+category: morphology
+plainTalk: "用一个叫结构元素的小模子去扫图像：腐蚀是「只要模子碰到一个黑点，中心就变黑」——把白块削瘦一圈；膨胀是「只要碰到一个白点，中心就变白」——把白块养胖一圈。开运算是先腐蚀后膨胀（去毛刺、去孤点），闭运算是先膨胀后腐蚀（补小洞、接断线）。二值图上它是最便宜的形状修理工。"
+formula: "腐蚀：(f⊖s)(x) = min{ f(x+y) | y ∈ s }；膨胀：(f⊕s)(x) = max{ f(x-y) | y ∈ s }"
+params:
+  - name: "op"
+    meaning: "运算类型"
+    typical: "MORPH_OPEN / CLOSE / ERODE / DILATE"
+    effect: "开运算去小白点，闭运算补小黑洞，用途相反"
+  - name: "kernel"
+    meaning: "结构元素形状与大小"
+    typical: "3×3 矩形 / 椭圆 / 十字"
+    effect: "核越大形状改动越猛，椭圆核保角性更好"
+  - name: "iterations"
+    meaning: "迭代次数"
+    typical: "1~3"
+    effect: "重复执行等效于放大核，但更慢"
+opencvFunc: "cv2.morphologyEx"
+usedBy:
+  - algo-morphology
+  - algo-otsu
+  - algo-watershed
+complexity: "O(n·k²)"
+edgePreserve: false
+useCases:
+  - "去除二值图上的椒盐噪点"
+  - "连接断裂的边缘与细线"
+  - "填充目标内部的小孔洞"
+pitfalls:
+  - "核必须显式指定，不能为 None"
+  - "开运算会削掉细长结构（如毛细血管）"
+  - "在浮点/灰度图上做形态学要小心，它同样会改变亮度值"
+separability: false
+inplace: true
+noiseRobustness: high
+tags: ["算子", "形态学"]

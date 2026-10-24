@@ -1,0 +1,28 @@
+id: algo-mosse
+type: Algorithm
+name: "MOSSE 相关滤波跟踪"
+nameEn: "Minimum Output Sum of Squared Error Tracking"
+year: 2010
+branch: branch-detection
+status: stable
+docsPath: /algorithms/mosse/
+plainTalk: "先在目标上盖一个『印章』（滤波器），然后在下一帧整幅画面里翻找，哪里盖出的印迹最亮最像，就说明目标跑到哪里了；而且印章能根据新画面自我微调，越跟越准，还能跑到 600 帧以上。"
+concepts:
+  - concept-correlation-filter
+  - concept-circulant-matrix
+tags:
+  - classic-cv
+  - tracking
+  - correlation-filter
+  - real-time
+papers:
+  - paper-bolme-2010-mosse
+evolvedFrom: algo-camshift
+replacedBy:
+  - algo-kcf
+  - algo-csrt
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L3

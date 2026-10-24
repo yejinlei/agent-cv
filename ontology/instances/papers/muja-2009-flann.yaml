@@ -1,0 +1,31 @@
+id: paper-muja-2009-flann
+type: Paper
+title: "Fast Approximate Nearest Neighbors with Automatic Algorithm Configuration"
+authors:
+  - Marius Muja
+  - David G. Lowe
+year: 2009
+venue: "International Conference on Computer Vision Theory and Applications (VISAPP)"
+venueType: conference
+contribution: "提出 FLANN 库与自动参数配置：为给定数据与精度目标自动挑选最优近似最近邻算法与参数，把特征匹配从暴力搜索解放出来。"
+keyInsight: "没有万能的最邻近算法——让算法自己交叉验证挑选，比人工调参更稳。"
+novelty:
+  - 自动算法/参数配置
+  - 随机 kd-tree 森林
+  - 优先级搜索
+limitations:
+  - 近似性带来少量漏配
+  - 建库有一次性开销
+relatedAlgorithms:
+  - algo-flann
+  - algo-sift
+  - algo-orb
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - ann
+  - kd-tree
+doi: 10.5220/0001787803310340
+citationCount: 3800

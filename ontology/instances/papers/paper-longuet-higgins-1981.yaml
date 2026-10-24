@@ -1,0 +1,26 @@
+id: paper-longuet-higgins-1981
+type: Paper
+title: A Computer Algorithm for Reconstructing a Scene from Two Projections
+authors:
+  - H. Christopher Longuet-Higgins
+year: 1981
+venue: Nature
+venueType: journal
+doi: 10.1038/293133a0
+relatedAlgorithms:
+  - algo-epipolar
+tags:
+  - classic-cv
+  - geometry
+keyInsight: 两张图的匹配点之间存在双线性约束 p'ᵀFp=0，8 对点即可解出 F，进而恢复相机位姿与三维结构。
+novelty:
+  - "首次给出可编程的八点法，把两视图几何约束写成线性方程组"
+  - "证明从两张投影可以同时恢复相机相对位姿与三维点（SFM 的思想起点）"
+limitations:
+  - "直接用像素坐标构造方程，数值极不稳定（需 16 年后 Hartley 归一化才实用）"
+  - "未处理外点与噪声，实践前必须配 RANSAC"
+readStatus: skimmed
+citationCount: 2500
+contribution: >
+  用 8 对匹配点求解基础矩阵 F，把「两张图能否还原三维场景」这个几何问题
+  转化为一个可编程的线性代数问题，成为对极几何与 Structure from Motion 的起点。

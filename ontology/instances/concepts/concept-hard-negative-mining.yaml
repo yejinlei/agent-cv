@@ -1,0 +1,20 @@
+id: concept-hard-negative-mining
+type: Concept
+name: "难例挖掘"
+plainTalk: >
+  「专挑错题做」：随机找的反面样本大部分很蠢（一眼就分得开），
+  练不到真本事。所以先把已经分得开的都过一遍，
+  专门把「分错的那些」再收集起来重新训练，越训越准。
+layer: L2
+relatedAlgorithms:
+  - algo-hog-svm
+  - algo-viola-jones
+prerequisites:
+  - op-svm-training
+keyFormula: "迭代：用当前模型扫背景图，把误报加入负样本集重新训练"
+usedIn:
+  - "HOG+SVM 训练"
+  - "Viola-Jones 级联训练"
+  - "深度学习中的 OHEM"
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["概念", "训练策略", "HOG核心"]

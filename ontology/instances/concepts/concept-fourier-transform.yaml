@@ -1,0 +1,20 @@
+id: concept-fourier-transform
+type: Concept
+name: "傅里叶变换"
+layer: L1
+plainTalk: >
+  任何一张图像都能拆成一堆不同频率的『波纹』叠加。低频波纹负责大块明暗（轮廓），高频波纹负责细碎变化（噪声、边缘）。傅里叶变换就是把这堆波纹的配料表列出来——哪些频率有多少分量。频谱图上中心是低频、外围是高频，于是『去噪』变成『把外围的高频掐掉』，『锐化』变成『把外围的高频抬高』。
+
+formal: >
+  F(u,v) = ΣΣ f(x,y)·e^{-j2π(ux/M + vy/N)}；逆变换 f(x,y) = (1/MN)·ΣΣ F(u,v)·e^{j2π(ux/M+vy/N)}
+
+solutions: [
+  "先做 fft2 得到复数频谱",
+  "用 fftshift 把低频挪到中心便于观察和设计滤波器",
+  "在频域乘上滤波器 H(u,v) 后做逆变换",
+]
+
+usedBy: ["algo-gaussian-blur", "algo-sobel"]
+related: ["concept-convolution", "concept-spectrum"]
+docsPath: "/algorithms/gaussian-blur/concepts"
+tags: ["transform", "frequency"]

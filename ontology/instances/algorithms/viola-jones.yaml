@@ -1,0 +1,32 @@
+id: algo-viola-jones
+type: Algorithm
+name: "Viola-Jones 人脸检测"
+nameEn: "Viola-Jones Face Detector"
+year: 2001
+branch: branch-detection
+status: legacy
+docsPath: "/algorithms/viola-jones/"
+
+plainTalk: >
+  「用简单问题层层筛选」：它准备了很多「一眼就能回答的小问题」，
+  比如「这块区域左边比右边白吗」「这块比旁边那块黑吗」。
+  先用几个最有效的 Haar 特征快速排除掉明显不是人脸的窗口（这一步极快），
+  只留下少数「有点像」的窗口，再用更多特征仔细判断。
+  积分图让每个 Haar 特征 O(1)，AdaBoost 自动选最判别特征，级联结构实现实时 30 FPS。
+  它是 CV 历史上第一个实时人脸检测器，也是 Haar+积分图+级联范式的开创者。
+
+tags: ["classic-cv", "face-detection", "cascade"]
+papers: ["paper-viola-jones-2001"]
+concepts:
+  - concept-integral-image
+  - concept-haar-feature
+  - concept-cascade-classifier
+  - concept-sliding-window
+  - concept-adaboost
+  - concept-image-pyramid
+evolvedFrom: "algo-face-detection-prev"
+painPoints:
+  - pp-viola-profile-face
+tricks:
+  - trick-viola-multi-scale
+layer: L3

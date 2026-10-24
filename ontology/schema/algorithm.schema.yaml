@@ -1,0 +1,187 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/algorithm.schema.yaml"
+title: Algorithm
+description: >
+  Algorithm（算法）：传统计算机视觉中的一个完整算法。
+  必须能挂到「论文 → 理论 → 实现 → 实战」四层闭环中，且在六大技术分支中有明确归属。
+type: object
+
+required:
+  - id
+  - type
+  - name
+  - year
+  - branch
+  - plainTalk
+
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: "^algo-[a-z0-9-]+$"
+    description: 全局唯一标识，必须以 algo- 开头，小写短横线连接
+
+  type:
+    const: Algorithm
+
+  name:
+    type: string
+    minLength: 2
+    description: 中文规范名，如 "Canny 边缘检测"
+
+  nameEn:
+    type: string
+    description: 英文名，便于对齐国际文献
+
+  year:
+    type: integer
+    minimum: 1950
+    maximum: 2030
+    description: 首次发表的年份
+
+  branch:
+    type: string
+    enum:
+      - branch-image-processing
+      - branch-feature-detection
+      - branch-feature-matching
+      - branch-segmentation
+      - branch-detection
+      - branch-geometry
+    description: 所属技术分支（六大分支之一，必须单选）
+
+  plainTalk:
+    type: string
+    minLength: 10
+    description: >
+      通俗解释——必须让「老奶奶也听得懂」。
+      要求：生活化比方 + 至少一个生活场景，禁止出现公式。
+
+  concepts:
+    type: array
+    items:
+      type: string
+      pattern: "^concept-[a-z0-9-]+$"
+    description: 关联的核心概念 ID 列表
+
+  chapters:
+    type: array
+    items:
+      type: string
+      pattern: "^ch-[0-9]{2}-[a-z0-9-]+$"
+    description: 该算法出现在纵轴学习路径的哪些章（与 branch 正交）
+
+  evolvedFrom:
+    type: [string, "null"]
+    pattern: "^algo-[a-z0-9-]+$"
+    description: 演化来源（单个算法 ID）。根节点填 null
+
+  dependsOn:
+    type: array
+    items:
+      type: string
+      pattern: "^(algo|op)-[a-z0-9-]+$"
+    description: 依赖的算法或算子 ID 列表
+
+  replacedBy:
+    type: array
+    items:
+      type: string
+    description: 被哪些技术替代（传统 CV → 深度学习的传承线索）
+
+  inheritedBy:
+    type: array
+    items:
+      type: string
+    description: 被哪些深度学习技术继承（多尺度金字塔 → FPN 之类）
+
+  papers:
+    type: array
+    items:
+      type: string
+      pattern: "^paper-[a-z0-9-]+$"
+    description: 原始论文 ID 列表，至少一条
+
+  implementations:
+    type: array
+    items:
+      type: object
+      required: [lib, func]
+      additionalProperties: false
+      properties:
+        lib:
+          type: string
+          description: 库名，如 OpenCV
+        func:
+          type: string
+          description: 调用入口，如 cv2.Canny
+        since:
+          type: string
+          description: 版本，如 "OpenCV 1.0"
+
+  metrics:
+    type: array
+    items:
+      type: object
+      required: [name, value]
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        dataset:
+          type: string
+        hardware:
+          type: string
+
+  applications:
+    type: array
+    items:
+      type: string
+      pattern: "^app-[a-z0-9-]+$"
+    description: 关联的应用场景 ID 列表
+
+  caseStudies:
+    type: array
+    items:
+      type: string
+      description: 关联的实战案例 ID 列表
+
+  painPoints:
+    type: array
+    items:
+      type: string
+      description: 关联的踩坑记录 ID 列表
+
+  tricks:
+    type: array
+    items:
+      type: string
+      description: 关联的调参技巧 ID 列表
+
+  layer:
+    type: string
+    enum: [L0, L1, L2, L3, L4]
+    default: L3
+    description: 四层闭环归属，Algorithm 固定为 L3（实现层）
+
+  docsPath:
+    type: string
+    pattern: "^/(algorithms|branches|versions)/.+$"
+    description: >
+      对应的文档路径。优先指算法档案页（/algorithms/...）；
+      尚未建立独立档案的算法，可指向其所在分支主题页（/branches/...）。
+
+  status:
+    type: string
+    enum: [stub, drafted, reviewed, stable, legacy]
+    default: drafted
+    description: 内容成熟度（legacy 表示历史里程碑、已被新一代方法取代但教学价值高）
+
+  tags:
+    type: array
+    items:
+      type: string
+    description: 自由标签，便于检索

@@ -1,0 +1,83 @@
+id: case-industrial-defect
+type: CaseStudy
+name: "产线零件表面缺陷检测"
+sector: manufacturing
+
+plainTalk: >
+  工厂流水线上，一个个金属零件从摄像头下走过。
+  系统要在一瞬间判断"这个零件表面有没有划痕、凹坑、污渍"，
+  有问题的立刻吹掉，不能让它流到下一道工序。
+
+scenario: >
+  某汽车零部件厂，产线速度 30 件/分钟，需要检测直径 40 mm 的金属法兰盘
+  表面划痕（宽度 ≥ 0.1 mm）。现场只有一台无风扇工控机（i5，无独立 GPU），
+  要求单件检测耗时 < 300 ms。
+
+pipeline:
+  - step: "图像采集"
+    detail: "触发式工业相机（500 万像素，黑白），光源为环形同轴 LED，零件到位后用光电传感器触发"
+  - step: "预处理"
+    detail: "高斯滤波去噪 → 背光背景分离（大津阈值做感兴趣区域）"
+  - step: "缺陷增强"
+    detail: "形态学顶帽变换（Top-Hat）突出比背景亮的小目标；黑帽变换突出暗缺陷"
+  - step: "缺陷定位"
+    detail: "自适应阈值二值化 → 连通域分析 → 按面积、长宽比过滤"
+  - step: "判定与输出"
+    detail: "缺陷面积超过阈值即判 NG，输出坐标给气动剔除机构"
+
+hardware:
+  device: "无风扇工控机 i5-1135G7，8 GB 内存，无 GPU"
+  os: "Ubuntu 20.04 LTS"
+  camera: "Basler 500 万像素黑白相机，GigE 接口"
+  lighting: "环形同轴 LED（消除反光，突出划痕）"
+
+settings:
+  - name: "高斯核"
+    value: "5×5，σ=1.0"
+  - name: "顶帽结构元"
+    value: "椭圆核 9×9"
+  - name: "自适应阈值"
+    value: "blockSize=31，C=-5"
+  - name: "面积阈值"
+    value: "50 像素（对应约 0.05 mm²）"
+
+results:
+  - metric: "缺陷检出率"
+    value: "97.2%"
+    note: "对宽度 ≥ 0.1 mm 的划痕"
+  - metric: "误报率"
+    value: "1.8%"
+    note: "主要来自油污与反光"
+  - metric: "单件耗时"
+    value: "180 ms"
+    note: "满足 300 ms 要求"
+  - metric: "连续运行"
+    value: "7×24 稳定 6 个月"
+
+lessons:
+  - lesson: "光照比算法重要"
+    detail: "环形同轴光让划痕呈现为亮线，直接提升了信噪比；换光照后同一套参数效果差异巨大。"
+  - lesson: "形态学是缺陷检测的瑞士军刀"
+    detail: "顶帽/黑帽能在不做模板匹配的前提下，只凭背景估计就分离出局部亮暗异常。"
+  - lesson: "不做深度学习反而更合适"
+    detail: "缺陷样本极少且形态单一，训练数据成本高；传统方法的参数可解释、可逐项调试，产线更信任。"
+  - lesson: "耗时主要在采图与通信"
+    detail: "算法本身只有 40 ms，其余是相机采集与 IO 通信；优化要抓真正的瓶颈。"
+
+whyClassic: >
+  ① 无 GPU 现场，传统方法纯 CPU 即可满足实时；
+  ② 缺陷定义明确（尺寸、形态），传统方法可精确控制召回与误报；
+  ③ 参数可解释，产线验收和故障定位都方便；
+  ④ 不需要大量标注样本，上线周期短（本例约 2 周）。
+
+substituteByDL: >
+  若缺陷形态高度多样、样本充足，可用分割/异常检测网络（如 PatchCore、YOLO-seg）。
+  但需 GPU 或量化推理，且上线周期长，对样本稀少的场景反而不划算。
+
+relatedAlgorithms:
+  - op-gaussian-blur
+  - algo-canny
+  - op-histogram
+
+docsPath: "/cases/industrial-defect"
+tags: ["工业", "缺陷检测", "形态学", "无GPU"]

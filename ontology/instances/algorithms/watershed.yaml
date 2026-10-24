@@ -1,0 +1,20 @@
+id: algo-watershed
+type: Algorithm
+name: 分水岭分割
+year: 1991
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/watershed/
+plainTalk: 把图像当地形图灌水，两盆地交汇点就是分割线，标记控制版能完美分开粘连硬币和细胞。
+layer: L2
+tags:
+- classic-cv
+- segmentation
+- region
+papers:
+- paper-vincent-1991-watershed
+dependsOn:
+- algo-morphology
+concepts: []
+painPoints: []
+tricks: []

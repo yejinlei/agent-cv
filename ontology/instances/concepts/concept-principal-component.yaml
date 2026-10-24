@@ -1,0 +1,21 @@
+id: concept-principal-component
+type: Concept
+name: "主成分分析"
+layer: L2
+plainTalk: >
+  一堆长得差不多又各有小差别的样本（比如一千张人脸照片），其实并不需要用几万个像素去描述。
+  主成分分析就是找出「大家主要往哪几个方向变」——第一主方向是差异最大的那个方向，
+  第二主方向是与第一个垂直、差异次大的方向，以此类推。
+  只留前几十个方向，就能近似还原所有样本，数据量从几万维掉到几十维，而且丢的是最不重要的变化。
+formal: >
+  对去均值后的数据矩阵 X（N×D）求协方差 C = XᵀX/N 的特征分解；
+  取最大的 k 个特征值对应的特征向量 W（D×k），降维表示为 Y = XW。
+solutions: [
+  "数据中心化（每列减去均值），这一步漏了结果全错",
+  "求协方差矩阵的特征值与特征向量，或对 X 做 SVD 更稳定",
+  "按特征值从大到小排序，取前 k 个特征向量作为投影基"
+]
+usedBy: ["algo-face-detection-prev", "algo-knn-background"]
+related: ["concept-svd", "concept-dimensionality-reduction"]
+docsPath: "/algorithms/face-detection-prev/concepts"
+tags: ["statistics", "dimension-reduction"]

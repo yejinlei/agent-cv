@@ -1,0 +1,31 @@
+id: paper-vincent-1991-watershed
+type: Paper
+title: 'Watersheds in Digital Spaces: An Efficient Algorithm Based on Immersion Simulations'
+authors:
+- Luc Vincent
+- Pierre Soille
+year: 1991
+venue: IEEE Transactions on Pattern Analysis and Machine Intelligence
+venueType: journal
+contribution: 基于浸没模拟的线性时间分水岭算法，把形态学分水岭从理论变成可实用的图像分割标准方法。
+keyInsight: 把梯度图像看作地形，局部极小值作为集水盆，水从每个极小值升起、在坝线相遇处分割——直观、高效。
+novelty:
+- 按灰度排序+FIFO 队列的线性时间实现
+- 分水岭变换的高效工程化
+- 自然解决多物体粘连问题
+limitations:
+- 严重过分割（需标记控制的分水岭 markers-controlled）
+- 对噪声敏感，需平滑预处理
+relatedAlgorithms:
+- algo-watershed
+influencedBy:
+- 数学形态学（Serra）
+- 地形图模拟思想
+influenced:
+- OpenCV watershed 实现
+- 医学图像、细胞分割的标配
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/34.87344
+citationCount: 13000

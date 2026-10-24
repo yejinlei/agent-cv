@@ -1,0 +1,21 @@
+id: concept-template-matching
+type: Concept
+name: "模板匹配"
+layer: L1
+plainTalk: >
+  拿一张小图当「图章」，在大图上从左到右、从上到下滑一遍，每滑一个位置就算一下这块和印章有多像，
+  最像的位置就是目标位置。像不像的算法可以是逐像素差值平方和（越暗越不准），
+  也可以先各自减掉均值再算相关系数（对整体明暗变化不敏感）。它简单到没有一行复杂公式，
+  但一旦目标转了角度、变了大小就失效——因为它在逐像素比对，而不是在比对结构。
+formal: >
+  R(x,y) = Σ_{i,j} [T(i,j) - I(x+i, y+j)]²（平方差）或
+  R(x,y) = Σ [T'·I'] / sqrt(Σ T'² · Σ I'²)（归一化互相关，T' = T - mean(T)）
+solutions: [
+  "遍历所有候选位置，计算相似度得分图",
+  "用归一化相关系数（TM_CCOEFF_NORMED）抵消整体亮度/对比度差异",
+  "在大图上用积分图或金字塔加速，避免逐位置重算"
+]
+usedBy: ["algo-face-detection-prev"]
+related: ["concept-correlation", "concept-sliding-window"]
+docsPath: "/algorithms/face-detection-prev/concepts"
+tags: ["matching", "basic"]

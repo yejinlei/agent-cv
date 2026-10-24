@@ -1,0 +1,46 @@
+id: algo-zhang-calibration
+type: Algorithm
+name: "张氏相机标定法"
+nameEn: "Zhang's Camera Calibration"
+year: 2000
+branch: branch-geometry
+status: stable
+docsPath: "/algorithms/zhang-calibration/"
+
+plainTalk: >
+  「相机的傻瓜校准术」：以前标定相机要做一个精密的三维标定块，张正友说不用——
+  你就打印一张棋盘格贴在硬板上，各个角度拍十几张照片，它就能自动算出相机的焦距、
+  主点和畸变系数。OpenCV 一行 cv2.calibrateCamera 就是它，几毛钱的成本就能
+  达到和几千元精密标定物相当的精度。工业视觉、三维重建、SLAM、AR 的第一步都是它。
+
+tags: ["classic-cv", "camera-calibration", "geometry"]
+papers: ["paper-zhang-2000"]
+chapters: ["ch-03-preprocessing", "ch-09-stereo"]
+
+concepts: [
+  "concept-camera-model",
+  "concept-homography",
+  "concept-radial-distortion",
+  "concept-lm-optimization",
+  "concept-reprojection-error"
+]
+
+dependsOn: [
+  "op-corner-subpix"
+]
+
+replacedBy: []
+inheritedBy: ["Kalibr多相机标定", "AprilTag自标定"]
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.calibrateCamera"
+    since: "OpenCV 1.0"
+  - lib: "Matlab"
+    func: "estimateCameraParameters"
+  - lib: "HALCON"
+    func: "calibrate_cameras"
+  - lib: "ROS"
+    func: "camera_calibration/cameracalibrator.py"
+
+layer: L3

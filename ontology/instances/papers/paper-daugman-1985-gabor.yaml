@@ -1,0 +1,25 @@
+id: paper-daugman-1985-gabor
+type: Paper
+title: Uncertainty relation for resolution in space, spatial frequency, and orientation
+  optimized by two-dimensional visual cortical filters
+authors:
+- John G. Daugman
+year: 1985
+venue: JOSA A
+tags:
+- gabor
+- texture
+- biological-vision
+contribution: 证明 2D Gabor 函数达到空间-频率联合不确定性下界
+keyInsight: Gabor 是最优的时频局部化基，与哺乳动物 V1 简单细胞吻合
+novelty:
+- 2D Gabor 达到空间-频率联合不确定性下界的证明
+- 为视觉皮层简单细胞提供数学模型
+- 将 Gabor 用于虹膜纹理编码
+limitations:
+- 多通道滤波器组计算量大
+- 参数多，调参复杂
+influencedBy: []
+influenced: []
+docsPath: /algorithms/gabor/paper
+doi: 10.1364/JOSAA.2.001160

@@ -1,0 +1,29 @@
+id: paper-leutenegger-2011-brisk
+type: Paper
+title: 'BRISK: Binary Robust Invariant Scalable Keypoints'
+authors:
+- Stefan Leutenegger
+- Margarita Chli
+- Roland Siegwart
+year: 2011
+venue: ICCV
+tags:
+- feature
+- binary-descriptor
+- real-time
+contribution: AGAST 角点 + 同心圆采样 + 长短点对分工的二进制描述子，兼具尺度/旋转不变性与速度
+keyInsight: 同心圆采样 + 长点对估方向 + 短点对比大小，预计算旋转偏移避免浮点插值
+novelty:
+- 长短点对分工估计方向与生成描述子
+- AGAST 多决策树角点加速
+- 预计算旋转偏移避免浮点插值
+limitations:
+- 描述子 512 位比 ORB 长一倍
+- 只检测角点不支持 blob
+- 采样模式硬编码
+influencedBy:
+- paper-orb-2011
+- calonder-2010-brief
+influenced: []
+docsPath: /algorithms/brisk/paper
+doi: 10.1109/ICCV.2011.6126542

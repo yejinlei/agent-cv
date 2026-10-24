@@ -1,0 +1,13 @@
+id: concept-gabor
+type: Concept
+name: Gabor 滤波器
+enName: Gabor Filter / Gabor Wavelet
+field: texture
+plainTalk: 高斯包络 × 复正弦波，是时频局部化最优的局部纹理探针
+explain: 2D Gabor 函数由高斯窗口调制平面正弦波，参数 lambda/theta/psi/sigma/gamma 控制波长/方向/相位/尺度/形状；多方向多尺度组成滤波器组。
+appearsIn:
+- algo-gabor
+related:
+- concept-gaussian-blur
+docsPath: /algorithms/gabor/concepts
+layer: L2

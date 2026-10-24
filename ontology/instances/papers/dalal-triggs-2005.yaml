@@ -1,0 +1,65 @@
+id: paper-dalal-triggs-2005
+type: Paper
+title: "Histograms of Oriented Gradients for Human Detection"
+authors:
+  - "Navneet Dalal"
+  - "Bill Triggs"
+year: 2005
+venue: "IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"
+venueType: conference
+doi: "10.1109/CVPR.2005.177"
+url: "https://ieeexplore.ieee.org/document/1467360"
+citationCount: 30000
+
+contribution: >
+  用一组精心设计的消融实验，系统性地找出「行人检测中什么特征最有效」，
+  最终确定「梯度方向直方图 + 块内归一化」这个组合。
+  论文最大的价值不只是提出了 HOG，而是展示了「用实验确定设计选择」的方法论：
+  它对颜色、梯度、方向分箱、块大小、归一化方式做了穷举对比，
+  用数据说明每一项的贡献。同时它把检测问题明确转成「固定窗口的分类问题」，
+  奠定了此后十年传统目标检测的基本范式。
+
+keyInsight: >
+  形状比颜色更可靠，而「邻近块之间的相对梯度分布」比「绝对梯度幅值」更抗光照变化。
+
+novelty:
+  - "系统性地对比多种特征组合，用消融实验确定 HOG 的最优配置"
+  - "提出块内归一化（block normalization），这是精度提升的关键"
+  - "提出「检测 = 固定窗口分类 + 多尺度滑动」的范式"
+  - "给出以 FPPW（false positives per window）为标准的评测方式"
+
+limitations:
+  - "计算量大，多尺度搜索下难以实时（原论文约 1–4 s/图）"
+  - "对遮挡和肢体形变鲁棒性有限"
+  - "只针对「直立行人」这一单一类别，泛化需要重新训练"
+  - "固定长宽比的窗口假设限制了应用范围"
+
+relatedAlgorithms:
+  - algo-hog-svm
+
+influencedBy:
+  - "Viola-Jones 的积分图 + 滑动窗口框架（2001）"
+  - "Mikolajczyk 的梯度方向特征研究"
+  - "SVM 在目标检测中的应用（如 Papageorgiou 的 Haar+SVM）"
+
+influenced:
+  - "DPM（Deformable Part Model，2008）直接以 HOG 为基础特征"
+  - "DPM 的作者之一（Felzenszwalb）→ 其学生 Ross Girshick → R-CNN → Faster R-CNN"
+  - "深度学习早期的 R-CNN 系列仍沿用「候选框 + 特征 + 分类」的框架"
+  - "行人检测长期以 HOG+SVM 为 baseline"
+
+readStatus: read
+
+bibtex: |
+  @inproceedings{dalal2005histograms,
+    title={Histograms of oriented gradients for human detection},
+    author={Dalal, Navneet and Triggs, Bill},
+    booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    volume={1},
+    pages={886--893},
+    year={2005},
+    organization={IEEE}
+  }
+
+docsPath: "/algorithms/hog-svm/paper"
+tags: ["目标检测", "行人检测", "2005", "CVPR", "消融实验"]

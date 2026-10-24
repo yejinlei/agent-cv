@@ -1,0 +1,23 @@
+id: paper-borgefors-1986-chamfer
+type: Paper
+title: Distance Transformations in Digital Images
+authors:
+- Gunilla Borgefors
+year: 1986
+venue: CVGIP
+tags:
+- distance-transform
+- chamfer
+contribution: 倒角距离权重（3/4 和 5/7/11），两次扫描近似欧氏距离，误差 <2%
+keyInsight: 用局部整数权重模板 + 两次扫描逼近连续欧氏距离
+novelty:
+- 3/4 和 5/7/11 整数权重的倒角距离模板
+- 两次扫描得到近似欧氏距离，误差 <2%
+limitations:
+- 仍是欧氏距离的近似
+- 对大规模点集不如精确 EDT
+influencedBy:
+- paper-rosenfeld-1966-dt
+influenced: []
+docsPath: /algorithms/distance-transform/paper
+doi: 10.1016/0734-189X(86)90047-2

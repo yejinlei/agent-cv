@@ -1,0 +1,33 @@
+id: paper-calonder-2010-brief
+type: Paper
+title: 'BRIEF: Binary Robust Independent Elementary Features'
+authors:
+- Michael Calonder
+- Vincent Lepetit
+- Christoph Strecha
+- Pascal Fua
+year: 2010
+venue: European Conference on Computer Vision (ECCV)
+venueType: conference
+contribution: 用 256 对随机点的灰度比较生成二进制描述子，汉明距离匹配速度比 SIFT 快 100 倍。
+keyInsight: 识别点的关键不是梯度直方图，而是随机点对的灰度大小关系——简单、判别力强、可用位运算加速。
+novelty:
+- 二进制描述子，256 bits 紧凑表示
+- 汉明距离用 XOR+popcount 位运算，匹配极快
+- 随机点对采样，无需梯度计算
+limitations:
+- 无旋转不变性（ORB 用 rBRIEF 补上）
+- 无尺度不变性，需配尺度检测器
+- 对噪声敏感
+relatedAlgorithms:
+- algo-brief
+influencedBy:
+- SIFT/SURF 浮点描述子
+influenced:
+- ORB、BRISK、FREAK 等二进制描述子家族
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1007/978-3-642-15561-1_56
+url: https://link.springer.com/chapter/10.1007/978-3-642-15561-1_56
+citationCount: 7000

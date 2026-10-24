@@ -1,0 +1,21 @@
+id: trick-bovw-tfidf
+type: Trick
+name: "TF-IDF 加权视觉词"
+difficulty: easy
+scenario: "BoVW 直方图里常见词（比如边缘、平滑块）占主导，真正有区分度的稀有词被淹没"
+how: >
+  参考文本检索的 TF-IDF：
+  - TF（词频）= 该词在本图出现次数 / 本图总词数
+  - IDF（逆文档频率）= log(总图像数 / 含该词的图像数)
+  最终每个词的权重 = TF × IDF
+  稀有但有区分度的词（如"车轮"对车辆）IDF 大，被放大；
+  到处都有的"平凡词"（如平滑背景、一般边缘）IDF 小，被压低。
+effect: >
+  分类/检索 mAP 稳定提升 2–5 个点，几乎零成本——换个加权方式就行。
+caveat: >
+  IDF 要在训练集统计，不能在测试集算（否则数据泄露）；
+  小数据集（<500 图）IDF 估计不稳，直接用 TF 也行。
+relatedAlgorithms:
+  - algo-bovw
+docsPath: "/branches/detection/bovw"
+tags: ["TF-IDF", "加权", "BoVW", "检索"]

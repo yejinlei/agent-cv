@@ -1,0 +1,26 @@
+id: paper-adams-1994-srg
+type: Paper
+title: Seeded Region Growing
+authors:
+- Rolf Adams
+- Leanne Bischof
+year: 1994
+venue: IEEE TPAMI
+tags:
+- segmentation
+- region-growing
+- interactive
+contribution: 基于优先级队列的有序区域生长，多区域竞争扩张
+keyInsight: 按最小差异优先级扩张，动态更新区域均值，自然形成闭合边界
+novelty:
+- 优先队列驱动的种子区域生长
+- 动态更新区域均值的增量公式
+- 多区域自然竞争形成闭合边界
+limitations:
+- 种子位置敏感
+- O(N log N) 串行算法较慢
+- 对纹理区域效果差
+influencedBy: []
+influenced: []
+docsPath: /algorithms/region-growing/paper
+doi: 10.1109/34.295913

@@ -1,0 +1,29 @@
+id: paper-mallat-1989-wavelet
+type: Paper
+title: "A Theory for Multiresolution Signal Decomposition: The Wavelet Representation"
+authors:
+  - Stéphane G. Mallat
+year: 1989
+venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+venueType: journal
+contribution: "提出多分辨率分析与快速小波变换（Mallat 算法），把滤波器组与正交小波统一，奠定小波在图像压缩与多尺度分析中的地位。"
+keyInsight: "多尺度分解可以由一对低通/高通滤波器的迭代下采样实现，等价于金字塔的推广。"
+novelty:
+  - 多分辨率分析理论框架
+  - 快速小波变换 Mallat 算法
+  - 正交小波基构造
+limitations:
+  - 正交小波的相位与边界处理需注意
+  - 对非平稳纹理的解释有限
+relatedAlgorithms:
+  - algo-haar-wavelet
+  - algo-gaussian-blur
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - wavelet
+  - multiresolution
+doi: 10.1109/34.192463
+citationCount: 12000

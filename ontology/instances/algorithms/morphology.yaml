@@ -1,0 +1,22 @@
+id: algo-morphology
+type: Algorithm
+name: 形态学操作
+year: 1964
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/morphology/
+plainTalk: 膨胀、腐蚀、开、闭、顶帽、黑帽——形态学五把瑞士军刀，去小白点填黑洞提边缘全靠它。
+layer: L1
+tags:
+- classic-cv
+- erosion
+- dilation
+- binary
+papers:
+- paper-serra-1982-morphology
+inheritedBy:
+- algo-watershed
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

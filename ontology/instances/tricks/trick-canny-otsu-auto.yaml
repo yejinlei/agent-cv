@@ -1,0 +1,16 @@
+id: trick-canny-otsu-auto
+type: Trick
+name: "用 Otsu 自动求 Canny 阈值"
+difficulty: medium
+scenario: "图像批次间对比度差异大，手调阈值顾此失彼。"
+how: >
+  ① 先算 Sobel 梯度幅值图（CV_32F）；
+  ② 把梯度幅值归一化到 0–255 的 uint8；
+  ③ 对梯度幅值图做 Otsu 阈值分割，得到 T_high；
+  ④ 取 T_high/2 作为 T_low，送入 Canny。
+effect: "阈值随图像自动适应，批次一致性明显改善。"
+caveat: "Otsu 假设双峰分布；若梯度分布单峰（几乎没有边缘）会得到不合理的阈值，需加下限保护。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/tricks"
+tags: ["技巧", "Canny", "自动化"]

@@ -1,0 +1,31 @@
+id: paper-barnich-2011-vibe
+type: Paper
+title: "ViBe: A Universal Background Subtraction Algorithm for Video Sequences"
+authors:
+  - Olivier Barnich
+  - Marc Van Droogenbroeck
+year: 2011
+venue: "IEEE Transactions on Image Processing"
+venueType: journal
+contribution: "提出样本一致性背景建模 ViBe，用每像素一组历史样本与随机邻居传播，实现内存小、速度快、无需训练的背景减除。"
+keyInsight: "背景模型不必独立建模，随机借用空间邻居的样本即可兼顾精度与内存。"
+novelty:
+  - 样本一致性判据
+  - 随机邻域样本传播
+  - 随机更新策略与保守更新
+limitations:
+  - 初始帧含运动物体易留鬼影
+  - 对相机抖动敏感
+relatedAlgorithms:
+  - algo-vibe
+  - algo-knn-background
+  - algo-mog2
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - background-subtraction
+  - sample-based
+doi: 10.1109/TIP.2010.2101613
+citationCount: 2400

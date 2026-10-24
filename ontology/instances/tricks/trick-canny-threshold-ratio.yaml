@@ -1,0 +1,15 @@
+id: trick-canny-threshold-ratio
+type: Trick
+name: "双阈值按比例设定"
+difficulty: easy
+scenario: "任何用 Canny 的场合。"
+how: >
+  把 T_high : T_low 固定为 2:1 或 3:1，只调 T_high 这一个「旋钮」。
+  例如 T_high=150 时 T_low=75（2:1）或 50（3:1）。
+  T_high 越大越保守（边缘少但都是强的），越小越敏感。
+effect: "把两个自由参数降为一个，调参量减半且更可控。"
+caveat: "比例过小时滞后连接会失效（弱边缘太多），推荐不超过 3:1。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/tricks"
+tags: ["技巧", "Canny", "调参"]

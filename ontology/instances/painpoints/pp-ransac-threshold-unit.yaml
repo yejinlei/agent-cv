@@ -1,0 +1,18 @@
+id: pp-ransac-threshold-unit
+type: PainPoint
+name: "阈值单位与坐标单位不匹配，全部点被当成内点"
+severity: high
+symptom: >
+  跑完 RANSAC 后 mask 里全是 1、内点数等于总点数，
+  解出的单应矩阵近似单位矩阵；或者反过来，内点被清光、模型乱飞。
+rootCause: >
+  ransacReprojThreshold 的单位跟随输入坐标的单位。
+  把特征点归一化到 [0,1] 后却仍用「3.0 像素」的阈值，
+  相当于允许 3 个图像宽度的误差，所有点自然都成了内点。
+fix: >
+  统一单位：一律用像素坐标 + 像素阈值（H 用 3~5 px、F 用 1~3 px）。
+  若必须在归一化坐标下计算，阈值同步除以图像宽度
+  （如 3 px / 1000 约等于 0.003）。
+relatedAlgorithms:
+  - algo-ransac
+tags: ["踩坑", "参数", "RANSAC"]

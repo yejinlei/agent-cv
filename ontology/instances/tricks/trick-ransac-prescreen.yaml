@@ -1,0 +1,16 @@
+id: trick-ransac-prescreen
+type: Trick
+name: "先预筛提内点率，再跑 RANSAC"
+difficulty: easy
+scenario: "原始匹配对里外点很多（内点率低于 40%），直接跑 RANSAC 又慢又不稳。"
+how: >
+  在 RANSAC 之前加一道预筛：用 Lowe 比值检验（阈值 0.7~0.8）、
+  交叉一致性检验（互相为最佳匹配）把明显错误的匹配先剔掉，
+  通常能把内点率从 30% 提到 60% 以上。
+  由于 RANSAC 所需迭代次数随内点率指数下降，
+  这一步的收益远大于调 RANSAC 自己的参数。
+effect: "迭代次数下降一个数量级，模型更稳定，整体耗时反而更少。"
+relatedAlgorithms:
+  - algo-ransac
+  - algo-sift
+tags: ["技巧", "预筛", "RANSAC"]

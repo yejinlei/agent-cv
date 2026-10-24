@@ -1,0 +1,59 @@
+id: paper-bay-2006
+type: Paper
+title: "SURF: Speeded Up Robust Features"
+authors:
+  - "Herbert Bay"
+  - "Tinne Tuytelaars"
+  - "Luc Van Gool"
+year: 2006
+venue: "European Conference on Computer Vision (ECCV)"
+venueType: conference
+doi: "10.1007/11744023_32"
+url: "https://link.springer.com/chapter/10.1007/11744023_32"
+citationCount: 15000
+
+contribution: >
+  在不牺牲太多精度的前提下，把 SIFT 的速度提升约 3 倍。
+  关键手法有两个：用盒子滤波器（box filter）近似高斯二阶导数，
+  以及用积分图让任意矩形区域的求和变成 4 次加减——
+  于是「卷积」这个最耗时的操作被替换成「几次加减」。
+
+keyInsight: >
+  「高斯可以用盒子近似，而盒子卷积可以用积分图 O(1) 完成。」
+
+novelty:
+  - "用 Hessian 行列式的盒子滤波近似做尺度空间检测（取代 DoG）"
+  - "基于积分图的快速卷积，计算复杂度与滤波器尺寸无关"
+  - "提出基于 Haar 小波响应的 64 维描述子（比 SIFT 少一半）"
+  - "描述子构建中引入方向和符号，兼顾旋转不变与速度"
+
+limitations:
+  - "长期受专利保护，OpenCV 中位于 non-free 的 contrib 模块"
+  - "视角变化下的可重复性略低于 SIFT"
+  - "64 维描述子在小纹理场景下区分度不足"
+
+relatedAlgorithms:
+  - algo-surf
+
+influencedBy:
+  - "Lowe 的 SIFT（2004）"
+  - "Viola-Jones 的积分图加速思想（2001）"
+
+influenced:
+  - "ORB、BRISK、KAZE 等后续加速特征"
+  - "OpenCV 的 xfeatures2d 模块"
+
+readStatus: skimmed
+
+bibtex: |
+  @inproceedings{bay2006surf,
+    title={Surf: Speeded up robust features},
+    author={Bay, Herbert and Tuytelaars, Tinne and Van Gool, Luc},
+    booktitle={European Conference on Computer Vision},
+    pages={404--417},
+    year={2006},
+    organization={Springer}
+  }
+
+docsPath: "/branches/feature-matching/descriptors"
+tags: ["特征", "SURF", "2006", "积分图"]

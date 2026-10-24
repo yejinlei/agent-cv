@@ -1,0 +1,27 @@
+id: algo-essential-matrix
+type: Algorithm
+name: "本质矩阵与八点法"
+nameEn: "Essential Matrix & Eight-Point Algorithm"
+year: 1981
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/essential-matrix/
+plainTalk: "同一张照片从两个略微不同的位置各拍一张，画面里的对应点之间藏着一个固定的数学约束。本质矩阵就是把这个约束写成一张 3×3 的小表格，只要给出八对以上的对应点，就能解出两张照片之间的相机相对位置和朝向。"
+concepts:
+  - concept-epipolar-geometry
+  - concept-fundamental-matrix
+tags:
+  - classic-cv
+  - geometry
+  - slam
+  - epipolar
+papers:
+  - paper-longuet-higgins-1981
+evolvedFrom: algo-epipolar
+replacedBy: []
+dependsOn:
+  - algo-homography
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L3

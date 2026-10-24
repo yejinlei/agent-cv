@@ -1,0 +1,24 @@
+id: ch-06-representation
+type: Chapter
+number: 6
+name: 目标表示与特征提取
+plainTalk: 把刚才切出来的一块块区域，用一串数字打包成「特征小票」——以后比对就直接比小票，不用整张图慢慢比。
+level: 中层
+branches:
+  - branch-feature-detection
+  - branch-feature-matching
+concepts:
+  - concept-scale-space
+  - concept-dog
+  - concept-sift
+  - concept-keypoint-localization
+  - concept-orientation-assignment
+  - concept-gradient-histogram-descriptor
+  - concept-block-normalization
+papers:
+  - paper-lowe-1999
+  - paper-lowe-2004
+coreQuestion: 切出来的目标，怎样用一串数字把它描述清楚，方便以后比对？
+docsPath: /chapters/ch06-representation
+prevChapter: ch-05-segmentation
+nextChapter: ch-07-texture

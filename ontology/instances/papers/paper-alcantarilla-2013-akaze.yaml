@@ -1,0 +1,26 @@
+id: paper-alcantarilla-2013-akaze
+type: Paper
+title: Fast Explicit Diffusion for Accelerated Features in Nonlinear Scale Spaces
+authors:
+- Pablo F. Alcantarilla
+- Jesús Nuevo
+- Adrien Bartoli
+year: 2013
+venue: BMVC
+tags:
+- feature
+- nonlinear-scale-space
+- binary-descriptor
+contribution: FED 快速显式扩散 + M-LDB 二进制描述子，使 KAZE 速度提升几十倍
+keyInsight: 用显式小步长循环求解非线性扩散，无需解线性方程组；M-LDB 做尺度/旋转感知的二进制描述
+novelty:
+- FED 快速显式扩散突破 AOS 求解瓶颈
+- 多尺度 grid 的 M-LDB 二进制描述子
+- 非线性尺度空间的快速特征框架
+limitations:
+- 速度比 ORB 慢 2-3 倍
+- 大尺度变化略弱于 SIFT
+influencedBy: []
+influenced: []
+docsPath: /algorithms/akaze/paper
+url: https://www.bmva.org/bmvc/2013/Papers/paper0013/index.html

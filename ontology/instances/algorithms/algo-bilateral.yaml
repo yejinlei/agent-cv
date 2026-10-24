@@ -1,0 +1,27 @@
+id: algo-bilateral
+type: Algorithm
+name: "双边滤波"
+year: 1998
+branch: branch-image-processing
+status: stable
+docsPath: "/algorithms/bilateral/"
+
+plainTalk: >
+  磨皮美颜的爷爷算法：离得近、颜色像的像素才被拉平，边缘自动保住。
+
+concepts:
+  - concept-edge-aware
+  - concept-gaussian-blur
+  - concept-denoising
+
+tags: ["classic-cv", "edge-preserving", "filter", "beauty"]
+papers: ["paper-tomasi-1998-bilateral"]
+replacedBy: []
+dependsOn:
+  - op-gaussian-blur
+inheritedBy:
+  - algo-guided-filter
+  - algo-domain-transform
+painPoints: []
+tricks: []
+layer: L1

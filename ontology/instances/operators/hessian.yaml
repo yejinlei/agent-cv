@@ -1,0 +1,50 @@
+id: op-hessian
+type: Operator
+name: "Hessian 矩阵（二阶导数）"
+nameEn: "Hessian Matrix"
+category: statistical
+
+plainTalk: >
+  「看一个地方是凸的还是凹的、还是像马鞍」：
+  二阶导数告诉你「坡度在往哪个方向变化」。
+  如果两个方向都在变陡（都是正的），这里是「坑底」；
+  两个方向都在变缓（都是负的），这里是「山顶」；
+  一正一负，就是「马鞍」。
+  在图像里，「山顶」和「坑底」就是很稳定的特征点（斑点），
+  而马鞍对应边缘——所以要避开它。
+
+formula: "H = [[Ixx, Ixy], [Ixy, Iyy]]，det(H) = Ixx·Iyy - Ixy²"
+
+params:
+  - name: "σ"
+    meaning: "求导前的高斯平滑尺度"
+    typical: "1.0–2.0"
+    effect: "越大越稳定但越模糊"
+  - name: "det(H)"
+    meaning: "行列式"
+    typical: "越大越可能是斑点中心"
+    effect: "det(H) 大 = 两个方向的曲率都大 = 好特征点"
+
+opencvFunc: "cv2.cornerHarris（近似 Hessian 的响应）"
+usedBy:
+  - algo-sift
+  - algo-surf
+
+complexity: "O(n · k²)"
+separability: false
+inplace: false
+noiseRobustness: low
+edgePreserve: true
+
+useCases:
+  - "斑点检测（斑点 = det(H) 极大值）"
+  - "角点检测（Harris 用类似思路）"
+  - "SURF 用 Hessian 行列式做尺度空间检测"
+  - "剔除边缘响应点（在 SIFT 中判断是否落在边缘）"
+
+pitfalls:
+  - "二阶导数对噪声极其敏感，必须先高斯平滑"
+  - "只取 det(H) 会同时在斑点中心和边缘都响应，需要额外约束"
+
+docsPath: "/branches/feature-detection/blobs"
+tags: ["统计", "二阶导", "斑点检测"]

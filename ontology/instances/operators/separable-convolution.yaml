@@ -1,0 +1,40 @@
+id: op-separable-convolution
+type: Operator
+name: "可分离卷积"
+nameEn: "Separable Convolution"
+category: filter
+
+plainTalk: >
+  「先横着刷一道，再竖着刷一道」：一个能拆成「横向一维核 × 纵向一维核」的
+  二维卷积核，可以用两次一维卷积代替一次二维卷积。
+  3×3 的核本来是每像素算 9 次乘加，拆开后只算 6 次；
+  核越大省得越多（15×15 能省 7 倍以上）。
+  高斯核、Sobel 核天然可分离，所以它们跑得特别快。
+
+formula: "K = u ⊗ v   ⟹   (I * K) = (I * u) * v"
+
+opencvFunc: "cv2.sepFilter2D"
+
+usedBy:
+  - algo-sobel
+  - algo-canny
+  - algo-sift
+
+complexity: "O(n · 2k)（相比二维卷积 O(n · k²)）"
+separability: true
+inplace: true
+noiseRobustness: medium
+edgePreserve: false
+
+useCases:
+  - "高斯模糊的加速实现"
+  - "Sobel / Scharr 梯度的可分离计算"
+  - "任何核可分解为两个一维核的卷积"
+
+pitfalls:
+  - "核不一定可分离——只有能写成 u ⊗ v 的才行（高斯、Sobel 可以，拉普拉斯不行）"
+  - "分两步会引入两次边界补零，边界像素与二维卷积略有差别"
+  - "小核（3×3）收益有限，别为了可分离而绕远路"
+
+docsPath: "/branches/image-processing/filtering"
+tags: ["滤波", "性能", "基础算子", "可分离"]

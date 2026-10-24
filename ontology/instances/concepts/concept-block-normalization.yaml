@@ -1,0 +1,19 @@
+id: concept-block-normalization
+type: Concept
+name: "块内归一化"
+plainTalk: >
+  「光线变了，比例不变」：整张图变亮一倍，所有梯度都变大，但它们的「相对大小」没变。
+  把相邻几个格子组成一块，在这一块里做归一化，就把「整体亮度」这个干扰去掉了。
+  这是 HOG 效果好的最大功臣。
+layer: L2
+relatedAlgorithms:
+  - algo-hog-svm
+prerequisites:
+  - op-l2-normalization
+  - op-histogram
+keyFormula: "块内按 L2 范数归一化，并对大值截断"
+usedIn:
+  - "HOG 特征"
+  - "SIFT 描述子"
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["概念", "光照不变", "HOG核心"]

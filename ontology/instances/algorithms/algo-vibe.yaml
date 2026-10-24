@@ -1,0 +1,25 @@
+id: algo-vibe
+type: Algorithm
+name: "ViBe 背景建模"
+nameEn: "ViBe Background Subtraction"
+year: 2011
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/vibe/
+plainTalk: "跟邻居借样本来描述背景：每个像素不只看自己，还随机从隔壁像素借几个历史颜色当模板。新像素只要和模板里任意几个相近就算背景，模板还会随机换掉旧样本——像同学之间不断交换笔记，既不占内存又能适应光线缓慢变化。"
+concepts:
+  - concept-background-model
+tags:
+  - classic-cv
+  - background-subtraction
+  - video
+  - sample-based
+papers:
+  - paper-barnich-2011-vibe
+evolvedFrom: algo-mog2
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

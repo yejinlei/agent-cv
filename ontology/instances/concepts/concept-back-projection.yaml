@@ -1,0 +1,6 @@
+id: concept-back-projection
+type: Concept
+name: 反向投影
+plainTalk: 把图像每个像素换成「它是目标颜色的概率」，亮的地方就像目标
+layer: L2
+formalDefinition: 基于颜色直方图，对整张图逐像素查询其颜色在目标直方图中的概率值得到概率图

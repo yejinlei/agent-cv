@@ -1,0 +1,19 @@
+id: algo-mser
+type: Algorithm
+name: MSER 最大稳定极值区域
+year: 2002
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/mser/
+plainTalk: 阈值像水位一样从 0 升到 255，那些面积最稳定的区域就是 MSER，天然仿射不变，文本检测利器。
+layer: L2
+tags:
+- classic-cv
+- region
+- affine-invariant
+papers:
+- paper-matas-2002-mser
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

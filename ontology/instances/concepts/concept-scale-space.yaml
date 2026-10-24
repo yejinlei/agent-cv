@@ -1,0 +1,21 @@
+id: concept-scale-space
+type: Concept
+name: "尺度空间"
+plainTalk: >
+  「把照片复印成从小到大的很多份」：因为同一个东西，拍近了占满画面，拍远了只有一小块，
+  所以「多大算大」这件事本身是不确定的。
+  办法是同时准备很多个不同「模糊程度」和「分辨率」的版本，
+  不管目标实际多大，总有一个版本上它的大小是「刚好合适」的。
+  这个「一大堆不同尺度版本」的集合就叫尺度空间。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-sift
+prerequisites:
+  - op-gaussian-blur
+keyFormula: "L(x,y,σ) = G(x,y,σ) * I(x,y)"
+usedIn:
+  - "SIFT 的尺度不变特征"
+  - "多尺度目标检测"
+docsPath: "/algorithms/sift/concepts"
+tags: ["概念", "尺度", "SIFT核心"]

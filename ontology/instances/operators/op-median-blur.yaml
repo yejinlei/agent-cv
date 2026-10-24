@@ -1,0 +1,28 @@
+id: op-median-blur
+type: Operator
+name: "中值模糊"
+nameEn: "Median Blur"
+category: filter
+plainTalk: "把每个像素和邻居的值排队，取正中间那个当作新值。白点黑点这类极端值排在最前或最后，永远选不上，所以能专门去掉椒盐噪声，而且物体边缘不会被糊掉。"
+formula: "out(x,y) = median{ in(x+i, y+j) | (i,j) ∈ Window }"
+params:
+  - name: "ksize"
+    meaning: "窗口边长（奇数）"
+    typical: "3 / 5 / 7"
+    effect: "越大去噪越强，但细小结构会被抹掉"
+opencvFunc: "cv2.medianBlur"
+usedBy:
+  - algo-median-filter
+complexity: "O(n · k²)（朴素排序）；快速实现接近 O(n·k)"
+noiseRobustness: high
+edgePreserve: true
+useCases:
+  - "去除椒盐噪声"
+  - "去除脉冲噪声"
+  - "边缘检测前处理"
+  - "缺陷检测中的孤立脏点剔除"
+pitfalls:
+  - "ksize 必须奇数且 >1"
+  - "对高斯噪声效果一般，会显得糊"
+  - "浮点图像需先转 8U 或自实现"
+tags: ["算子", "基础"]

@@ -1,0 +1,27 @@
+id: algo-haar-wavelet
+type: Algorithm
+name: "Haar 小波变换"
+nameEn: "Haar Wavelet Transform"
+year: 1989
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/haar-wavelet/
+plainTalk: "把一块豆腐先切成两半比大小，再各切两半继续比，最后把每层的『差异』和最后的『平均』都记下来。Haar 小波就是这种一层层切分图像的记录方式：大部分差异都很小，可以丢掉，于是图像被高效压缩，边缘信息还留在差异里。"
+concepts:
+  - concept-wavelet
+  - concept-image-pyramid
+tags:
+  - classic-cv
+  - transform
+  - multiresolution
+  - compression
+papers:
+  - paper-mallat-1989-wavelet
+evolvedFrom: null
+replacedBy: []
+dependsOn: []
+inheritedBy:
+  - Haar-like 特征
+painPoints: []
+tricks: []
+layer: L2

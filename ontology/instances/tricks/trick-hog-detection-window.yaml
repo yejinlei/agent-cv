@@ -1,0 +1,16 @@
+id: trick-hog-detection-window
+type: Trick
+name: "检测窗口与多尺度策略"
+difficulty: medium
+scenario: "HOG+SVM 做多尺度检测。"
+how: >
+  ① 用 HOGDescriptor.setSVMDetector 设置已训练好的权重；
+  ② detectMultiScale 的 scale 建议 1.05（步长小不易漏检）；
+  ③ winStride 取 blockStride（8×8）或更小；
+  ④ hitThreshold 从 0 开始往上调，控制误报。
+effect: "漏检明显减少，代价是耗时增加（scale 越小耗时越长）。"
+caveat: "scale=1.05 时尺度数约为 log(1/S)/log(1.05)，大图上是几十个尺度，很慢。"
+relatedAlgorithms:
+  - algo-hog-svm
+docsPath: "/algorithms/hog-svm/tricks"
+tags: ["技巧", "HOG", "多尺度"]

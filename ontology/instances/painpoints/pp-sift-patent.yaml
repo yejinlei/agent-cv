@@ -1,0 +1,12 @@
+id: pp-sift-patent
+type: PainPoint
+name: "SIFT 专利与许可证"
+severity: high
+symptom: "在旧版本 OpenCV 里找不到 cv2.SIFT_create，或者商用有法律风险。"
+rootCause: "SIFT 受 US 6,711,293 专利保护，2018–2020 年先后到期；OpenCV 曾把它移到 contrib 并标注 non-free。"
+fix: "① 使用 OpenCV 4.4+（专利到期后 SIFT 回到主模块）；② 需要完全规避时改用 ORB（无专利、实时）；③ 商用前确认所在司法辖区的专利状态。"
+detection: "检查 OpenCV 版本与模块（cv2.SIFT_create 是否存在）。"
+relatedAlgorithms:
+  - algo-sift
+docsPath: "/algorithms/sift/painpoints"
+tags: ["踩坑", "SIFT", "许可"]

@@ -1,0 +1,26 @@
+id: algo-distance-transform
+type: Algorithm
+name: 距离变换
+year: 1966
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/distance-transform/
+plainTalk: 两遍扫描给每个前景像素算到最近背景的距离，是分水岭、骨架、匹配的底层积木
+concepts:
+- concept-chamfer-distance
+- concept-medial-axis
+tags:
+- classic-cv
+- morphology
+- binary
+- distance
+papers:
+- paper-rosenfeld-1966-dt
+- paper-borgefors-1986-chamfer
+replacedBy: []
+dependsOn: []
+inheritedBy:
+- algo-watershed
+painPoints: []
+tricks: []
+layer: L1

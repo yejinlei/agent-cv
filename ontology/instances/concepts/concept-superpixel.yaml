@@ -1,0 +1,6 @@
+id: concept-superpixel
+type: Concept
+name: 超像素
+plainTalk: 把百万像素切成几百个颜色一致、形状紧凑的小块
+layer: L2
+formalDefinition: 在颜色-位置联合空间中聚类得到的感知一致小区域，用作后续处理单元

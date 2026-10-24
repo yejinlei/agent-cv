@@ -1,0 +1,32 @@
+id: paper-alahi-2012-freak
+type: Paper
+title: "FREAK: Fast Retina Keypoint"
+authors:
+  - Alexandre Alahi
+  - Raphael Ortiz
+  - Pierre Vandergheynst
+year: 2012
+venue: "IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"
+venueType: conference
+contribution: "提出仿视网膜的采样图案与二进制描述子 FREAK，用级联比较在极低算力下端到端匹配，适合移动与嵌入式设备。"
+keyInsight: "人眼视网膜中央密集、周边稀疏的采样分布，正是高效特征描述的好模板。"
+novelty:
+  - 仿视网膜同心采样图案
+  - 级联式粗到精比较
+  - 仅需几十字节描述子
+limitations:
+  - 旋转不变性弱于 SIFT/SURF
+  - 尺度空间靠外部检测器提供
+relatedAlgorithms:
+  - algo-freak
+  - algo-brisk
+  - algo-orb
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - binary-descriptor
+  - bio-inspired
+doi: 10.1109/CVPR.2012.6247715
+citationCount: 2100

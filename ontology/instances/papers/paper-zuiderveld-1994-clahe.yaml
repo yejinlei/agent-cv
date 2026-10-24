@@ -1,0 +1,24 @@
+id: paper-zuiderveld-1994-clahe
+type: Paper
+title: Contrast Limited Adaptive Histogram Equalization
+authors:
+- Karel Zuiderveld
+year: 1994
+venue: Graphics Gems IV
+tags:
+- enhancement
+- histogram
+- preprocessing
+contribution: tile 分块 + Clip Limit + 双线性插值的 80 行 C 实现，成为工业标准
+keyInsight: 把超过阈值的超额直方图均分给所有 bin，既能增强局部对比度又抑制噪声
+novelty:
+- Clip Limit 限制对比度避免噪声放大
+- 双线性插值消除 tile 网格边界
+- 80 行 C 语言实现成为事实标准
+limitations:
+- clipLimit 和 tileGridSize 需手动调节
+- 对极端 HDR 场景效果有限
+influencedBy: []
+influenced: []
+docsPath: /algorithms/clahe/paper
+url: https://ieeexplore.ieee.org/book/5264922

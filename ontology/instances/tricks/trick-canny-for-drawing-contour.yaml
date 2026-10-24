@@ -1,0 +1,16 @@
+id: trick-canny-for-drawing-contour
+type: Trick
+name: "Canny 用于提取可描线轮廓"
+difficulty: medium
+scenario: "要把照片变成「线稿」风格（描线、涂色）。"
+how: >
+  ① 转灰度并做双边滤波（保边去噪，比高斯更适合这一步）；
+  ② 对滤波结果做 Canny，得到细线；
+  ③ 对 Canny 结果做一次膨胀（dilate）让线条更连贯；
+  ④ 反相后与原图做「颜色相乘」，得到保留色彩的线稿。
+effect: "线条干净、位置准确，比直接阈值化更适合「描线」场景。"
+caveat: "双边滤波比高斯慢很多，若只追求速度直接 Canny 即可。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/tricks"
+tags: ["技巧", "Canny", "艺术风格"]

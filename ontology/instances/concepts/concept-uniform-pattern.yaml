@@ -1,0 +1,6 @@
+id: concept-uniform-pattern
+type: Concept
+name: "Uniform 模式"
+layer: L1
+plainTalk: "LBP 里 0→1 跳变不超过 2 次的 58 种基本模式"
+docsPath: "/algorithms/"

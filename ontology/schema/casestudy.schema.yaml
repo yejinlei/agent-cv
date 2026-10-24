@@ -1,0 +1,69 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/casestudy.schema.yaml"
+title: CaseStudy
+description: 实战案例（可复现的工程落地记录）
+type: object
+required: [id, type, name, sector, plainTalk, scenario, pipeline, hardware, results, lessons]
+additionalProperties: true
+properties:
+  id:
+    type: string
+    pattern: "^case-[a-z0-9-]+$"
+    description: 全局唯一 ID，前缀 case-
+  type:
+    const: CaseStudy
+  name:
+    type: string
+    minLength: 2
+  sector:
+    enum: [manufacturing, iot, automotive, security, culture, medical, consumer, research, other]
+  plainTalk:
+    type: string
+  scenario:
+    type: string
+    minLength: 2
+  pipeline:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [step, detail]
+      properties:
+        step: {type: string}
+        detail: {type: string}
+  hardware:
+    type: object
+  settings:
+    type: array
+    items:
+      type: object
+  results:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [metric, value]
+      properties:
+        metric: {type: string}
+        value: {type: string}
+        note: {type: string}
+  lessons:
+    type: array
+    items:
+      type: object
+      required: [lesson, detail]
+      properties:
+        lesson: {type: string}
+        detail: {type: string}
+  whyClassic:
+    type: string
+  substituteByDL:
+    type: string
+  relatedAlgorithms:
+    type: array
+    items: {type: string}
+  docsPath:
+    type: string
+  tags:
+    type: array
+    items: {type: string}

@@ -1,0 +1,27 @@
+id: paper-matas-ppht-1998
+type: Paper
+title: Progressive Probabilistic Hough Transform
+authors:
+  - Jiri Matas
+  - C. Galambos
+  - J. Kittler
+year: 1998
+venue: BMVC 1998 / CVIU 2000, Vol.78 No.1
+venueType: conference
+doi: "10.1006/cviu.1999.0831"
+relatedAlgorithms:
+  - algo-hough
+keyInsight: 随机抽样边缘点投票，一旦某 bin 过阈值就沿直线行走找线段端点并移除相关点，边投边输出。
+novelty:
+  - 不遍历所有边缘点
+  - 边投票边输出线段
+  - 直接返回线段端点
+  - 速度 5–10×
+limitations:
+  - 随机顺序导致结果略有差异
+  - 阈值敏感
+readStatus: read
+citationCount: 3000
+contribution: OpenCV HoughLinesP 的算法基础，工业 90% 霍夫直线场景的实际实现。
+tags:
+  - classic-cv

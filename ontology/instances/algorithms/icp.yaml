@@ -1,0 +1,20 @@
+id: algo-icp
+type: Algorithm
+name: ICP 迭代最近点
+year: 1992
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/icp/
+plainTalk: 两片点云找最近点配对→SVD 算刚体变换→反复迭代直到对齐，LiDAR SLAM 和三维重建的核心配准算法。
+layer: L3
+tags:
+- classic-cv
+- point-cloud
+- registration
+- 3d
+papers:
+- paper-besl-1992-icp
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

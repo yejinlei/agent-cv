@@ -1,0 +1,32 @@
+id: op-grayscale
+type: Operator
+name: "灰度化"
+nameEn: "Grayscale"
+category: point-operation
+plainTalk: "把彩色照片压成黑白。人眼对绿色最敏感、蓝色最不敏感，所以不是把 RGB 简单平均，而是按 0.299/0.587/0.114 的比例加权——绿色贡献最多。压成单通道后数据量掉到三分之一，后续所有滤波、边缘、特征计算都跟着快三倍，这也是几乎所有传统 CV 流水线的第一步。"
+formula: "Y = 0.299R + 0.587G + 0.114B"
+params:
+  - name: "code"
+    meaning: "OpenCV 灰度转换码"
+    typical: "COLOR_BGR2GRAY"
+    effect: "不同码对应不同亮度权重，也支持转 HSV/Lab 等"
+opencvFunc: "cv2.cvtColor"
+usedBy:
+  - algo-canny
+  - algo-sobel
+  - algo-otsu
+  - algo-harris
+complexity: "O(n)（逐像素加权）"
+edgePreserve: false
+useCases:
+  - "所有灰度算法的前置步骤"
+  - "降低数据量与计算量"
+  - "亮度通道单独用于测光/曝光分析"
+pitfalls:
+  - "OpenCV 默认读入是 BGR 顺序，别按 RGB 权重套"
+  - "先灰度再缩放可以省时间，但会损失彩色信息"
+  - "对彩色本身就是判别依据的任务（如颜色分割）不能灰度"
+separability: false
+inplace: true
+noiseRobustness: medium
+tags: ["算子", "基础"]

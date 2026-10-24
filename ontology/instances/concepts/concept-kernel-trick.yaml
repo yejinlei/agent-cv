@@ -1,0 +1,20 @@
+id: concept-kernel-trick
+type: Concept
+name: "核技巧"
+layer: L2
+plainTalk: >
+  有些数据在原来的坐标里怎么画直线都分不开（比如一圈红点包着一圈蓝点）。核技巧的做法是：不改数据，只在计算『相似度』时换一个公式，等效于把数据悄悄搬到了更高维空间——在那里一刀就能切开。因为算法（如 SVM）只用到样本之间的内积，所以根本不用真的去做高维映射，省下了巨大计算量。
+
+formal: >
+  K(x, z) = φ(x)·φ(z)；常用 RBF 核 K(x,z) = exp(-γ‖x-z‖²)，等价于无穷维特征空间的内积
+
+solutions: [
+  "用核函数替换线性内积",
+  "选核类型（线性/多项式/RBF）与参数（C、γ）",
+  "对偶形式求解，只在支持向量处非零",
+]
+
+usedBy: ["algo-hog-svm"]
+related: ["concept-svm", "concept-margin"]
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["machine-learning", "svm"]

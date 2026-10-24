@@ -1,0 +1,31 @@
+id: paper-zivkovic-2006-knn-bg
+type: Paper
+title: "Efficient Adaptive Density Estimation per Image Pixel for the Task of Background Subtraction"
+authors:
+  - Zoran Zivkovic
+  - Ferdinand van der Heijden
+year: 2006
+venue: "Pattern Recognition Letters"
+venueType: journal
+contribution: "用每像素保留的最近样本做非参数密度估计（KNN 背景建模），无需假设高斯分布即可适应多模态背景。"
+keyInsight: "背景像素的颜色分布未知，与其硬套高斯，不如直接记住它最近出现过的样本。"
+novelty:
+  - 非参数 KNN 密度估计
+  - 样本缓存与自适应更新
+  - 与 MOG 的高斯假设对比
+limitations:
+  - 内存随样本数增长
+  - 对突然的光照变化需配合阴影抑制
+relatedAlgorithms:
+  - algo-knn-background
+  - algo-mog2
+  - algo-vibe
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - background-subtraction
+  - knn
+doi: 10.1016/j.patrec.2005.11.005
+citationCount: 2600

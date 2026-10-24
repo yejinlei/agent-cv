@@ -1,0 +1,13 @@
+id: concept-nonlinear-diffusion
+type: Concept
+name: 非线性扩散
+enName: Nonlinear Diffusion (Perona-Malik)
+field: scale-space
+plainTalk: 平坦处自由模糊，边缘处几乎不模糊的保边平滑
+explain: Perona-Malik PDE 让扩散系数随梯度变化：梯度大（边缘）处 c 趋近于 0 停扩散，梯度小（平坦）处 c 趋近于 1 自由扩散，构造保边尺度空间。
+appearsIn:
+- algo-akaze
+related:
+- concept-gaussian-blur
+docsPath: /algorithms/akaze/concepts
+layer: L2

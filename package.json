@@ -1,0 +1,20 @@
+{
+  "name": "agent-cv",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Classic CV Ontology Research Site - Paper -> Theory -> Implementation -> Practice",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "mermaid": "^11.4.1",
+    "d3": "^7.9.0"
+  },
+  "dependencies": {
+    "markdown-it-mathjax3": "^4.3.2"
+  }
+}

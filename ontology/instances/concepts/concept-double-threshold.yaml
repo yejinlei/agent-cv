@@ -1,0 +1,19 @@
+id: concept-double-threshold
+type: Concept
+name: "双阈值与滞后连接"
+plainTalk: >
+  「两道门槛 + 顺藤摸瓜」：高门槛以上的肯定是边，低门槛以下的肯定不是，
+  中间的那批「不好说」。
+  再从确定的边出发往外走，能连上的弱边也算数——因为一条真实的边不会凭空断掉。
+layer: L2
+relatedAlgorithms:
+  - algo-canny
+prerequisites:
+  - op-double-threshold
+  - op-hysteresis-tracking
+keyFormula: "strong: M≥T_high, weak: T_low≤M<T_high, 弱边若与强边连通则保留"
+usedIn:
+  - "Canny 第 4 步"
+  - "边缘连接"
+docsPath: "/algorithms/canny/concepts"
+tags: ["概念", "阈值", "Canny核心"]

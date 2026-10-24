@@ -1,0 +1,21 @@
+id: algo-meanshift
+type: Algorithm
+name: MeanShift 均值漂移
+year: 2002
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/meanshift/
+plainTalk: 每个点往邻居最密集的方向爬，最后聚成几坨——不用提前说分几类，能做平滑分割也能跟踪。
+layer: L2
+tags:
+- classic-cv
+- clustering
+- density
+papers:
+- paper-comaniciu-2002-meanshift
+inheritedBy:
+- algo-camshift
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

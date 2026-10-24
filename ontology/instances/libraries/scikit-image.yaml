@@ -1,0 +1,33 @@
+id: lib-scikit-image
+type: Library
+name: "scikit-image"
+language: Python
+role: "科研友好的图像处理库，算法实现贴近论文。"
+maturity: production
+baselineVersion: "0.22"
+
+plainTalk: >
+  相比 OpenCV 的"工程实用主义"，scikit-image 更像"论文的原味翻译"：
+  函数名、参数名都跟论文一致，读代码就是在读论文。
+
+strengths:
+  - "API 语义清晰，与论文术语一一对应"
+  - "提供很多 OpenCV 没有的算法（如主动轮廓、区域邻接图）"
+  - "与 NumPy/SciPy 生态无缝"
+  - "文档里常直接给出论文引用"
+
+weaknesses:
+  - "纯 Python + NumPy，性能不如 OpenCV"
+  - "实时场景不适用"
+  - "部分函数接口变动较频繁"
+
+install: "pip install scikit-image"
+docsUrl: "https://scikit-image.org/docs/stable/"
+repoUrl: "https://github.com/scikit-image/scikit-image"
+
+usedByAlgorithms:
+  - algo-canny
+  - algo-sift
+
+docsPath: "/algorithms/"
+tags: ["scikit-image", "科研", "Python"]

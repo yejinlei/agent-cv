@@ -1,0 +1,30 @@
+id: op-find-contours
+type: Operator
+name: "轮廓查找"
+nameEn: "Find Contours"
+category: geometric
+plainTalk: "把二值图里连成一片的白色区域当成一个个『岛屿』，沿着每个岛屿的海岸线绕一圈，把海岸线上的点按顺序记下来，就得到了轮廓。"
+formula: "基于边界跟踪（Suzuki-Abe）提取二值区域的外/内边界点序列"
+params:
+  - name: "mode"
+    meaning: "轮廓检索模式"
+    typical: "RETR_EXTERNAL / RETR_LIST / RETR_TREE"
+    effect: "决定是否保留内外层轮廓"
+  - name: "method"
+    meaning: "轮廓近似方式"
+    typical: "CHAIN_APPROX_SIMPLE / NONE"
+    effect: "SIMPLE 只保留拐点，省内存"
+opencvFunc: "cv2.findContours"
+usedBy:
+  - algo-contour-fitting
+complexity: "O(像素数)"
+useCases:
+  - "形状分析"
+  - "面积/周长测量"
+  - "目标计数"
+  - "多边形逼近与拟合的前置步骤"
+pitfalls:
+  - "输入必须是二值图（先阈值或边缘）"
+  - "OpenCV 3+ 返回两值，2.x 返回三值"
+  - "轮廓点顺序的方向性需注意"
+tags: ["算子", "基础"]

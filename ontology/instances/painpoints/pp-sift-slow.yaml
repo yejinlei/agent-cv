@@ -1,0 +1,12 @@
+id: pp-sift-slow
+type: PainPoint
+name: "SIFT 慢到无法实时"
+severity: high
+symptom: "1080p 图像上单帧 SIFT 要几百毫秒，完全跑不到 30 fps。"
+rootCause: "SIFT 要在多尺度、多方向上做大量卷积和高维描述子匹配，计算量天然大。"
+fix: "① 降分辨率处理；② 限制 nfeatures（如 500）；③ 检测用 SIFT、匹配用 FLANN；④ 实时场景换 ORB（快约 10 倍）。"
+detection: "用时间戳分段测「检测+描述子+匹配」各占多少。"
+relatedAlgorithms:
+  - algo-sift
+docsPath: "/algorithms/sift/painpoints"
+tags: ["踩坑", "SIFT", "性能"]

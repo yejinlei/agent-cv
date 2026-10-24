@@ -1,0 +1,16 @@
+id: concept-hog
+type: Concept
+name: "方向梯度直方图 HOG"
+layer: L2
+plainTalk: >
+  「看一块区域里，明暗变化主要朝哪个方向」：把一小块区域分成若干小格子，
+  每个格子统计像素梯度方向的直方图（"这个格子里朝左、朝右、朝上、朝下的边各有多少"），
+  再把这些直方图拼起来归一化，就得到一个能描述"这块区域长什么样"的向量。
+  因为只统计方向、不关心绝对亮度，所以对光照变化相对稳健。
+  它是 HOG+SVM 行人检测的核心特征，也是 BoVW 和 DPM 的底层特征来源。
+formal: "把检测窗口分成 cells（8×8）→ blocks（2×2 cells）→ 在每个 cell 内统计 9-bin 梯度方向直方图 → block 内 L2 归一化 → 拼接所有 block 的直方图得到最终特征。"
+usedBy:
+  - algo-hog-svm
+  - algo-dpm
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["特征描述", "HOG", "梯度", "行人检测"]

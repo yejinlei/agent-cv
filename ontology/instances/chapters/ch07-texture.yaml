@@ -1,0 +1,15 @@
+id: ch-07-texture
+type: Chapter
+number: 7
+name: 纹理分析
+plainTalk: 看懂表面花纹——就像摸布料：毛巾是毛糙的、丝绸是顺滑的、木纹是有条纹的。
+level: 中层
+branches:
+  - branch-feature-detection
+concepts:
+  - concept-histogram
+papers: []
+coreQuestion: 一块表面摸上去是什么感觉，怎么让机器也能"摸"出来？
+docsPath: /chapters/ch07-texture
+prevChapter: ch-06-representation
+nextChapter: ch-08-shape-description

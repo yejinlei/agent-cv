@@ -1,0 +1,18 @@
+id: ch-10-3d-reconstruction
+type: Chapter
+number: 10
+name: 三维重建与恢复
+plainTalk: 拍一堆二维照片，倒推回三维模型——就像拼图：从碎片里反推出原图原来长什么样。
+level: 高层
+branches:
+  - branch-geometry
+concepts:
+  - concept-pyramid
+  - concept-epipolar-geometry
+  - concept-ransac
+papers:
+  - paper-hartley-zisserman-2003
+coreQuestion: 只给二维照片，怎么倒推回它原本的三维结构？
+docsPath: /chapters/ch10-3d-recovery
+prevChapter: ch-09-stereo-vision
+nextChapter: ch-11-motion

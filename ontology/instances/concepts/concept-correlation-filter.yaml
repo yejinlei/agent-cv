@@ -1,0 +1,6 @@
+id: concept-correlation-filter
+type: Concept
+name: "相关滤波 Correlation Filter"
+layer: L1
+plainTalk: "训练一个滤波器让目标位置出现峰值响应"
+docsPath: "/algorithms/"

@@ -1,0 +1,33 @@
+id: paper-matas-2002-mser
+type: Paper
+title: Robust Wide Baseline Stereo from Maximally Stable Extremal Regions
+authors:
+- Jiri Matas
+- Ondrej Chum
+- Martin Urban
+- Tomas Pajdla
+year: 2002
+venue: British Machine Vision Conference (BMVC)
+venueType: conference
+contribution: 提出最大稳定极值区域 MSER：阈值稳定区域检测，天然具备仿射不变性，开创宽基线匹配新思路。
+keyInsight: 在灰度阈值连续变化过程中，面积变化率最小的连通域才是最稳定的『物体区域』。
+novelty:
+- 极值区域（ER）概念：阈值分割得到的连通域
+- 按面积变化率的稳定性排序
+- 天然仿射不变、多区域检测
+limitations:
+- 非线性灰度变换下不稳定
+- 对模糊图像敏感
+- 密集区域检测速度较慢
+relatedAlgorithms:
+- algo-mser
+influencedBy:
+- 分水岭、阈值分割
+influenced:
+- 自然场景文本检测（MSER+NMS）
+- 宽基线立体匹配标准区域检测器
+readStatus: skimmed
+tags:
+- classic
+doi: 10.5244/C.16.36
+citationCount: 7500

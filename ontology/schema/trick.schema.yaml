@@ -1,0 +1,38 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/trick.schema.yaml"
+title: Trick
+description: 工程技巧（"这么调就对了"的经验知识）
+type: object
+required: [id, type, name, difficulty, scenario, how, effect]
+additionalProperties: true
+properties:
+  id:
+    type: string
+    pattern: "^trick-[a-z0-9-]+$"
+    description: 全局唯一 ID，前缀 trick-
+  type:
+    const: Trick
+  name:
+    type: string
+    minLength: 2
+  difficulty:
+    enum: [easy, medium, hard]
+  scenario:
+    type: string
+    minLength: 2
+  how:
+    type: string
+    minLength: 2
+  effect:
+    type: string
+    minLength: 2
+  caveat:
+    type: string
+  relatedAlgorithms:
+    type: array
+    items: {type: string}
+  docsPath:
+    type: string
+  tags:
+    type: array
+    items: {type: string}

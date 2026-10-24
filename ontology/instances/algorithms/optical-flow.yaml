@@ -1,0 +1,55 @@
+id: algo-optical-flow
+type: Algorithm
+name: "Lucas-Kanade 光流"
+nameEn: "Lucas-Kanade Optical Flow"
+year: 1981
+branch: branch-geometry
+
+plainTalk: >
+  看一段视频，同一个亮点在上一帧和这一帧的位置差了一点点。
+  光流就是算这个"差了多少、往哪个方向差"。
+  它假设一小块区域内的所有点都朝同一个方向移动，
+  于是可以解出这块区域的整体运动——这就是"像素在往哪跑"。
+
+concepts:
+  - concept-optical-flow
+
+evolvedFrom: null
+
+dependsOn:
+  - op-sobel
+
+replacedBy: []
+
+inheritedBy:
+  - "深度学习光流（FlowNet、RAFT）在精度上超越，但 LK 仍是实时首选"
+
+papers:
+  - paper-lucas-kanade-1981
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.calcOpticalFlowPyrLK"
+    since: "OpenCV 1.0"
+  - lib: "OpenCV"
+    func: "cv2.calcOpticalFlowFarneback"
+
+metrics:
+  - name: "LK 稀疏光流"
+    value: "对少量特征点极快（可实时）"
+  - name: "适用范围"
+    value: "小位移、亮度恒定（大位移需金字塔）"
+
+applications:
+  - app-security-surveillance
+
+caseStudies: []
+
+painPoints: []
+
+tricks: []
+
+layer: L3
+docsPath: "/branches/geometry/optical-flow"
+status: stable
+tags: ["光流", "运动估计", "1981"]

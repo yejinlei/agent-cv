@@ -1,0 +1,17 @@
+id: trick-viola-multi-scale
+type: Trick
+name: "Viola-Jones 多尺度与人脸检测配置"
+difficulty: easy
+scenario: "用 OpenCV 内置级联做人脸/人眼检测。"
+how: >
+  ① cv2.CascadeClassifier 加载 haarcascade_frontalface_default.xml；
+  ② detectMultiScale(img, scaleFactor=1.1, minNeighbors=5,
+     minSize=(30,30)）；
+  ③ minNeighbors 是关键：值越大误检越少但漏检增多，5 是常用起点；
+  ④ 转灰度并做直方图均衡化可提升检测率。
+effect: "在常规室内场景下检出率高、速度快（CPU 实时）。"
+caveat: "只对正脸有效；侧脸需换 profile 级联，遮挡严重时建议上深度学习。"
+relatedAlgorithms:
+  - algo-viola-jones
+docsPath: "/branches/detection/classic-detectors"
+tags: ["技巧", "Viola-Jones", "人脸检测"]

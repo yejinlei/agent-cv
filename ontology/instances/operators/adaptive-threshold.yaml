@@ -1,0 +1,44 @@
+id: op-adaptive-threshold
+type: Operator
+name: "自适应阈值"
+nameEn: "Adaptive Threshold"
+category: point-operation
+
+plainTalk: >
+  全局阈值像「全班统一划一条及格线」，可如果卷子一半亮一半暗就不公平了。
+  自适应阈值的做法是「给每个同学单独划一条线」：
+  对图上每一个像素，都去看它周围一小圈邻居的平均亮度，再决定它是黑还是白。
+  于是光照不均匀的图像也能被正确二值化。
+
+formula: "T(x,y) = mean(邻域) − C  或  T(x,y) = gaussian(邻域) − C"
+
+params:
+  - name: "blockSize"
+    meaning: "邻域大小（必须为奇数）"
+    typical: "11–51"
+    effect: "太小会引入噪声，太大会退化成全局阈值"
+  - name: "C"
+    meaning: "从局部均值中减去的常数"
+    typical: "2–10（常取正数）"
+    effect: "越大留下的白区越少，抑制噪声"
+  - name: "method"
+    meaning: "邻域均值或高斯加权"
+    typical: "MEAN_C / GAUSSIAN_C"
+    effect: "高斯加权对中心更敏感，边缘更平滑"
+
+useCases:
+  - "文档扫描：阴影、折痕下的文字二值化"
+  - "工业缺陷检测：光照不均表面的缺陷提取"
+  - "车牌/字符识别的预处理"
+
+pitfalls:
+  - "blockSize 必须是奇数，否则 OpenCV 直接报错"
+  - "blockSize 过大时局部性消失，退化成全局阈值（不如直接用 Otsu）"
+  - "对纯色区域会产生大量噪点（因为没有真实的局部对比）"
+
+usedBy:
+  - algo-canny
+
+opencvFunc: "cv2.adaptiveThreshold"
+docsPath: "/branches/image-processing/thresholding"
+tags: ["阈值", "局部", "光照自适应"]

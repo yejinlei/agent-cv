@@ -1,0 +1,20 @@
+id: concept-gradient-magnitude
+type: Concept
+name: "梯度幅值与方向"
+plainTalk: >
+  「明暗变化的快慢和朝向」：每个点都能算出「这里的亮度朝哪个方向、变化得多剧烈」。
+  变化越剧烈（幅值越大），越可能是边缘；方向则告诉你这条边是横的、竖的还是斜的。
+layer: L2
+relatedAlgorithms:
+  - algo-canny
+  - algo-sobel
+  - algo-hog-svm
+prerequisites:
+  - op-sobel
+keyFormula: "M = sqrt(Gx² + Gy²),  θ = atan2(Gy, Gx)"
+usedIn:
+  - "边缘检测"
+  - "HOG 特征"
+  - "光流"
+docsPath: "/branches/feature-detection/edges"
+tags: ["概念", "梯度", "基础"]

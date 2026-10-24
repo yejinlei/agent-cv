@@ -1,0 +1,34 @@
+id: paper-triggs-2000-ba
+type: Paper
+title: "Bundle Adjustment — A Modern Synthesis"
+authors:
+  - Bill Triggs
+  - Philip F. McLauchlan
+  - Richard I. Hartley
+  - Andrew W. Fitzgibbon
+year: 2000
+venue: "Vision Algorithms: Theory and Practice (IWVA)"
+venueType: conference
+contribution: "系统总结光束法平差的理论与实现，明确 LM 优化、稀疏结构与鲁棒核的工程要点，成为 SfM/SLAM 的标准参考。"
+keyInsight: "BA 是稀疏最小二乘问题：利用雅可比矩阵的稀疏块结构，才能让百万级变量的优化跑得动。"
+novelty:
+  - 稀疏 LM 框架综述
+  - 鲁棒损失与初始化策略
+  - 协方差与不确定性分析
+limitations:
+  - 对初始化与异常值敏感
+  - 大规模场景需分块或滑动窗口
+relatedAlgorithms:
+  - algo-bundle-adjustment
+  - algo-triangulation
+  - algo-icp
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - slam
+  - optimization
+  - lsq
+doi: 10.1007/3-540-44480-7_21
+citationCount: 5200

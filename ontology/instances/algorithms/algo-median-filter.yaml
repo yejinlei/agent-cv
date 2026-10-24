@@ -1,0 +1,27 @@
+id: algo-median-filter
+type: Algorithm
+name: "中值滤波"
+nameEn: "Median Filter"
+year: 1979
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/median-filter/
+plainTalk: "把每个像素和周围一圈邻居的数值排队，取站在正中间的那个来替换它；就像一群人身高各不相同，你只报中间那个人的身高，偶尔窜出来的『大高个』（椒盐噪声）自然被忽略，所以专治白点黑点。"
+concepts:
+  - concept-median-filter
+tags:
+  - classic-cv
+  - filter
+  - nonlinear
+  - denoise
+  - salt-pepper
+papers:
+  - paper-huang-1979-median
+evolvedFrom: null
+replacedBy: []
+dependsOn:
+  - op-median-blur
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

@@ -1,0 +1,20 @@
+id: concept-otsu-threshold
+type: Concept
+name: "最大类间方差判据"
+plainTalk: >
+  要在明暗分布图上划一条分界线，怎么划最好？
+  判据是：划完之后，两边的「平均亮度差得尽量大」（类间方差大），
+  同时每一边内部「亮度尽量一致」（类内方差小）。
+  数学上这两件事是同一件事，所以只要让类间方差最大就对了。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-otsu
+prerequisites:
+  - concept-histogram
+keyFormula: "σ²_b(t) = ω₀(t)ω₁(t)[μ₀(t) − μ₁(t)]²"
+usedIn:
+  - "Otsu 自动阈值"
+  - "自适应局部阈值"
+docsPath: "/branches/image-processing/thresholding"
+tags: ["概念", "阈值", "判别分析"]

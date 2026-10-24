@@ -1,0 +1,6 @@
+id: concept-dense-flow
+type: Concept
+name: 稠密光流
+plainTalk: 不只在角点，给每个像素都算出一个运动箭头
+layer: L2
+formalDefinition: 在能量最小化框架下，对全图每个像素估计位移向量 (u,v)，数据项+平滑正则项

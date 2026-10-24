@@ -1,0 +1,30 @@
+id: paper-longuet-higgins-1981
+type: Paper
+title: "A Computer Algorithm for Reconstructing a Scene from Two Projections"
+authors:
+  - H. Christopher Longuet-Higgins
+year: 1981
+venue: "Nature"
+venueType: journal
+contribution: "提出八点法，用八对以上对应点线性求解本质矩阵，从两张投影重建场景，是运动恢复结构（SfM）的开山之作。"
+keyInsight: "两视图之间的几何约束可写成一个 3×3 矩阵，八对点就足以线性解出。"
+novelty:
+  - 本质矩阵概念
+  - 八点线性求解
+  - 两视图重建流程
+limitations:
+  - 对噪声与错误匹配敏感
+  - 需后续非线性优化精化
+relatedAlgorithms:
+  - algo-essential-matrix
+  - algo-epipolar
+  - algo-homography
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - sfm
+  - epipolar
+doi: 10.1038/293133a0
+citationCount: 2700

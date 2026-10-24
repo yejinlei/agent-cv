@@ -1,0 +1,21 @@
+id: ch-15-scene-understanding
+type: Chapter
+number: 15
+name: 场景理解
+plainTalk: 搞清楚整个画面在讲什么——就像进一个陌生房间，扫一眼就知道是厨房还是卧室。
+level: 高层
+branches:
+  - branch-image-processing
+  - branch-feature-detection
+  - branch-feature-matching
+  - branch-segmentation
+  - branch-detection
+  - branch-geometry
+concepts:
+  - concept-histogram
+  - concept-pyramid
+papers: []
+coreQuestion: 整个画面在讲一个什么故事？
+docsPath: /chapters/ch15-scene
+prevChapter: ch-14-activity-understanding
+nextChapter: null

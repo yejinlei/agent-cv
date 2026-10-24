@@ -1,0 +1,20 @@
+id: algo-sgbm
+type: Algorithm
+name: SGM 半全局立体匹配
+year: 2005
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/sgbm/
+plainTalk: 双目测距工业标准，沿 8 个方向做 DP 平滑聚合，P1/P2 惩罚视差跳变，稠密视差图又快又准。
+layer: L3
+tags:
+- classic-cv
+- stereo
+- disparity
+- depth
+papers:
+- paper-hirschmueller-2005-sgm
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

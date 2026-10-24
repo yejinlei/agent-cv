@@ -1,0 +1,12 @@
+id: pp-viola-profile-face
+type: PainPoint
+name: "Viola-Jones 在侧脸和遮挡下失效"
+severity: high
+symptom: "正脸检测很好，一转头就检测不到。"
+rootCause: "Haar 特征的模板是「正视脸」的统计规律，对视角变化没有建模。"
+fix: "① 换用侧脸专用级联（haarcascade_profileface.xml）；② 换用深度学习人脸检测器（MTCNN、RetinaFace）；③ 多角度训练自己的级联。"
+detection: "用侧脸样本单独评测。"
+relatedAlgorithms:
+  - algo-viola-jones
+docsPath: "/branches/detection/classic-detectors"
+tags: ["踩坑", "Viola-Jones", "鲁棒性"]

@@ -1,0 +1,25 @@
+id: paper-surf-2006
+type: Paper
+title: 'SURF: Speeded Up Robust Features'
+authors:
+- Herbert Bay
+- Tinne Tuytelaars
+- Luc Van Gool
+year: 2006
+venue: ECCV 2006
+relatedAlgorithms:
+- algo-surf
+doi: 10.1007/11744023_32
+tags:
+- classic-cv
+venueType: conference
+keyInsight: 用积分图+箱式滤波近似 Hessian，把 SIFT 的 DoG 卷积加速一个量级。
+novelty:
+- Fast-Hessian 检测器用积分图加速
+- 64 维描述子用 Haar 小波响应
+limitations:
+- 受专利保护
+- 区分度略逊于 SIFT
+readStatus: skimmed
+citationCount: 18000
+contribution: 用 Hessian 矩阵近似、积分图和 Haar 小波响应加速 SIFT，速度提升约 3 倍且保持尺度旋转不变，是 SIFT 时代最有力的竞争者。

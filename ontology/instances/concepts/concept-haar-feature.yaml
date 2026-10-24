@@ -1,0 +1,18 @@
+id: concept-haar-feature
+name: "Haar 特征"
+type: Concept
+plainTalk: >
+  「黑白小方块」：一个小区域内，「一半黑一半白」，看黑白两边的亮度谁高。
+  这种特征极简单，但配上积分图算得飞快。
+  一堆这样的简单特征组合起来，就能描述眼睛比脸颊暗、鼻梁比两侧亮这类脸部规律。
+layer: L2
+relatedAlgorithms:
+  - algo-viola-jones
+prerequisites:
+  - concept-integral-image
+keyFormula: "特征值 = 白区像素和 - 黑区像素和"
+usedIn:
+  - "Viola-Jones 人脸检测"
+  - "早期的快速目标检测"
+docsPath: "/branches/detection/classic-detectors"
+tags: ["概念", "特征", "级联"]

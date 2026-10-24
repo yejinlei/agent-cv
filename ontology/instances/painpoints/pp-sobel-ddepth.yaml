@@ -1,0 +1,12 @@
+id: pp-sobel-ddepth
+type: PainPoint
+name: "Sobel 用 CV_8U 导致一半梯度丢失"
+severity: high
+symptom: "边缘图看起来只有一半的边，或者边缘方向单一。"
+rootCause: "Sobel 的梯度有正有负；用 uint8 时负值被截断为 0。"
+fix: "① ddepth 用 cv2.CV_16S 或 CV_32F；② 用 cv2.convertScaleAbs 取绝对值转回 uint8；③ 若要求幅值，用 cv2.magnitude(gx, gy)。"
+detection: "分别查看 Gx、Gy 的符号分布（应正负都有）。"
+relatedAlgorithms:
+  - algo-sobel
+docsPath: "/branches/feature-detection/edges"
+tags: ["踩坑", "Sobel", "数据类型"]

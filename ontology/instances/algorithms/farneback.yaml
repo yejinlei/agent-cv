@@ -1,0 +1,23 @@
+id: algo-farneback
+type: Algorithm
+name: Farnebäck 稠密光流
+year: 2003
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/farneback/
+plainTalk: 每个邻域用二次多项式拟合亮度，根据多项式系数差解析求稠密光流，CPU 上的经典稠密光流。
+layer: L2
+tags:
+- classic-cv
+- optical-flow
+- dense
+- motion
+papers:
+- paper-farneback-2003-denseflow
+evolvedFrom: algo-horn-schunck
+dependsOn: []
+concepts:
+- concept-optical-flow
+- concept-pyramidal-lk
+painPoints: []
+tricks: []

@@ -1,0 +1,23 @@
+id: paper-hough-1962
+type: Paper
+title: Method and Means for Recognizing Complex Patterns
+authors:
+- Paul V.C. Hough
+year: 1962
+venue: U.S. Patent 3069654
+relatedAlgorithms:
+- algo-hough
+doi: —
+tags:
+- classic-cv
+venueType: patent
+keyInsight: 图像空间每个边缘点对参数空间所有过它的形状投票，票高者即目标。
+novelty:
+- 首创参数空间投票思想
+- 把形状检测从模板匹配升级为全局累加
+limitations:
+- 时间/空间复杂度高
+- 量化步长和阈值敏感
+readStatus: skimmed
+citationCount: 12000
+contribution: 提出把图像空间的直线/曲线检测转换为参数空间投票的方法，是第一个系统的形状检测算法，车道线/圆/椭圆检测至今沿用该思想。

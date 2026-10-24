@@ -1,0 +1,20 @@
+id: concept-pyramidal-lk
+type: Concept
+name: 金字塔 LK（Pyramidal Lucas-Kanade）
+layer: L2
+plainTalk: >
+  标准 LK 只能处理 1~2 像素内的小位移，大一点就失效。
+  金字塔 LK 就像先在远处（高层低分辨率图像）看到大致运动方向，再凑近了（低层高分辨率图像）精修细节——
+  自顶向下逐层传递位移估计，每层只做"小位移修正"，合起来能处理几十像素的大运动。
+formal: >
+  对两帧分别建高斯金字塔（I^L, J^L, L=0..L_m），从最高层估计 g^L，
+  逐层传递 g^{L} = 2(g^{L+1} + d^{L+1})，每层 LK 在残差上解小位移 d^L，
+  最终 d = g^0 + d^0。
+params: [
+  "maxLevel：金字塔层数，典型 3~5",
+  "winSize：每层窗口，典型 15~31",
+  "双线性插值 warp 当前估计"
+]
+usedBy: ["algo-lucas-kanade"]
+related: ["concept-pyramid", "concept-brightness-constancy", "concept-optical-flow"]
+docsPath: "/algorithms/lucas-kanade/architecture#金字塔-lk-大位移"

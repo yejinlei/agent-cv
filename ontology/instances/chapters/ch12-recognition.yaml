@@ -1,0 +1,24 @@
+id: ch-12-object-recognition
+type: Chapter
+number: 12
+name: 物体识别
+plainTalk: 认出图里是什么东西——就像玩"我是谁"游戏：看特征，猜答案。
+level: 高层
+branches:
+  - branch-detection
+concepts:
+  - concept-sliding-window
+  - concept-haar-feature
+  - concept-integral-image
+  - concept-cascade-classifier
+  - concept-hog
+  - concept-gradient-orientation-histogram
+  - concept-svm-hyperplane
+  - concept-hard-negative-mining
+papers:
+  - paper-viola-jones-2001
+  - paper-dalal-triggs-2005
+coreQuestion: 这张图里到底是什么东西？
+docsPath: /chapters/ch12-recognition
+prevChapter: ch-11-motion
+nextChapter: ch-13-image-matching

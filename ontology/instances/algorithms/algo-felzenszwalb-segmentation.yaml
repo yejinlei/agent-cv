@@ -1,0 +1,28 @@
+id: algo-felzenszwalb-segmentation
+type: Algorithm
+name: "高效图分割 Felzenszwalb"
+nameEn: "Efficient Graph-Based Segmentation"
+year: 2004
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/felzenszwalb-segmentation/
+plainTalk: "把像素想象成一个个小岛，岛与岛之间用桥连着，桥的宽窄代表两边颜色差多少。算法总是先在最相似的岛之间搭桥合并，一旦遇到颜色差异太大的『深沟』就停下来断开，于是画面自动被切成语义相近的一块块。"
+concepts:
+  - concept-union-find
+  - concept-superpixel
+  - concept-graph-cut
+tags:
+  - classic-cv
+  - segmentation
+  - graph
+  - greedy
+papers:
+  - paper-felzenszwalb-2004-graph
+evolvedFrom: null
+replacedBy: []
+dependsOn: []
+inheritedBy:
+  - 选择性搜索 Selective Search
+painPoints: []
+tricks: []
+layer: L2

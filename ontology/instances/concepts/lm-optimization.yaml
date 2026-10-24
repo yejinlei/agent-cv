@@ -1,0 +1,25 @@
+id: concept-lm-optimization
+type: Concept
+name: "Levenberg-Marquardt 非线性优化"
+layer: L2
+plainTalk: >
+  LM算法是介于梯度下降和高斯-牛顿之间的非线性最小二乘优化器——
+  离最优点远时像梯度下降那样大步稳走，接近最优点时切换到高斯-牛顿二次收敛。
+  就像开车：高速路上大方向快速调整，进车库时小方向精细微调。
+  张氏标定、PnP、Bundle Adjustment 最后都靠它把参数"磨"到最优。
+
+formal: >
+  (J^T J + λ·diag(J^T J)) Δ = -J^T r，
+  其中 J 是雅可比矩阵，r 是残差，λ 是阻尼因子（LM 核心：
+  λ 大时退化为梯度下降，λ 小时退化为高斯-牛顿）。
+
+solutions: [
+  "闭解提供初值，LM做最终精化",
+  "解析雅可比比数值差分快且稳定（OpenCV内部实现）",
+  "收敛判据：参数变化量 < ε 或迭代次数上限"
+]
+
+usedBy: ["algo-zhang-calibration"]
+related: ["concept-reprojection-error"]
+docsPath: "/algorithms/zhang-calibration/concepts"
+tags: ["optimization", "numerical", "nonlinear-least-squares"]

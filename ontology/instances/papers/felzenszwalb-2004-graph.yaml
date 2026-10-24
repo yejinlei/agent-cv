@@ -1,0 +1,32 @@
+id: paper-felzenszwalb-2004-graph
+type: Paper
+title: "Efficient Graph-Based Image Segmentation"
+authors:
+  - Pedro F. Felzenszwalb
+  - Daniel P. Huttenlocher
+year: 2004
+venue: "International Journal of Computer Vision"
+venueType: journal
+contribution: "提出基于最小生成树的贪心图分割，用自适应阈值在近线性时间内得到感知一致的超像素，是选择性搜索与语义分割前处理的基石。"
+keyInsight: "两个区域是否合并，应由「区域内差异」与「区域间差异」的相对大小决定，而非固定阈值。"
+novelty:
+  - 自适应合并判据
+  - 并查集近线性实现
+  - 无需预设区域数量
+limitations:
+  - 参数 k 需手调
+  - 小区域易被吞并或碎化
+  - 对噪声敏感
+relatedAlgorithms:
+  - algo-felzenszwalb-segmentation
+  - algo-slic
+  - algo-kmeans
+influencedBy: []
+influenced: []
+readStatus: skimmed
+tags:
+  - classic
+  - segmentation
+  - graph
+doi: 10.1023/B:VISI.0000022288.19776.0e
+citationCount: 8000

@@ -1,0 +1,47 @@
+id: algo-horn-schunck
+type: Algorithm
+name: Horn-Schunck 稠密光流
+nameEn: Horn-Schunck Optical Flow
+year: 1981
+branch: branch-geometry
+plainTalk: '与 Lucas-Kanade 同一年诞生的另一种光流算法，但它不挑点，而是给画面里每一个像素都算一个运动方向。 它的想法很朴素：相邻像素的运动应该「平滑地」变化，不会出现一个像素往左、紧挨着的就往右这种跳变。
+  于是它把所有像素的运动连起来解一个全局最优化问题，一次得到一整张「运动地图」（稠密光流）。 代价是局部平滑假设会把物体边界处的运动「抹平」，所以今天工程上做稠密光流多用它的后继者
+  Farneback。
+
+  '
+concepts:
+- concept-optical-flow
+- concept-brightness-constancy
+evolvedFrom: null
+dependsOn:
+- op-taylor-expansion
+replacedBy: []
+inheritedBy:
+- Farneback 稠密光流（多项式展开的工程替代）
+- 深度学习光流（FlowNet、RAFT）
+papers:
+- paper-horn-schunck-1981
+implementations:
+- lib: OpenCV
+  func: cv2.calcOpticalFlowFarneback（工程替代）
+  since: OpenCV 2.4
+- lib: scikit-image
+  func: skimage.registration.optical_flow_ilk（变体）
+metrics:
+- name: 输出密度
+  value: 逐像素（稠密），一帧即可得到全画面运动场
+- name: 典型速度
+  value: 远慢于 LK 稀疏光流，实时性差
+applications:
+- app-security-surveillance
+caseStudies: []
+painPoints: []
+tricks: []
+layer: L3
+docsPath: /algorithms/horn-schunck/
+status: stable
+tags:
+- 光流
+- 稠密光流
+- 运动估计
+- '1981'

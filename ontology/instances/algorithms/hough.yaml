@@ -1,0 +1,37 @@
+id: algo-hough
+type: Algorithm
+name: "霍夫变换"
+nameEn: "Hough Transform"
+year: 1962
+branch: branch-segmentation
+status: stable
+docsPath: "/algorithms/hough/"
+
+plainTalk: >
+  「参数空间的投票箱」：图像里一条直线在原图上是斜的，但在（ρ,θ）参数空间就是一个点。
+  让每个边缘像素给所有可能过它的直线投一票，得票最多的那几条就是真的直线。
+  车道线检测、圆检测、文档倾斜校正、PCB走线定位全都用它。
+
+tags: ["classic-cv", "shape-detection", "line-detection", "circle-detection"]
+papers:
+  - paper-hough-1962
+  - paper-duda-hart-1972
+  - paper-matas-ppht-1998
+  - paper-kimme-circle-1975
+
+chapters:
+  - ch-05-segmentation
+
+dependsOn:
+  - algo-canny
+  - op-sobel
+  - op-gaussian-blur
+  - op-non-max-suppression
+  - op-canny-threshold
+  - op-hough-vote
+
+applications:
+  - app-industrial-defect
+  - app-lane-detection
+  - app-document-scan
+  - app-security-surveillance

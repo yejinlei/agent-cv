@@ -1,0 +1,21 @@
+id: paper-tomasi-1998-bilateral
+type: Paper
+title: "Bilateral Filtering for Gray and Color Images"
+authors: ["Carlo Tomasi", "Roberto Manduchi"]
+year: 1998
+venue: ICCV
+url: "https://people.csail.mit.edu/sparis/publi/2008/fnt/Paris_08_Bilateral_Filtering.pdf"
+doi: "10.1109/ICCV.1998.710815"
+
+contribution: "首次同时用空间邻近度和亮度相似度做非线性保边滤波"
+keyInsight: "跨边缘的像素颜色差大，给它们权重为 0，就能保边"
+novelty:
+  - "值域高斯 × 空间高斯的乘积核"
+  - "非迭代、保边、非线性能一次完成"
+limitations:
+  - "原始 O(r²) 复杂度"
+  - "彩色 BGR 空间有色偏"
+  - "大核慢、易出 halo"
+influencedBy: ["op-gaussian-blur"]
+influenced: ["algo-guided-filter", "algo-domain-transform"]
+docsPath: "/algorithms/bilateral/paper"

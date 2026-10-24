@@ -1,0 +1,29 @@
+id: algo-surf
+type: Algorithm
+name: "SURF 加速稳健特征"
+year: 2006
+branch: branch-feature-detection
+status: stable
+docsPath: "/algorithms/surf/"
+
+plainTalk: >
+  「SIFT 的快车版本」：SIFT 要算 DoG 金字塔太慢，SURF 用 Hessian 矩阵的近似 + 积分图把卷积算得飞快，
+  号称比 SIFT 快 3 倍还能保持尺度旋转不变。描述子用 Haar 小波响应，64/128 维浮点。
+  缺点是一直有专利，工业上用得不多，被 ORB 替代。
+
+concepts:
+  - concept-integral-image
+  - concept-hessian
+  - concept-scale-space
+  - concept-binary-descriptor
+
+tags: ["classic-cv", "feature", "patented"]
+papers: ["paper-bay-2006"]
+evolvedFrom: "algo-sift"
+replacedBy: ["algo-orb"]
+dependsOn:
+  - op-hessian
+  - op-gaussian-blur
+painPoints: []
+tricks: []
+layer: L2

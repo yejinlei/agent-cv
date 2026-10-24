@@ -1,0 +1,27 @@
+id: algo-brisk
+type: Algorithm
+name: BRISK 二进制鲁棒不变可伸缩关键点
+year: 2011
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/brisk/
+plainTalk: AGAST 找角点 + 同心圆采样 + 长短点对分工，免费版 SIFT，速度快鲁棒性好
+concepts:
+- concept-agast
+- concept-concentric-pattern
+- concept-brief
+tags:
+- classic-cv
+- feature
+- binary-descriptor
+- real-time
+papers:
+- paper-leutenegger-2011-brisk
+evolvedFrom: algo-brief
+replacedBy: []
+dependsOn:
+- algo-fast
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

@@ -1,0 +1,22 @@
+id: ch-04-primitives
+type: Chapter
+number: 4
+name: 基元检测
+plainTalk: 从画面里挑出最基础的零件——就像拼乐高先把积木块找出来：哪些是边、哪些是角、哪些是斑点。
+level: 低层
+branches:
+  - branch-feature-detection
+concepts:
+  - concept-gradient-magnitude
+  - concept-non-maximum-suppression
+  - concept-double-threshold
+  - concept-hysteresis
+  - concept-fast-detector
+  - concept-hessian-detector
+papers:
+  - paper-canny-1986
+  - paper-sobel-1968
+coreQuestion: 图像里哪些位置是有结构的——哪里有边、哪里有角、哪里有斑点？
+docsPath: /chapters/ch04-primitives
+prevChapter: ch-03-preprocessing
+nextChapter: ch-05-segmentation

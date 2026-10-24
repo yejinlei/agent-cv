@@ -1,0 +1,21 @@
+id: concept-fundamental-matrix
+type: Concept
+name: "基础矩阵 F（Fundamental Matrix）"
+plainTalk: >
+  两张图之间的几何关系——对任意一对匹配点 (x, x')，它们必须满足 x'^T F x = 0。
+  你可以把它想象成「点 → 对应另一张图里的一条极线」：点 x 在第二张图里的匹配一定在这条极线上，
+  不用全图搜，沿这条线找就行。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-ransac
+  - algo-homography
+prerequisites:
+  - concept-epipolar-geometry
+keyFormula: "x'^T F x = 0，F 是 3×3、秩为 2、7 自由度的齐次矩阵"
+usedIn:
+  - "三维重建"
+  - "视觉 SLAM"
+  - "双视图几何"
+docsPath: "/branches/geometry/epipolar"
+tags: ["概念", "几何", "多视图几何", "对极几何"]

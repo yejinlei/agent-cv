@@ -1,0 +1,12 @@
+id: concept-spatial-reliability
+type: Concept
+name: 空间可靠性图
+enName: Spatial Reliability Map
+field: tracking
+plainTalk: 用颜色前/背景分割自动估计的软掩膜，告诉滤波器哪些像素是目标、哪些是背景该忽略
+explain: CSRT 的空间掩膜由颜色直方图+空间先验联合计算，让 DCF 只在目标像素上学习，避免矩形框污染。
+appearsIn:
+- algo-csrt
+related: []
+docsPath: /algorithms/csrt/concepts
+layer: L2

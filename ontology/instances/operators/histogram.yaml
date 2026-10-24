@@ -1,0 +1,49 @@
+id: op-histogram
+type: Operator
+name: "直方图统计"
+nameEn: "Histogram"
+category: statistical
+
+plainTalk: >
+  「数一数每种亮度有多少个像素」：把 0–255 的亮度做成 256 个格子，
+  遍历每个像素，看它落在哪个格子，格子里的计数器加一。
+  最后得到一张柱状图：横轴是亮度，纵轴是这个亮度的像素个数。
+  它能一眼看出「这张照片是偏暗还是偏亮、对比度够不够」。
+
+formula: "h(v) = #{ (x,y) | I(x,y) = v }"
+
+params:
+  - name: "bins"
+    meaning: "格子数"
+    typical: "256（灰度）"
+    effect: "越少越粗但越稳"
+  - name: "range"
+    meaning: "统计范围"
+    typical: "[0, 256)"
+    effect: "决定哪些值被计入"
+
+opencvFunc: "cv2.calcHist"
+usedBy:
+  - algo-hog-svm
+  - algo-otsu
+  - algo-canny
+
+complexity: "O(n)"
+separability: false
+inplace: false
+noiseRobustness: high
+edgePreserve: false
+
+useCases:
+  - "图像统计与可视化"
+  - "直方图均衡化（增强对比度）"
+  - "Otsu 自动阈值"
+  - "HOG 的梯度方向直方图（是「方向」的直方图）"
+  - "反向投影做目标跟踪"
+
+pitfalls:
+  - "直方图相同的两张图可能完全不同（丢失空间信息）"
+  - "用于「方向」统计时要注意分箱的循环性（0° 和 360° 是同一个方向）"
+
+docsPath: "/branches/image-processing/thresholding"
+tags: ["统计", "基础算子"]

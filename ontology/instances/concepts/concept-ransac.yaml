@@ -1,0 +1,21 @@
+id: concept-ransac
+type: Concept
+name: "RANSAC 随机采样一致性"
+plainTalk: >
+  你要根据一堆点画一条最合适的直线，但里面混了很多「明显在乱放」的点。
+  办法是：随机选最少量的点先画一条线，然后数一数有多少点离这条线很近；
+  重复很多次，哪次「贴着的点最多」，那条线就是最可信的。
+  它用一个很朴素的办法，把「有大量错误数据」变成了「可解决的问题」。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-homography
+  - algo-epipolar
+prerequisites: []
+keyFormula: "迭代 N 次，每次从最小样本集估计模型并统计内点数"
+usedIn:
+  - "单应矩阵、基础矩阵的鲁棒估计"
+  - "点云配准（ICP 的鲁棒版本）"
+  - "任何「少数模型 + 大量外点」的拟合问题"
+docsPath: "/branches/feature-matching/robust-estimation"
+tags: ["概念", "鲁棒估计", "核心工具"]

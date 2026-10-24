@@ -1,0 +1,13 @@
+id: concept-mldb
+type: Concept
+name: M-LDB 描述子
+enName: Modified-Local Difference Binary
+field: feature-descriptor
+plainTalk: 尺度/旋转感知的二进制描述子，在 grid cell 里比平均灰度和梯度
+explain: M-LDB 把关键点周围分成多尺度 grid，每格比较灰度均值、dx、dy 得到二进制串；比 LDB 多了尺度/旋转适应。
+appearsIn:
+- algo-akaze
+related:
+- concept-brief
+docsPath: /algorithms/akaze/concepts
+layer: L2

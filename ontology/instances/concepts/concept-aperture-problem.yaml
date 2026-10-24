@@ -1,0 +1,20 @@
+id: concept-aperture-problem
+type: Concept
+name: 孔径问题（Aperture Problem）
+layer: L2
+plainTalk: >
+  你通过一个小管子看一条平移的直线，只能看到局部运动，无法判断这条直线的真实运动方向——
+  直线上所有点看起来都像"垂直于直线"运动，沿直线方向的分量你根本看不见。
+  这就是为什么光流约束方程一个方程两个未知数，单凭一个点永远解不出来。
+formal: >
+  亮度恒常方程 I_x u + I_y v = -I_t 只有一个方程，
+  法线方向解唯一，切线方向解任意，因此单独一个像素点的运动无法唯一确定。
+solutions: [
+  "Lucas-Kanade：局部窗口求超定方程最小二乘解",
+  "Horn-Schunck：全局平滑正则约束",
+  "特征点光流：只跟踪角点，双方向都有梯度",
+  "稠密光流+平滑项：正则化全局一致性"
+]
+usedBy: ["algo-lucas-kanade"]
+related: ["concept-brightness-constancy", "concept-optical-flow", "concept-fast-detector"]
+docsPath: "/algorithms/lucas-kanade/concepts#孔径问题"

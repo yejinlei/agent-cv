@@ -1,0 +1,59 @@
+id: paper-canny-1986
+type: Paper
+title: "A Computational Approach to Edge Detection"
+authors:
+  - "John F. Canny"
+year: 1986
+venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+venueType: journal
+doi: "10.1109/TPAMI.1986.4767851"
+url: "https://ieeexplore.ieee.org/document/4767851"
+citationCount: 30000
+
+contribution: >
+  第一次把「边缘检测」从一堆经验性的卷积核，变成一个有明确优化目标的数学问题。
+  论文先论证「什么样的边缘检测器才叫好」，给出了三条判据（低误检率、高定位精度、
+  单响应），然后从这三条判据出发推导出最优滤波器，最后给出一套完整可实现的算法。
+  它把「操作者的主观偏好」替换成了「可证明的最优性」。
+
+keyInsight: >
+  「先定义什么叫好，再求解最优」——把工程问题变成变分问题。
+
+novelty:
+  - "提出边缘检测的三条定量判据（optimality criteria），此前只有定性讨论"
+  - "推导出最优边缘检测滤波器近似为一个高斯的一阶导数"
+  - "提出非极大值抑制（NMS），使边缘细化为单像素宽"
+  - "提出双阈值 + 滞后连接（hysteresis），兼顾漏检与误检"
+
+limitations:
+  - "双阈值的两个参数仍需人工设定，论文未给出自动确定方法"
+  - "小尺度下对噪声敏感，大尺度下定位精度下降（尺度与定位的固有权衡）"
+  - "假设边缘是阶跃型的，对渐变边缘（如模糊纹理）效果不理想"
+
+relatedAlgorithms:
+  - algo-canny
+
+influencedBy:
+  - "Marr-Hildreth 的 LoG 边缘检测（LoG 算子）"
+  - "Canny 本人的 1983 硕士论文（Finding Edges and Lines in Images）"
+  - "Haralick 的边缘检测最优性分析"
+
+influenced:
+  - "几乎所有后续的边缘检测算法都以 Canny 为基准对比"
+  - "NMS 成为目标检测中的标准后处理步骤（直到 YOLO 仍在用）"
+
+readStatus: deep-read
+
+bibtex: |
+  @article{canny1986computational,
+    title={A computational approach to edge detection},
+    author={Canny, John},
+    journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+    number={6},
+    pages={679--698},
+    year={1986},
+    publisher={IEEE}
+  }
+
+docsPath: "/algorithms/canny/paper"
+tags: ["边缘检测", "1986", "TPAMI", "经典"]

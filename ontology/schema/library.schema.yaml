@@ -1,0 +1,84 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/library.schema.yaml"
+title: Library
+description: >
+  Library（开源库）：算法在工程中的承载者。
+  记录「这个算法在哪个库里、用什么函数、有什么坑」，
+  让本体不仅能回答「是什么」，还能回答「怎么用」。
+type: object
+
+required:
+  - id
+  - type
+  - name
+  - language
+  - role
+  - maturity
+
+additionalProperties: true
+
+properties:
+  id:
+    type: string
+    pattern: "^lib-[a-z0-9-]+$"
+
+  type:
+    const: Library
+
+  name:
+    type: string
+    minLength: 2
+
+  language:
+    type: string
+    description: 主要编程语言
+
+  role:
+    type: string
+    description: 这个库在技术栈中的定位
+
+  maturity:
+    enum: [experimental, stable, production, deprecated]
+    description: 成熟度
+
+  baselineVersion:
+    type: string
+    description: 本档案参考的版本
+
+  plainTalk:
+    type: string
+    description: 通俗解释（老奶奶也听得懂）
+
+  strengths:
+    type: array
+    items:
+      type: string
+
+  weaknesses:
+    type: array
+    items:
+      type: string
+
+  install:
+    type: string
+    description: 安装命令
+
+  docsUrl:
+    type: string
+
+  repoUrl:
+    type: string
+
+  usedByAlgorithms:
+    type: array
+    items:
+      type: string
+      pattern: "^algo-[a-z0-9-]+$"
+
+  docsPath:
+    type: string
+
+  tags:
+    type: array
+    items:
+      type: string

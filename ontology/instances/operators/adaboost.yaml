@@ -1,0 +1,43 @@
+id: op-adaboost
+type: Operator
+name: "AdaBoost 集成学习"
+nameEn: "AdaBoost"
+category: statistical
+
+plainTalk: >
+  「三个臭皮匠顶一个诸葛亮」：单个弱分类器只能比瞎猜好一点点，
+  但把很多个这样的弱分类器加权组合起来，就能变成一个强分类器。
+  做法是：每加一个新分类器，就把上一个分错的样本「加重权重」，
+  逼着新分类器去专心对付这些难样本。
+  最后投票时，谁平时更准，谁的票就更重。
+
+formula: "H(x) = sign( Σ_t α_t · h_t(x) )，α_t = ½ ln((1−e_t)/e_t)"
+
+params:
+  - name: "弱分类器数量 T"
+    meaning: "集成的轮数"
+    typical: "10–200"
+    effect: "越多越准但越慢；级联检测里通常每级几十个"
+  - name: "弱分类器类型"
+    meaning: "通常用单层决策树（决策树桩）"
+    typical: "decision stump"
+    effect: "越简单越好，只要能比随机猜好"
+  - name: "学习率/权重更新"
+    meaning: "错分样本的权重放大倍率"
+    typical: "由误差率自动决定"
+    effect: "误差率越低，该分类器的投票权重越大"
+
+useCases:
+  - "组合弱分类器成强分类器（Viola-Jones 级联的每一级训练）"
+  - "作为通用集成学习 baseline（如 AdaBoost.M1）"
+
+pitfalls:
+  - "对噪声样本与离群点敏感（AdaBoost 会不断给它们加权）"
+  - "弱分类器太强反而容易过拟合"
+
+usedBy:
+  - algo-viola-jones
+
+opencvFunc: "cv2.ml.Boost_create"
+docsPath: "/branches/detection/classic-detectors"
+tags: ["集成学习", "分类", "Viola-Jones"]

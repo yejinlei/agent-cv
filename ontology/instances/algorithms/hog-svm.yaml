@@ -1,0 +1,76 @@
+id: algo-hog-svm
+type: Algorithm
+name: "HOG + SVM 行人检测"
+nameEn: "Histogram of Oriented Gradients + Support Vector Machine"
+year: 2005
+branch: branch-detection
+
+plainTalk: >
+  「照影子认人」：它不看颜色，只看「影子的形状」。
+  把图像切成一个个小格子，每个格子里统计「明暗变化的方向」，
+  就像用铅笔素描时只画线条方向、不涂颜色。
+  然后把相邻格子拼成块，块内做一次「亮度归一化」——这样光线变亮变暗都不怕。
+  最后把这一串方向统计交给一个「会画分界线」的分类器（SVM），
+  它就能判断「这个框里是不是一个人」。
+  检测时用滑动窗口在图上不停地「扫描」，就像用放大镜一寸寸找东西。
+
+concepts:
+  - concept-gradient-orientation-histogram
+  - concept-block-normalization
+  - concept-sliding-window
+  - concept-svm-hyperplane
+  - concept-hard-negative-mining
+
+evolvedFrom: "algo-viola-jones"
+
+dependsOn:
+  - op-sobel
+  - op-histogram
+  - op-l2-normalization
+  - op-svm-training
+
+replacedBy:
+  - "深度学习目标检测器（Faster R-CNN / YOLO / SSD）"
+inheritedBy:
+  - "可变形部件模型（DPM）直接建立在 HOG 之上"
+  - "深度学习中的「特征金字塔」思想延续了多尺度滑动窗口"
+
+papers:
+  - paper-dalal-triggs-2005
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.HOGDescriptor"
+    since: "OpenCV 2.2"
+  - lib: "dlib"
+    func: "dlib.fhog_object_detector"
+
+metrics:
+  - name: "误检率 FPPW（INRIA 数据集）"
+    value: "约 10⁻⁴（同期最佳）"
+    dataset: "INRIA Person"
+    hardware: "论文时代硬件"
+  - name: "正检率"
+    value: "miss rate 约 10% @ FPPW=10⁻⁴"
+
+applications:
+  - app-pedestrian-detection
+  - app-security-surveillance
+  - app-edge-deployment
+
+caseStudies:
+  - case-edge-deployment
+
+painPoints:
+  - pp-hog-window-mismatch
+  - pp-hog-very-slow
+  - pp-hog-scale-search
+
+tricks:
+  - trick-hog-params
+  - trick-hog-detection-window
+
+layer: L3
+docsPath: "/algorithms/hog-svm/"
+status: stable
+tags: ["目标检测", "行人检测", "经典算法", "滑动窗口"]

@@ -1,0 +1,17 @@
+id: pp-ransac-no-refit
+type: PainPoint
+name: "不做重拟合，精度停在几个像素"
+severity: medium
+symptom: >
+  RANSAC 找到的模型方向大致正确，但精度只有几个像素，
+  做亚像素任务（精密测量、标定、点云配准）时不够用。
+rootCause: >
+  RANSAC 主体只用最小样本（单应 4 点、直线 2 点）拟合，
+  命中即止，精度受限于这少数几个点的定位噪声。
+fix: >
+  用找出的内点再做一次最小二乘重拟合。
+  OpenCV 的 findHomography / findFundamentalMat 内部已含这一步，
+  手写实现最容易漏——务必在投票结束后加一段「用全部内点最小二乘」。
+relatedAlgorithms:
+  - algo-ransac
+tags: ["踩坑", "精度", "RANSAC"]

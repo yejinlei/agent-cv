@@ -1,0 +1,20 @@
+id: concept-denoising
+type: Concept
+name: "图像去噪"
+layer: L1
+plainTalk: >
+  相机在暗光下拍出来的照片会有一粒粒的杂色，这就是噪声。去噪的目标是『把杂色抹平，同时别把真实细节也一起抹了』。难点在于二者在图像上长得几乎一样——都是局部的小幅跳变，所以任何去噪方法本质都是在赌：这个跳变是噪声还是边缘？
+
+formal: >
+  y(x,y) = f(x,y) + n(x,y)，n 为零均值随机场；去噪即求 f 的估计 f̂，使 E[(f̂-f)²] 最小
+
+solutions: [
+  "空间域：均值/中值/双边滤波",
+  "变换域：小波阈值收缩、频域低通",
+  "统计建模：非局部均值、BM3D、高斯混合建模",
+]
+
+usedBy: ["algo-median-filter", "algo-bilateral"]
+related: ["concept-gaussian-noise", "concept-edge-preserving"]
+docsPath: "/algorithms/median-filter/concepts"
+tags: ["denoising", "restoration"]

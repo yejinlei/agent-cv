@@ -1,0 +1,20 @@
+id: concept-keypoint-localization
+type: Concept
+name: "关键点定位"
+plainTalk: >
+  「把找到的点对准到真正的位置」：在粗粒度的图上先找到「大概在这里」，
+  再用数学方法（泰勒展开）精确到「零点几个像素」。
+  同时把两类「长得像但不好用的点」去掉：
+  太小太弱的（对比度低，容易被噪声影响）和「一条线上的」（边缘响应，位置不唯一）。
+layer: L2
+relatedAlgorithms:
+  - algo-sift
+prerequisites:
+  - op-taylor-expansion
+  - op-hessian
+keyFormula: "x̂ = -(∂²D/∂x²)⁻¹(∂D/∂x)"
+usedIn:
+  - "SIFT 第 3 步"
+  - "亚像素角点精化"
+docsPath: "/algorithms/sift/concepts"
+tags: ["概念", "亚像素", "SIFT核心"]

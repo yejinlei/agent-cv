@@ -1,0 +1,47 @@
+id: op-dog
+type: Operator
+name: "高斯差分（DoG）"
+nameEn: "Difference of Gaussians"
+category: filter
+
+plainTalk: >
+  「用两个不同模糊程度的照片相减」：把同一张图模糊一次得到 A，模糊得更厉害一次得到 B，
+  然后 A 减 B。结果里留下的，正好是「那种大小的细节」——
+  比这个尺寸小的细节被 A 的模糊抹掉了，比这个尺寸大的细节在相减时抵消了。
+  所以 DoG 就像一个「只认某个尺寸」的筛子，专门筛出特定大小的斑点。
+  它便宜得惊人：只是两次模糊再加一次减法，却近似了很贵的拉普拉斯算子。
+
+formula: "DoG(x,y,σ) = (G(x,y,kσ) - G(x,y,σ)) * I(x,y) ≈ (k-1)σ²∇²G * I"
+
+params:
+  - name: "k"
+    meaning: "相邻尺度的比例"
+    typical: "2^(1/s)，s 为每 octave 的层数（SIFT 用 s=3，k≈1.26）"
+    effect: "k 越接近 1，近似越准，但层数越多越慢"
+  - name: "σ"
+    meaning: "基础尺度"
+    typical: "1.6（SIFT 默认）"
+    effect: "决定检测的最细特征尺寸"
+
+opencvFunc: "（SIFT 内部实现，可手写为 GaussianBlur 相减）"
+usedBy:
+  - algo-sift
+
+complexity: "O(n · k²)（两次高斯）"
+separability: true
+inplace: false
+noiseRobustness: high
+edgePreserve: false
+
+useCases:
+  - "尺度空间的极值检测（SIFT 的第一步）"
+  - "斑点检测（Blob Detection）"
+  - "低成本近似 LoG"
+
+pitfalls:
+  - "直接用 LoG 会慢很多，DoG 是它的高效近似"
+  - "k 取值不当会导致尺度采样不足、遗漏特征点"
+  - "相减时若用 uint8 会截断负值，必须用浮点"
+
+docsPath: "/algorithms/sift/concepts"
+tags: ["滤波", "尺度空间", "SIFT核心"]

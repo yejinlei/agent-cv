@@ -1,0 +1,22 @@
+id: concept-camera-model
+type: Concept
+name: "针孔相机模型"
+layer: L2
+plainTalk: >
+  相机成像的基础数学模型：真实世界的3D点穿过光心（针孔），在像平面上形成倒立的2D像。
+  就像小时候用纸盒做的小孔成像——光线穿过小孔，在后面的纸上投影。
+
+formal: >
+  s · [u,v,1]^T = K [R|t] [X,Y,Z,1]^T，其中K是3×3内参矩阵（fx,fy,cx,cy），
+  [R|t]是3×4外参矩阵（旋转+平移），s是深度缩放因子。
+
+solutions: [
+  "内参K：相机本身属性（焦距、主点）",
+  "外参[R|t]：相机在世界中的位姿（每幅图不同）",
+  "投影分三步：世界→相机（外参），相机→归一化平面（除以Z），归一化→像素（内参）"
+]
+
+usedBy: ["algo-zhang-calibration"]
+related: ["concept-homography", "concept-radial-distortion", "concept-reprojection-error"]
+docsPath: "/algorithms/zhang-calibration/concepts"
+tags: ["geometry", "camera-model"]

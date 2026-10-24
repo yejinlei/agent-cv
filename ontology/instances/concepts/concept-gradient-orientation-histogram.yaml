@@ -1,0 +1,18 @@
+id: concept-gradient-orientation-histogram
+type: Concept
+name: "梯度方向直方图"
+plainTalk: >
+  把一小块图像切成很多格子，每个格子里统计「这里的线条都朝哪些方向」。
+  就像素描时你会注意到「这片区域主要是斜线、那片主要是竖线」。
+  统计完成后每个格子就变成一个「方向分布画像」，用它来描述形状。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-hog-svm
+prerequisites:
+  - op-sobel
+usedIn:
+  - "HOG 特征的胞元（cell）统计"
+  - "SIFT 描述子的方向直方图（同一思想的另一处应用）"
+docsPath: "/algorithms/hog-svm/concepts"
+tags: ["概念", "HOG", "形状描述"]

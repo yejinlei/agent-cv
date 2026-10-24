@@ -1,0 +1,78 @@
+id: algo-sift
+type: Algorithm
+name: "SIFT 尺度不变特征变换"
+nameEn: "Scale-Invariant Feature Transform"
+year: 1999
+branch: branch-feature-matching
+
+plainTalk: >
+  「认脸小能手」：不管你把这张照片拍得多远、多大、转了多少度、光线亮还是暗，
+  它都能在照片里找到同一批「关键点」，并且能把这些点对上号。
+  它干的第一件事是「把照片复印成从小到大的很多张」——这就是尺度空间，
+  然后在每一张里找最特别的点（周围明暗变化最剧烈的点），
+  这样不管物体大小，总有一张复印纸上的那个点是最突出的。
+  再给每个点记下「周围明暗花纹的指纹」，这样换张照片也能认出来。
+
+concepts:
+  - concept-scale-space
+  - concept-dog
+  - concept-keypoint-localization
+  - concept-orientation-assignment
+  - concept-gradient-histogram-descriptor
+
+evolvedFrom: null
+
+dependsOn:
+  - op-gaussian-blur
+  - op-dog
+  - op-hessian
+  - op-taylor-expansion
+
+replacedBy: []
+inheritedBy:
+  - "深度学习时代仍被当作「黄金标准」用于评测学习式特征"
+  - "SIFT → SURF → ORB → 学习式特征（SuperPoint）的思想延续"
+
+papers:
+  - paper-lowe-1999
+  - paper-lowe-2004
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.SIFT_create"
+    since: "OpenCV 3.0（2.x 需 contrib）"
+  - lib: "VLFeat"
+    func: "vl_sift"
+  - lib: "scikit-image"
+    func: "skimage.feature.SIFT"
+
+metrics:
+  - name: "匹配准确率（牛津数据集，含旋转+缩放）"
+    value: "recall@10 明显优于当时所有方法"
+    dataset: "Oxford 特征匹配数据集"
+  - name: "尺度不变范围"
+    value: "可处理约 2–4 倍的尺度变化"
+  - name: "旋转不变"
+    value: "360° 全角度"
+
+applications:
+  - app-panorama
+  - app-sfm-reconstruction
+  - app-industrial-defect
+
+caseStudies:
+  - case-industrial-defect
+
+painPoints:
+  - pp-sift-patent
+  - pp-sift-slow
+  - pp-sift-ratio-test
+
+tricks:
+  - trick-sift-lowe-ratio
+  - trick-sift-flann
+
+layer: L3
+docsPath: "/algorithms/sift/"
+status: stable
+tags: ["特征点", "尺度不变", "经典算法", "里程碑"]

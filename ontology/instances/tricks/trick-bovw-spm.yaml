@@ -1,0 +1,21 @@
+id: trick-bovw-spm
+type: Trick
+name: "空间金字塔匹配 SPM"
+difficulty: medium
+scenario: "BoVW 分类效果遇到瓶颈，或者想做点粗定位"
+how: >
+  把图像分成多层网格：
+  - 第 0 层（L0）：整张图一个块，做 1 个直方图
+  - 第 1 层（L1）：2×2 四个块，做 4 个直方图
+  - 第 2 层（L2）：4×4 十六个块，做 16 个直方图
+  把所有直方图拼接（L0/L1/L2 分别按 1/4、1/4、1/2 加权），作为最终特征送 SVM。
+effect: >
+  给 BoVW 补回"粗糙的空间信息"，在 PASCAL VOC 等数据集上 mAP 能提升 5–10 个点，
+  是 BoVW 时代的标配升级。
+caveat: >
+  层数越深特征维度越高（4×4=16 块 ×1000 词=16000 维），SVM 训练变慢；
+  实践中 L0+L1+L2 三层足够，再深收益递减。
+relatedAlgorithms:
+  - algo-bovw
+docsPath: "/branches/detection/bovw"
+tags: ["空间金字塔", "SPM", "BoVW", "特征增强"]

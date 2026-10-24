@@ -1,0 +1,20 @@
+id: algo-slic
+type: Algorithm
+name: SLIC 超像素
+year: 2010
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/slic/
+plainTalk: 把百万像素切成几百个颜色一致、大小均匀的超像素，后续处理快 1000 倍，是分割/显著性常用预处理。
+layer: L2
+tags:
+- classic-cv
+- superpixel
+- over-segmentation
+papers:
+- paper-achanta-2010-slic
+dependsOn:
+- algo-kmeans
+concepts: []
+painPoints: []
+tricks: []

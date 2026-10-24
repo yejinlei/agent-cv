@@ -1,0 +1,13 @@
+id: concept-fed
+type: Concept
+name: FED 快速显式扩散
+enName: Fast Explicit Diffusion
+field: scale-space
+plainTalk: 用一连串越来越大的显式小步长突破稳定上限，并行求解非线性扩散
+explain: FED 把大时间步拆成 M 个显式小循环，步长按 cos 平方变化突破显式欧拉稳定上限；无需解方程组，可完全并行。
+appearsIn:
+- algo-akaze
+related:
+- concept-nonlinear-diffusion
+docsPath: /algorithms/akaze/concepts
+layer: L2

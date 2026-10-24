@@ -1,0 +1,31 @@
+id: lib-pillow
+type: Library
+name: "Pillow (PIL)"
+language: Python
+role: "图像读写与基础几何操作。"
+maturity: production
+baselineVersion: "10.x"
+
+plainTalk: >
+  最常用的"图片打开和保存"库。做视觉算法时通常用它读文件、
+  转格式、裁剪缩放，然后交给 OpenCV 或 NumPy 处理。
+
+strengths:
+  - "支持格式最多，读写最稳"
+  - "简单直观，学习成本极低"
+  - "裁剪/旋转/缩放等基础操作完备"
+
+weaknesses:
+  - "没有真正的视觉算法（滤波、特征都没有）"
+  - "逐像素操作慢"
+  - "坐标系与 OpenCV 不一致（图像模式、通道顺序）"
+
+install: "pip install pillow"
+docsUrl: "https://pillow.readthedocs.io/"
+repoUrl: "https://github.com/python-pillow/Pillow"
+
+usedByAlgorithms:
+  - algo-canny
+
+docsPath: "/algorithms/"
+tags: ["Pillow", "IO", "Python"]

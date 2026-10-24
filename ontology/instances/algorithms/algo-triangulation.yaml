@@ -1,0 +1,27 @@
+id: algo-triangulation
+type: Algorithm
+name: "三角化重建"
+nameEn: "Triangulation"
+year: 1997
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/triangulation/
+plainTalk: "两只眼睛看同一个点，各自的视线方向不同；两条视线在空间里相交的地方，就是物体真正的三维位置。三角化就是拿两个相机的位置和两条视线，用几何求出这个交点坐标，把平面照片还原成立体坐标。"
+concepts:
+  - concept-triangulation
+  - concept-reprojection-error
+tags:
+  - classic-cv
+  - geometry
+  - 3d-reconstruction
+  - slam
+papers:
+  - paper-hartley-1997-triangulation
+evolvedFrom: algo-epipolar
+replacedBy: []
+dependsOn:
+  - algo-essential-matrix
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L3

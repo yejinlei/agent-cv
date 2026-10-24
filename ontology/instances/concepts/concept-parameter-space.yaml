@@ -1,0 +1,14 @@
+id: concept-parameter-space
+type: Concept
+name: "参数空间"
+layer: L2
+plainTalk: "把图像空间的形状表示转换到参数空间，原图上的形状变成参数空间里的点，点变成曲线，投票交汇点就是形状参数"
+formal: "图像空间点 (x,y) ↔ 参数空间曲线 (由形状方程决定)；共线点的参数空间曲线交于一点"
+docsPath: "/algorithms/hough/concepts"
+tags:
+  - classic-cv
+  - hough
+relatedAlgorithms:
+  - algo-hough
+usedBy:
+  - algo-hough

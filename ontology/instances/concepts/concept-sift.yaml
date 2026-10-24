@@ -1,0 +1,15 @@
+id: concept-sift
+type: Concept
+name: "SIFT 尺度不变特征变换"
+layer: L2
+plainTalk: >
+  SIFT 既是一个具体算法，也代表一套思想：在不同尺度下找稳定的关键点，
+  再给每个关键点分配一个方向，最后统计该点周围的梯度方向分布做成 128 维描述子。
+  整套设计的目标是：不管物体怎么缩放、怎么旋转、光线怎么变，同一个点都能给出"差不多"的描述子。
+  在 BoVW、图像检索、三维重建里，SIFT 描述子是默认的"视觉字母"。
+formal: "Scale-space extrema detection (DoG) → Keypoint refinement (Taylor + Hessian) → Orientation assignment (gradient histogram peak) → Descriptor (16×16 window → 4×4 blocks × 8 bins = 128 dim)"
+usedBy:
+  - algo-sift
+  - algo-bovw
+docsPath: "/algorithms/sift/"
+tags: ["SIFT", "特征点", "尺度不变", "描述子"]

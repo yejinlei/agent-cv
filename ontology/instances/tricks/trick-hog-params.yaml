@@ -1,0 +1,16 @@
+id: trick-hog-params
+type: Trick
+name: "HOG 参数的起点配置"
+difficulty: medium
+scenario: "首次训练/使用 HOG 时的参数选择。"
+how: >
+  经典行人检测配置：winSize=64×128，blockSize=16×16，blockStride=8×8，
+  cellSize=8×8，nbins=9。
+  得到 3780 维特征。改这些参数会改变特征维度，
+  必须训练与检测两侧一致。
+effect: "这是 Dalal-Triggs 论文的推荐配置，人体检测效果与速度平衡最好。"
+caveat: "窗口长宽比固定为 1:2，不适合方形目标（如车辆需重新设计）。"
+relatedAlgorithms:
+  - algo-hog-svm
+docsPath: "/algorithms/hog-svm/tricks"
+tags: ["技巧", "HOG", "配置"]

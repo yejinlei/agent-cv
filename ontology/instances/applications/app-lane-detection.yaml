@@ -1,0 +1,32 @@
+id: app-lane-detection
+type: Application
+name: "车道线检测"
+domain: automotive
+
+plainTalk: >
+  从车载摄像头画面里实时识别车道线，用于 ADAS 辅助驾驶或车道偏离预警。
+  就像给车装上一双"认路的眼睛"，当车子偏离车道时会发出提醒。
+
+algorithmStack:
+  - op-gaussian-blur
+  - algo-canny
+  - op-hough-vote
+  - algo-hough
+  - algo-ransac
+
+hardware:
+  device: "车载摄像头 + 车规级 SoC 或工控机"
+  needsGPU: false
+  fps: "20–30 fps @1080p（纯 CPU）"
+  resolution: "1280×720 或 1920×1080"
+
+constraints:
+  - "延迟 < 50ms（实时性要求）"
+  - "强逆光/夜路/雨天都要工作"
+  - "无 GPU 车规芯片也要跑得动"
+  - "不能误识别电线杆阴影为车道线"
+
+tags:
+  - application
+  - adas
+  - automotive

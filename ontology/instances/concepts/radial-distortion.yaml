@@ -1,0 +1,24 @@
+id: concept-radial-distortion
+type: Concept
+name: "径向畸变"
+layer: L2
+plainTalk: >
+  镜头边缘的光线弯曲比中心厉害，导致拍出来的直线变弯——
+  广角镜头边缘的直线往外鼓（桶形畸变），长焦镜头往里缩（枕形畸变）。
+  就像透过啤酒瓶底看世界，中心基本正常，越往外越扭曲。
+
+formal: >
+  x'' = x'(1 + k1·r² + k2·r⁴ + k3·r⁶)，y'' = y'(1 + k1·r² + k2·r⁴ + k3·r⁶)，
+  其中 r² = x'² + y'² 是到光心的归一化距离。
+  切向畸变 p1,p2 由镜头-传感器装配不平行引起，一般比径向畸变小一个量级。
+
+solutions: [
+  "张氏标定闭解阶段可估计k1、k2初值",
+  "LM优化阶段同时精化所有畸变参数",
+  "去畸变：cv2.undistort 或 initUndistortRectifyMap+remap"
+]
+
+usedBy: ["algo-zhang-calibration"]
+related: ["concept-camera-model", "concept-reprojection-error"]
+docsPath: "/algorithms/zhang-calibration/concepts"
+tags: ["geometry", "camera-calibration", "distortion"]

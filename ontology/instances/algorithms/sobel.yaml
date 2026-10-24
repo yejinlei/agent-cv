@@ -1,0 +1,73 @@
+id: algo-sobel
+type: Algorithm
+name: "Sobel 边缘算子"
+nameEn: "Sobel Operator"
+year: 1968
+branch: branch-image-processing
+
+plainTalk: >
+  「摸变化的尺子」：拿一个 3×3 的小方块横一下、竖一下在图像上滑，
+  哪边像素明暗变化最剧烈，哪里就是边。
+  它比「硬相减」多了一点点模糊（中心权重更大），所以对噪点更宽容。
+  它是后来 Canny、HOG、Harris、光流等一大票算法的公共前置零件——
+  凡是需要「梯度」的地方，第一步几乎都在算它。
+
+concepts:
+  - concept-gradient-magnitude
+  - concept-gradient-orientation-histogram
+  - concept-anisotropy
+
+chapters:
+  - ch-03-preprocessing
+  - ch-04-primitives
+
+evolvedFrom: null
+
+dependsOn:
+  - op-separable-convolution
+  - op-sobel
+
+replacedBy:
+  - "algo-canny"
+
+inheritedBy:
+  - "深度学习中的边缘感知分支与可变形卷积（梯度估计的直觉来源）"
+
+papers:
+  - paper-sobel-1968
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.Sobel"
+    since: "OpenCV 1.0"
+  - lib: "scikit-image"
+    func: "skimage.filters.sobel"
+  - lib: "MATLAB"
+    func: "fspecial('sobel')"
+
+metrics:
+  - name: "速度（1080p 灰度，单方向，OpenCV，i5）"
+    value: "约 4 ms"
+    hardware: "Intel i5"
+  - name: "相比 Roberts 的抗噪能力"
+    value: "同噪声下误检率显著降低（内嵌 1-2-1 平滑）"
+    dataset: "含高斯噪声的合成边缘"
+  - name: "方向偏差"
+    value: "45° 斜边响应约为轴向的 0.71 倍（√2 分之一）"
+    dataset: "理想阶梯边缘"
+
+applications:
+  - app-industrial-defect
+  - app-document-scan
+  - app-edge-deployment
+
+painPoints:
+  - pp-sobel-ddepth
+
+tricks:
+  - trick-sobel-scale-abs
+
+layer: L3
+docsPath: "/algorithms/sobel/"
+status: stable
+tags: ["边缘检测", "梯度", "基础算子", "1968"]

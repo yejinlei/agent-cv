@@ -1,0 +1,33 @@
+id: lib-numpy
+type: Library
+name: "NumPy"
+language: Python
+role: "所有图像算法的数值底座。"
+maturity: production
+baselineVersion: "1.26"
+
+plainTalk: >
+  图像在 Python 里就是一个 NumPy 数组。所有"向量化"的加速
+  本质上是让 NumPy 用 C 循环代替你的 Python 循环。
+
+strengths:
+  - "向量化运算，性能接近 C"
+  - "广播机制让矩阵运算写法极简"
+  - "几乎所有视觉库都以它为基础"
+
+weaknesses:
+  - "不擅长分支复杂的逐像素逻辑"
+  - "内存占用大（无原地操作意识时）"
+  - "循环写法会失去全部性能优势"
+
+install: "pip install numpy"
+docsUrl: "https://numpy.org/doc/stable/"
+repoUrl: "https://github.com/numpy/numpy"
+
+usedByAlgorithms:
+  - algo-canny
+  - algo-sobel
+  - algo-hog-svm
+
+docsPath: "/algorithms/"
+tags: ["NumPy", "基础库", "Python"]

@@ -1,0 +1,13 @@
+id: concept-median-filter
+type: Concept
+name: "中值滤波"
+layer: L1
+plainTalk: "把邻域内的数值排队取中间那个，而不是取平均。极端值（如白点、黑点）排在队首队尾，永远轮不到它当代表，所以去椒盐噪声不糊边。"
+formal: "对邻域窗口内像素灰度排序后取第 (k²+1)/2 个值作为输出，是一类秩排序（rank-order）非线性滤波。"
+usedBy:
+  - algo-median-filter
+docsPath: /algorithms/median-filter/concepts
+tags:
+  - filter
+  - nonlinear
+  - rank-order

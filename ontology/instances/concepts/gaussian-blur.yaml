@@ -1,0 +1,20 @@
+id: concept-gaussian-blur
+type: Concept
+name: "高斯模糊（高斯平滑）"
+layer: L2
+
+plainTalk: >
+  给照片「柔化」一下——每个像素都拿它周围像素的加权平均来顶替自己，
+  离得越近的邻居权重越大（权重按高斯钟形曲线分布）。
+  它的作用是磨掉高频噪点，免得后面的边缘、梯度计算被噪点带偏。
+  几乎所有经典算法的第一步都是它：Canny 先去噪、SIFT 先建高斯尺度空间、LK 光流先平滑图像。
+
+formal: "G(x,y) = 1/(2πσ²) · exp(-(x²+y²)/(2σ²))；σ 越大越糊，σ≈1 保留细节，σ≥3 基本只剩轮廓"
+
+usedBy:
+  - algo-canny
+  - algo-sift
+  - algo-lucas-kanade
+
+docsPath: "/operators/gaussian-blur"
+tags: ["滤波", "高斯核", "预处理", "平滑"]

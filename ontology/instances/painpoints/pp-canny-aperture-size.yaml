@@ -1,0 +1,12 @@
+id: pp-canny-aperture-size
+type: PainPoint
+name: "apertureSize 的效果没被理解"
+severity: medium
+symptom: "改了 apertureSize 但看不出明显区别，或者边缘变粗变细没有规律。"
+rootCause: "apertureSize 是 Sobel 核大小（3/5/7），它同时影响梯度精度和抗噪性，但影响不如阈值显著。"
+fix: "先用 3（默认，最快）；只有噪声大时才考虑 5；不要盲调到 7（会明显变慢且边缘变粗）。"
+detection: "对比不同 apertureSize 下的边缘图，看噪声响应。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/painpoints"
+tags: ["踩坑", "Canny"]

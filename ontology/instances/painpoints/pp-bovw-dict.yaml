@@ -1,0 +1,20 @@
+id: pp-bovw-dict
+type: PainPoint
+name: "视觉字典大小难选"
+severity: medium
+symptom: >
+  字典太小（如 100）→ 区分度差，不同类都分到同一类；
+  字典太大（如 10 万）→ 直方图稀疏，训练慢且过拟合。
+rootCause: >
+  K-means 的 K 控制视觉单词的粒度——K 小=单词太粗（猫狗都是"毛茸茸"），
+  K 大=单词太细（同一只猫不同角度变不同单词）。
+fix: >
+  1）从 1000、4000、10000 三个点试起，在验证集上选 mAP 最高的；
+  2）数据量越大，K 可以越大（10k 图像用 4k–10k 字典较常见）；
+  3）K-means 用近似算法（如 VLFeat 的 hierarchical k-means、FAISS K-means）加速；
+  4）字典学习用多次随机初始化，选 inertia 最小的。
+detection: "画验证集 mAP 随 K 变化曲线——通常先升后降，取峰值"
+relatedAlgorithms:
+  - algo-bovw
+docsPath: "/branches/detection/bovw"
+tags: ["字典", "K-means", "BoVW", "调参"]

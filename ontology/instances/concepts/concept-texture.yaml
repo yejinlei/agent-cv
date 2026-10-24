@@ -1,0 +1,20 @@
+id: concept-texture
+type: Concept
+name: "图像纹理"
+layer: L1
+plainTalk: >
+  纹理就是图像里『重复出现、看不出单个物体』的那种规律感——布料的斜纹、墙面的颗粒、木头的年轮。它没有明确边界，却有稳定的统计规律。所以描述纹理通常不描述某一个具体形状，而是描述『一小块区域里明暗的变化节奏』：变化得快就是细纹理，变化得慢就是粗纹理。
+
+formal: >
+  纹理可表示为局部统计量的集合，如灰度共生矩阵 P(i,j|d,θ)、Gabor 响应能量、LBP 直方图
+
+solutions: [
+  "结构法：找纹理基元及其排列规则",
+  "统计法：灰度共生矩阵、LBP、Tamura 特征",
+  "滤波法：Gabor 滤波器组多尺度多方向响应",
+]
+
+usedBy: ["algo-lbp", "algo-gabor"]
+related: ["concept-gabor-filter", "concept-glcm"]
+docsPath: "/algorithms/lbp/concepts"
+tags: ["texture", "feature"]

@@ -1,0 +1,6 @@
+id: concept-edge-aware
+type: Concept
+name: "保边滤波 Edge-Aware Filtering"
+layer: L1
+plainTalk: "平滑图像但不糊边缘的一类滤波器"
+docsPath: "/algorithms/"

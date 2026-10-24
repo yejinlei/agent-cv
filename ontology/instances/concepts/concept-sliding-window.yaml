@@ -1,0 +1,19 @@
+type: Concept
+id: concept-sliding-window
+name: "滑动窗口"
+plainTalk: >
+  「拿放大镜一寸一寸地找」：固定一个框的大小，从上到下、从左到右一格一格地挪，
+  每挪一次就问一次「框里的人是不是行人」。
+  目标大小不一样怎么办？把框放大缩小，再扫一遍。这就是多尺度滑动窗口。
+layer: L2
+relatedAlgorithms:
+  - algo-hog-svm
+  - algo-viola-jones
+prerequisites:
+  - concept-scale-space
+keyFormula: "for scale in scales: for y in range(H): for x in range(W): classify(patch)"
+usedIn:
+  - "HOG+SVM 行人检测"
+  - "Viola-Jones 人脸检测"
+docsPath: "/branches/detection/sliding-window"
+tags: ["概念", "检测范式", "基础"]

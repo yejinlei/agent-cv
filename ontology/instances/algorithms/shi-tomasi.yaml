@@ -1,0 +1,20 @@
+id: algo-shi-tomasi
+type: Algorithm
+name: Shi-Tomasi 角点
+year: 1994
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/shi-tomasi/
+plainTalk: 把 Harris 响应改成最小特征值 min(λ1,λ2)，不用调 k 参数，光流跟踪最爱的角点（goodFeaturesToTrack）。
+layer: L2
+tags:
+- classic-cv
+- corner
+- tracking
+papers:
+- paper-shi-tomasi-1994
+evolvedFrom: algo-harris
+dependsOn: []
+concepts: []
+painPoints: []
+tricks: []

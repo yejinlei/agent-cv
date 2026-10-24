@@ -1,0 +1,24 @@
+id: algo-brief
+type: Algorithm
+name: BRIEF 二进制描述子
+year: 2010
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/brief/
+plainTalk: 随机选 256 对点比较大小拼出二进制描述子，32 字节/点，汉明距离匹配快到飞起，不抗旋转。
+layer: L2
+tags:
+- classic-cv
+- descriptor
+- binary
+papers:
+- paper-calonder-2010-brief
+evolvedFrom: algo-sift
+replacedBy:
+- algo-orb
+dependsOn:
+- algo-fast
+concepts:
+- concept-binary-descriptor
+painPoints: []
+tricks: []

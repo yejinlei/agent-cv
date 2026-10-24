@@ -1,0 +1,11 @@
+id: paper-felzenszwalb-2008-dpm
+type: Paper
+title: "A Discriminatively Trained, Multiscale, Deformable Part Model"
+authors: ["Pedro F. Felzenszwalb", "David McAllester", "Deva Ramanan"]
+year: 2008
+venue: "CVPR 2008"
+contribution: >
+  提出可变形部件模型（DPM）：用 HOG 特征构建整体根滤波器 + 多个部件滤波器，
+  部件位置通过变形代价（deformation cost）约束而非硬绑定，
+  能容忍物体一定程度的姿态/形变。在 PASCAL VOC 上取得当时最佳成绩。
+doi: "10.1109/CVPR.2008.4587597"

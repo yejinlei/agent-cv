@@ -1,0 +1,36 @@
+id: paper-achanta-2010-slic
+type: Paper
+title: SLIC Superpixels Compared to State-of-the-Art Superpixel Methods
+authors:
+- Radhakrishna Achanta
+- Appu Shaji
+- Kevin Smith
+- Aurelien Lucchi
+- Pascal Fua
+- Sabine Süsstrunk
+year: 2012
+venue: IEEE Transactions on Pattern Analysis and Machine Intelligence
+venueType: journal
+contribution: SLIC：仅两参数（超像素数 K、紧密度 m）、线性复杂度的 LabXY 五维 K-Means 超像素算法，成为超像素标准。
+keyInsight: 超像素不需要全局搜索——把搜索范围限制在 2S×2S 的区域，就能得到 O(N) 复杂度。
+novelty:
+- LabXY 5 维空间 K-Means
+- 2S×2S 局部搜索，复杂度 O(N)
+- 边界粘附性优于 FH/NCuts/Watershed
+limitations:
+- 对纹理复杂区域边界不够贴合
+- K 和 m 仍需手动调
+- 紧凑度固定导致细长物体分割不佳
+relatedAlgorithms:
+- algo-slic
+- algo-kmeans
+influencedBy:
+- K-Means 聚类
+- FH/NCuts 超像素
+influenced:
+- 语义分割前处理、目标候选生成、视觉显著性检测
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/TPAMI.2012.120
+citationCount: 10000

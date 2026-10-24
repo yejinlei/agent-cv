@@ -1,0 +1,38 @@
+id: lib-opencv-python
+type: Library
+name: "OpenCV (Python)"
+language: Python
+role: "传统 CV 的通用工具箱：几乎所有经典算法都有实现。"
+maturity: production
+baselineVersion: "4.9"
+
+plainTalk: >
+  这就是传统视觉的"瑞士军刀"。什么都有，且大部分是 C++ 写的、速度很快。
+  学传统 CV 基本就是学 OpenCV 的 API 怎么调。
+
+strengths:
+  - "算法覆盖极全（滤波、特征、匹配、分割、几何、标定）"
+  - "底层 C++ + SIMD 优化，CPU 上性能好"
+  - "文档与教程极丰富，社区最大"
+  - "跨平台（Windows/Linux/Android/iOS）"
+  - "Python 绑定简洁，适合原型与教学"
+
+weaknesses:
+  - "部分算法受专利限制（SIFT/SURF 历史问题）"
+  - "深度学习模块（dnn）不如 PyTorch 生态"
+  - "细节参数的默认值有时不够合理"
+  - "Python 层的逐像素循环会拖慢性能（要用向量化）"
+
+install: "pip install opencv-python    # 完整版；服务器用 opencv-python-headless"
+docsUrl: "https://docs.opencv.org/4.x/"
+repoUrl: "https://github.com/opencv/opencv"
+
+usedByAlgorithms:
+  - algo-canny
+  - algo-sift
+  - algo-hog-svm
+  - algo-sobel
+  - algo-viola-jones
+
+docsPath: "/algorithms/"
+tags: ["OpenCV", "Python", "工具箱"]

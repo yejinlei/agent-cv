@@ -1,0 +1,13 @@
+id: concept-clip-limit
+type: Concept
+name: Clip Limit 对比度限制
+enName: Contrast Clip Limit
+field: enhancement
+plainTalk: 把直方图中超限的部分切下来均分给所有 bin，避免噪声被暴力放大
+explain: CLAHE 的核心：对每个 tile 直方图设 clipLimit，超限部分均摊给所有 bin，相当于在局部均衡时加了对比度天花板。
+appearsIn:
+- algo-clahe
+related:
+- concept-histogram-equalization
+docsPath: /algorithms/clahe/concepts
+layer: L2

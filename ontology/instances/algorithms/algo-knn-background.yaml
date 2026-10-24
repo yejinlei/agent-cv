@@ -1,0 +1,25 @@
+id: algo-knn-background
+type: Algorithm
+name: "KNN 背景建模"
+nameEn: "K-Nearest Neighbors Background Subtraction"
+year: 2006
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/knn-background/
+plainTalk: "给每个像素位置长期记账：它过去出现过哪些颜色，都存一小本档案。新来一个像素，就翻档案看它是否属于『常见的老颜色』，属于就认定是背景，突然冒出的陌生颜色才判定为前景运动物体。"
+concepts:
+  - concept-background-model
+tags:
+  - classic-cv
+  - background-subtraction
+  - video
+  - non-parametric
+papers:
+  - paper-zivkovic-2006-knn-bg
+evolvedFrom: algo-mog2
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

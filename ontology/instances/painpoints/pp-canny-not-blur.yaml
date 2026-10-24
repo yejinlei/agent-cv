@@ -1,0 +1,12 @@
+id: pp-canny-not-blur
+type: PainPoint
+name: "丢了 Canny 的第一步平滑"
+severity: high
+symptom: "边缘图里全是碎点噪声。"
+rootCause: "Canny 内部有高斯平滑，但很多人以为「我自己先锐化一下再 Canny 会更好」，结果锐化放大了噪声。"
+fix: "不要在做 Canny 之前做锐化或强对比度拉伸；若必须预处理，优先做去噪（中值/双边）而不是锐化。"
+detection: "对比「直接 Canny」和「锐化后 Canny」的噪声程度。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/painpoints"
+tags: ["踩坑", "Canny", "预处理"]

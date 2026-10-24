@@ -1,0 +1,47 @@
+id: app-panorama
+type: Application
+name: "全景图像拼接"
+domain: consumer
+
+plainTalk: >
+  拿着手机转一圈拍很多张，App 把它们缝成一张超宽的全景图。
+  难点在于缝的地方要看不出来——接缝处的亮度和细节要自然过渡。
+
+algorithmStack:
+  - algo-sift
+  - algo-homography
+  - op-l2-normalization
+
+hardware:
+  device: "手机 / PC"
+  needsGPU: false
+  fps: "离线处理"
+
+constraints:
+  - "必须绕光心旋转拍摄（平移会产生视差鬼影）"
+  - "相邻图要有足够重叠（> 30%）"
+  - "曝光差异要处理（否则接缝处亮度跳变）"
+  - "接缝处不能有错位重影"
+
+metrics:
+  - name: "接缝可见度"
+    target: "肉眼不可察觉"
+    note: "用多频段融合（拉普拉斯金字塔）实现"
+  - name: "重叠区域配准误差"
+    target: "< 1 px"
+    note: "SIFT + RANSAC 通常能达到"
+
+whyClassic: >
+  ① 特征匹配 + 单应矩阵是拼接的标准解法；
+  ② 多频段融合（拉普拉斯金字塔）能无缝过渡；
+  ③ 不需要训练，对不同场景都通用；
+  ④ 手机端 OpenCV 可离线运行。
+
+substituteByDL: >
+  深度学习可用于低纹理场景的特征匹配（如 SuperPoint + SuperGlue），
+  但几何求解部分（单应矩阵、融合）仍是传统方法，不可替代。
+
+caseStudies: []
+
+docsPath: "/cases/"
+tags: ["全景拼接", "特征匹配", "图像融合"]

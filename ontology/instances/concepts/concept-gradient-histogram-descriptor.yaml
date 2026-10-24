@@ -1,0 +1,21 @@
+id: concept-gradient-histogram-descriptor
+type: Concept
+name: "梯度方向直方图描述子"
+plainTalk: >
+  「给这个点记一份指纹」：把这个点周围分成 4×4 个小块，
+  每块统计「周围明暗变化的方向」有几个、朝哪些方向，
+  再把 16 块的结果拼起来，就是一个又长又能区分不同点的「指纹」。
+  SIFT 的指纹有 128 个数字；HOG 用的也是同一套思路。
+layer: L2
+relatedAlgorithms:
+  - algo-sift
+  - algo-hog-svm
+prerequisites:
+  - op-histogram
+  - op-l2-normalization
+keyFormula: "descriptor = concat_{i=1..16} hist_8dir(block_i)"
+usedIn:
+  - "SIFT 描述子"
+  - "HOG 特征"
+docsPath: "/algorithms/sift/concepts"
+tags: ["概念", "描述子", "SIFT核心", "HOG"]

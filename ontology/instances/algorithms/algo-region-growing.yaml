@@ -1,0 +1,24 @@
+id: algo-region-growing
+type: Algorithm
+name: 区域生长分割
+year: 1994
+branch: branch-segmentation
+status: stable
+docsPath: /algorithms/region-growing/
+plainTalk: 从种子出发用最小堆优先级扩散，每次吸进最像的像素，最直觉的交互式分割
+concepts:
+- concept-priority-queue-growing
+tags:
+- classic-cv
+- segmentation
+- interactive
+- region-growing
+papers:
+- paper-adams-1994-srg
+replacedBy:
+- algo-grabcut
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

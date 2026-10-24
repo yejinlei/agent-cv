@@ -1,0 +1,27 @@
+id: algo-bundle-adjustment
+type: Algorithm
+name: "光束法平差 BA"
+nameEn: "Bundle Adjustment"
+year: 1958
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/bundle-adjustment/
+plainTalk: "把所有相机的位姿和所有空间点的坐标当成一整副拼图，反复微调每一块，直到每个三维点重新投影回每张照片的位置都尽量贴合。它像团队一起对齐一张巨幅照片墙，让整体误差最小、结构最稳。"
+concepts:
+  - concept-lm-optimization
+  - concept-reprojection-error
+tags:
+  - classic-cv
+  - geometry
+  - slam
+  - optimization
+papers:
+  - paper-triggs-2000-ba
+evolvedFrom: algo-zhang-calibration
+replacedBy: []
+dependsOn:
+  - algo-triangulation
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L3

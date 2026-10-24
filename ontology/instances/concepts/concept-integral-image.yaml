@@ -1,0 +1,18 @@
+id: concept-integral-image
+type: Concept
+name: "积分图"
+plainTalk: >
+  「提前把账算好」：与其每问一次「这块区域总共多少」就重新加一遍，
+  不如先把「从左上角到每个点」的累加和全部存下来。
+  这样任意一个矩形区域的和，用四个数相减就出来了——不管这块区域多大。
+  这就是 Viola-Jones 能实时的秘密之一。
+layer: L2
+relatedAlgorithms:
+  - algo-viola-jones
+prerequisites: []
+keyFormula: "I(x,y) = Σ_{x'≤x, y'≤y} i(x',y')，矩形和 = 四角查表相减"
+usedIn:
+  - "Viola-Jones 的 Haar 特征 O(1) 计算"
+  - "快速区域统计（均值、方差）"
+docsPath: "/branches/detection/classic-detectors"
+tags: ["概念", "加速技巧", "级联"]

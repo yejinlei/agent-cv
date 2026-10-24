@@ -1,0 +1,47 @@
+id: algo-homography
+type: Algorithm
+name: 单应矩阵估计
+nameEn: Homography Estimation
+year: 1981
+branch: branch-geometry
+plainTalk: '你站在一栋楼前拍照，楼是方的，但照片里它是梯形（近大远小）。 单应矩阵就是一张"矫正表"：它告诉你照片上每个点应该挪到哪儿， 就能把那个梯形拉回成正方形。它只需要
+  4 组"原来在哪、应该在哪"的点。
+
+  '
+concepts:
+- concept-homography
+- concept-ransac
+evolvedFrom: null
+dependsOn:
+- algo-sift
+replacedBy: []
+inheritedBy:
+- 深度单应估计（如 HomographyNet）仍以 RANSAC 为基准对照
+papers:
+- paper-hartley-zisserman-2003
+implementations:
+- lib: OpenCV
+  func: cv2.findHomography
+  since: OpenCV 1.0
+- lib: OpenCV
+  func: cv2.warpPerspective
+metrics:
+- name: 求解所需最少点对
+  value: 4 组（每点提供 2 个方程）
+- name: 鲁棒性
+  value: 配合 RANSAC 可容忍 50% 以上误匹配
+applications:
+- app-document-scan
+- app-panorama
+caseStudies:
+- case-heritage
+painPoints: []
+tricks:
+- trick-sift-lowe-ratio
+layer: L3
+docsPath: /algorithms/homography/
+status: stable
+tags:
+- 几何
+- 投影变换
+- RANSAC

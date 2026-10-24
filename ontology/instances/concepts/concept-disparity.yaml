@@ -1,0 +1,6 @@
+id: concept-disparity
+type: Concept
+name: 视差
+plainTalk: 同一个 3D 点在左右相机里的横坐标差，近大远小
+layer: L2
+formalDefinition: d = x_L - x_R，深度 Z = f·B/d，B 为基线，f 为焦距

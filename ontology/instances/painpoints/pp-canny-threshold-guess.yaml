@@ -1,0 +1,12 @@
+id: pp-canny-threshold-guess
+type: PainPoint
+name: "Canny 阈值凭感觉设"
+severity: high
+symptom: "用默认阈值（100/200）时，有的图全是边，有的图几乎没有边。"
+rootCause: "阈值是绝对灰度梯度值，和图像本身的对比度强相关，默认值只在特定图像上合适。"
+fix: "① 按 T_high : T_low = 2:1 或 3:1 设比例；② 用 Otsu 自动求阈值；③ 用中位数 + 倍数自适应。"
+detection: "先画梯度幅值的直方图，看分布集中在哪个量级。"
+relatedAlgorithms:
+  - algo-canny
+docsPath: "/algorithms/canny/painpoints"
+tags: ["踩坑", "Canny", "调参"]

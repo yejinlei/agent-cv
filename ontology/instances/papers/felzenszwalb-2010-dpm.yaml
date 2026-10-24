@@ -1,0 +1,11 @@
+id: paper-felzenszwalb-2010-dpm
+type: Paper
+title: "Object Detection with Discriminatively Trained Part-Based Models"
+authors: ["Pedro F. Felzenszwalb", "Ross B. Girshick", "David McAllester", "Deva Ramanan"]
+year: 2010
+venue: "IEEE TPAMI 2010"
+contribution: >
+  DPM 的完整期刊版，加入了难例挖掘（hard negative mining）、
+  上下文重评分（context rescoring）、包围盒预测等改进。
+  该文 2010 年获 PASCAL VOC Lifetime Achievement Award，标志传统检测巅峰。
+doi: "10.1109/TPAMI.2009.167"

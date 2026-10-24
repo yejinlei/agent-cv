@@ -1,0 +1,57 @@
+id: paper-lowe-1999
+type: Paper
+title: "Object Recognition from Local Scale-Invariant Features"
+authors:
+  - "David G. Lowe"
+year: 1999
+venue: "IEEE International Conference on Computer Vision (ICCV)"
+venueType: conference
+doi: "10.1109/ICCV.1999.790410"
+url: "https://ieeexplore.ieee.org/document/790410"
+citationCount: 20000
+
+contribution: >
+  SIFT 的初版（ICCV 1999），首次提出「在尺度空间中检测局部特征」的完整框架：
+  用 DoG 找尺度空间极值点、用梯度方向直方图构建描述子、用最近邻 + 比值做匹配。
+  这一版已经具备尺度不变与旋转不变，但描述子的处理较粗糙（未做块内归一化）。
+  它证明了「尺度不变特征」在物体识别中可行，为 2004 年的完整版奠定基础。
+
+keyInsight: >
+  特征点的「可重复性」比「描述子的复杂度」更重要——先在尺度空间找稳的点，再谈怎么描述它。
+
+novelty:
+  - "首次把「尺度空间极值检测」用于局部特征提取"
+  - "提出用 DoG 高效近似 LoG"
+  - "提出基于梯度方向直方图的描述子雏形"
+
+limitations:
+  - "描述子未做块内归一化，对光照变化鲁棒性不足（2004 版修正）"
+  - "未给出关键点的亚像素精确定位（2004 版用 Taylor 展开修正）"
+  - "匹配的筛选策略较简单"
+
+relatedAlgorithms:
+  - algo-sift
+
+influencedBy:
+  - "Lindeberg 的尺度空间理论"
+  - "Moravec 角点检测"
+
+influenced:
+  - "SIFT 完整版（IJCV 2004）"
+  - "SURF、ORB 等整代特征方法"
+
+readStatus: read
+
+bibtex: |
+  @inproceedings{lowe1999object,
+    title={Object recognition from local scale-invariant features},
+    author={Lowe, David G},
+    booktitle={IEEE International Conference on Computer Vision (ICCV)},
+    volume={2},
+    pages={1150--1157},
+    year={1999},
+    organization={IEEE}
+  }
+
+docsPath: "/algorithms/sift/paper"
+tags: ["特征点", "1999", "ICCV", "SIFT初版"]

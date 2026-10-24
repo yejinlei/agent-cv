@@ -1,0 +1,20 @@
+id: concept-homography
+type: Concept
+name: "单应变换（投影变换）"
+plainTalk: >
+  拍一张地面的方砖，近处的砖显得大、远处的显得小，方砖在照片里变成梯形。
+  单应变换就是描述「同一个平面从不同角度看上去会怎么变形」的数学规则。
+  它有一个重要性质：只要知道 4 组对应点，就能把整张图的变形规律算出来。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-homography
+prerequisites:
+  - concept-ransac
+keyFormula: "x' = Hx，H 为 3×3 矩阵（相差一个尺度因子）"
+usedIn:
+  - "文档扫描的透视矫正"
+  - "全景拼接的配准"
+  - "AR 中的平面追踪"
+docsPath: "/branches/geometry/homography"
+tags: ["概念", "几何", "投影变换"]

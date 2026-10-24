@@ -1,0 +1,67 @@
+id: paper-lowe-2004
+type: Paper
+title: "Distinctive Image Features from Scale-Invariant Keypoints"
+authors:
+  - "David G. Lowe"
+year: 2004
+venue: "International Journal of Computer Vision"
+venueType: journal
+doi: "10.1023/B:VISI.0000029664.99615.94"
+url: "https://link.springer.com/article/10.1023/B:VISI.0000029664.99615.94"
+citationCount: 70000
+
+contribution: >
+  给出了第一个「四大不变性」都具备、且性能远超同期的局部特征方法：
+  在尺度空间里找极值点（尺度不变）、用主方向归一化（旋转不变）、
+  用梯度方向直方图做描述子并对幅值做截断归一化（光照不变）、
+  用小范围视角变化下的局部统计（弱视角不变）。
+  更重要的是，它把「特征匹配」从「工程技巧」提升为「可复用的标准流程」，
+  并给出了完整的匹配筛选方法（Lowe 比值检验）。
+
+keyInsight: >
+  把「找特征点」放到「尺度空间」里做——同一个物体不管远近，
+  总有一个尺度上的响应最突出，所以尺度变化被自动吸收了。
+
+novelty:
+  - "用高斯差分（DoG）高效近似尺度归一化高斯拉普拉斯（LoG）"
+  - "提出亚像素精度的关键点定位（用 Taylor 展开剔除低对比度和边缘响应点）"
+  - "用梯度方向直方图 + 幅值阈值截断 + 归一化，构建 128 维描述子"
+  - "提出 Lowe 比值检验（distance ratio test），显著降低误匹配"
+
+limitations:
+  - "计算量大，难以实时（论文给出的时间受当时硬件限制）"
+  - "对视角变化（超过约 30°）和仿射形变的鲁棒性有限"
+  - "对数纹理区域响应过多，需要限制特征数"
+  - "算法本身受专利保护（US 6,711,293），2018–2020 先后到期"
+
+relatedAlgorithms:
+  - algo-sift
+
+influencedBy:
+  - "Lindeberg 的尺度空间理论（1994, 1998）"
+  - "Koenderink 关于高斯核唯一性的证明（1984）"
+  - "Moravec 角点检测（1977）→ Harris 角点（1988）"
+
+influenced:
+  - "SURF（2006）——DoG 换 Hessian，加速"
+  - "ORB（2011）——用 BRIEF 描述子，实时"
+  - "AKAZE / BRISK / KAZE 等一整代特征方法"
+  - "学习式特征（SuperPoint、R2D2）的评测基准"
+  - "SLAM / SFM 系统的标配（ORB-SLAM、COLMAP）"
+
+readStatus: deep-read
+
+bibtex: |
+  @article{lowe2004distinctive,
+    title={Distinctive image features from scale-invariant keypoints},
+    author={Lowe, David G},
+    journal={International Journal of Computer Vision},
+    volume={60},
+    number={2},
+    pages={91--110},
+    year={2004},
+    publisher={Springer}
+  }
+
+docsPath: "/algorithms/sift/paper"
+tags: ["特征点", "尺度不变", "2004", "IJCV", "里程碑"]

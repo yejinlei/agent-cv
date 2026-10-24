@@ -1,0 +1,64 @@
+id: paper-viola-jones-2001
+type: Paper
+title: "Rapid Object Detection using a Boosted Cascade of Simple Features"
+authors:
+  - "Paul Viola"
+  - "Michael Jones"
+year: 2001
+venue: "IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"
+venueType: conference
+doi: "10.1109/CVPR.2001.990517"
+url: "https://ieeexplore.ieee.org/document/990517"
+citationCount: 40000
+
+contribution: >
+  第一次让「通用目标检测」达到实时速度，并从工程上给出了完整可用的方案。
+  三个关键贡献：① 用积分图把 Haar 特征的计算变成 O(1)；
+  ② 用 AdaBoost 从海量特征中挑出少量有效特征；
+  ③ 用级联结构让大部分窗口在前几级就被淘汰，从而把平均计算量降几个数量级。
+  它证明了「多尺度滑动窗口 + 分类器」这条路走得通，直接影响了此后十年的检测范式。
+
+keyInsight: >
+  检测的瓶颈不是「单个窗口判得准不准」，而是「要判几百万个窗口」——
+  级联的作用就是把「大部分窗口」变得极其便宜。
+
+novelty:
+  - "用积分图实现 Haar 特征的 O(1) 计算（含旋转 45° 的特征）"
+  - "用 AdaBoost 做特征选择，从数万个特征里挑几百个"
+  - "提出「级联（cascade）」结构，让计算量集中在少数疑似窗口上"
+  - "注意力级联（attentional cascade）设计：前面的级用少量特征快速否决"
+
+limitations:
+  - "对正脸效果好，侧脸和遮挡下明显变差（这也是后来 DPM/深度学习的机会）"
+  - "只针对刚性、纹理简单的目标（人脸最典型）"
+  - "级联结构难以在 GPU 上高效并行（深度学习方案的优势之一）"
+
+relatedAlgorithms:
+  - algo-viola-jones
+
+influencedBy:
+  - "Papageorgiou 等人的 Haar 特征 + SVM 目标检测"
+  - "AdaBoost（Freund & Schapire, 1997）"
+  - "Crow 的积分图思想"
+
+influenced:
+  - "HOG + SVM（2005）——沿用「固定窗口 + 分类器」范式"
+  - "DPM（2008）"
+  - "级联思想在深度学习中的复现（Cascade R-CNN）"
+  - "OpenCV 内置人脸检测器（haarcascade_*.xml）至今仍被广泛使用"
+
+readStatus: read
+
+bibtex: |
+  @inproceedings{viola2001rapid,
+    title={Rapid object detection using a boosted cascade of simple features},
+    author={Viola, Paul and Jones, Michael},
+    booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    volume={1},
+    pages={I--I},
+    year={2001},
+    organization={IEEE}
+  }
+
+docsPath: "/branches/detection/classic-detectors"
+tags: ["人脸检测", "实时", "级联", "2001", "CVPR"]

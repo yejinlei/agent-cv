@@ -1,0 +1,16 @@
+id: trick-sift-flann
+type: Trick
+name: "用 FLANN 加速高维描述子匹配"
+difficulty: medium
+scenario: "特征数量多（上千）时的描述子匹配。"
+how: >
+  SIFT 是 128 维浮点向量，暴力匹配是 O(N²)。
+  改用 cv2.FlannBasedMatcher（KD-Tree 或 LSH），
+  KD-Tree 参数 trees=5、checks=50 是常见起点。
+  也可以先做 PCA 降维（降到 64 维）再做匹配。
+effect: "匹配速度提升数倍到数十倍，精度损失可接受。"
+caveat: "FLANN 不保证精确最近邻；对精度极敏感的场景仍应用暴力匹配。"
+relatedAlgorithms:
+  - algo-sift
+docsPath: "/algorithms/sift/tricks"
+tags: ["技巧", "SIFT", "加速"]

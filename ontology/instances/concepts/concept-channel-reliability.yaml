@@ -1,0 +1,13 @@
+id: concept-channel-reliability
+type: Concept
+name: 通道可靠性权重
+enName: Channel Reliability Weighting
+field: tracking
+plainTalk: 给每个特征通道按 PSR 和稳定性打分，加权求和响应图，让不靠谱的通道自动降权
+explain: CSRT 的通道可靠性由 PSR（峰锐度）和学习稳定性共同决定，遮挡/模糊的通道权重会自动趋近于 0。
+appearsIn:
+- algo-csrt
+related:
+- concept-correlation-filter
+docsPath: /algorithms/csrt/concepts
+layer: L2

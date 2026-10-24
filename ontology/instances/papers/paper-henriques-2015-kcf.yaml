@@ -1,0 +1,22 @@
+id: paper-henriques-2015-kcf
+type: Paper
+title: "High-Speed Tracking with Kernelized Correlation Filters"
+authors: ["João F. Henriques", "Rui Caseiro", "Pedro Martins", "Jorge Batista"]
+year: 2015
+venue: IEEE TPAMI
+url: "https://arxiv.org/abs/1404.7584"
+doi: "10.1109/TPAMI.2014.2345390"
+
+contribution: "用循环矩阵+FFT 将相关滤波训练/检测速度推到数百 FPS，并引入核技巧与多通道 HOG"
+keyInsight: "滑动窗口的所有候选都是模板的循环移位，在傅里叶域可一次全部算出"
+novelty:
+  - "循环矩阵对角化把 O(n³) 降到 O(n log n)"
+  - "核技巧（高斯核）做非线性边界"
+  - "多通道 HOG 特征扩展"
+limitations:
+  - "不处理尺度变化"
+  - "遮挡后正反馈漂移"
+  - "无重检测机制"
+influencedBy: ["algo-mosse"]
+influenced: ["algo-dsst", "algo-csrt", "algo-sort"]
+docsPath: "/algorithms/kcf/paper"

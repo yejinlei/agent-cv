@@ -1,0 +1,31 @@
+id: paper-farneback-2003-denseflow
+type: Paper
+title: Two-Frame Motion Estimation Based on Polynomial Expansion
+authors:
+- Gunnar Farnebäck
+year: 2003
+venue: Scandinavian Conference on Image Analysis (SCIA)
+venueType: conference
+contribution: 基于局部二次多项式展开的稠密光流算法，每个像素都估计位移，OpenCV 稠密光流标配。
+keyInsight: 图像局部可以用二次多项式近似；多项式系数在位移下可解析解出，得到亚像素精度位移。
+novelty:
+- 二次多项式展开建模局部邻域
+- 可分离+多尺度提升稳定性
+- 稠密逐像素位移估计
+limitations:
+- 假设小位移，需金字塔处理大运动
+- 对光照变化和大遮挡敏感
+- 边界区域误差大
+relatedAlgorithms:
+- algo-farneback
+influencedBy:
+- Lucas-Kanade 稀疏光流
+- Horn-Schunck 稠密变分光流
+influenced:
+- OpenCV calcOpticalFlowFarneback
+- 视频稳像、动作识别稠密轨迹
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1007/3-540-45103-X_50
+citationCount: 3800

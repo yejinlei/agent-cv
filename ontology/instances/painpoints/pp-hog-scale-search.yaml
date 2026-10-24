@@ -1,0 +1,12 @@
+id: pp-hog-scale-search
+type: PainPoint
+name: "尺度步长太大导致漏检"
+severity: medium
+symptom: "目标大小介于两个尺度之间时，怎么都检测不到。"
+rootCause: "尺度之间如果按 1.2 倍递增，那么窗口尺寸的覆盖会有空隙，位于空隙中的目标既不匹配大尺度也不匹配小尺度。"
+fix: "① 尺度步长收窄到 1.05–1.1；② 用图像金字塔而不是缩放检测窗口（SIFT 的做法）；③ 检测后做 NMS 合并多尺度响应。"
+detection: "用合成目标（已知实际尺寸）测试各尺度响应。"
+relatedAlgorithms:
+  - algo-hog-svm
+docsPath: "/algorithms/hog-svm/painpoints"
+tags: ["踩坑", "HOG", "多尺度"]

@@ -1,0 +1,23 @@
+id: algo-connected-components
+type: Algorithm
+name: 连通域分析（Two-Pass）
+year: 1966
+branch: branch-image-processing
+status: stable
+docsPath: /algorithms/connected-components/
+plainTalk: 两遍扫描 + 并查集给二值图每个连通块打标签，带面积/框/质心统计，数个数首选
+concepts:
+- concept-union-find
+tags:
+- classic-cv
+- binary
+- labeling
+- counting
+papers:
+- paper-rosenfeld-1966-cc
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L1

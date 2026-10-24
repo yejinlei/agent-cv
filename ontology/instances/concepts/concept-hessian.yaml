@@ -1,0 +1,18 @@
+id: concept-hessian
+type: Concept
+name: "海森矩阵"
+brief: "由二阶偏导构成的对称矩阵，用于描述图像局部曲面的曲率/凹凸性，是 blob 检测的核心工具。"
+layer: L1
+plainTalk: >
+  海森矩阵就像给图像上每一点放一台「曲面测量仪」：x²方向的弯曲度、y²方向的弯曲度、
+  xy交叉方向的弯曲度三个数字组成一个 2×2 矩阵，它的两个特征值对应两个主曲率方向。
+  两个特征值都比较大且符号相同 → 说明周围像素同时向两个方向凸/凹 → 就是 blob（斑点/块）。
+detail: >
+  H = [[Ixx, Ixy], [Ixy, Iyy]] 。SURF 把 DoG 换成 Fast-Hessian：用盒式滤波器近似高斯二阶导，
+  再配合积分图，把卷积从 O(k²) 降到 O(1)。
+related:
+  - op-hessian
+  - op-gaussian-blur
+  - concept-hessian-detector
+docsPath: "/branches/feature-detection/blobs"
+tags: ["数学", "角点", "blob"]

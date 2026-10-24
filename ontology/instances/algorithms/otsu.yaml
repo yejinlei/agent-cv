@@ -1,0 +1,62 @@
+id: algo-otsu
+type: Algorithm
+name: "Otsu 大津阈值法"
+nameEn: "Otsu's Method"
+year: 1979
+branch: branch-image-processing
+
+plainTalk: >
+  「自动选黑白分界线的裁判」：二值化时不用人眼反复调阈值，
+  它会试遍所有可能的阈值，挑那个让前景和背景「分得最开」的——
+  也就是类间方差最大。
+  但它有前提：前景背景灰度要分明、光照要均匀。
+  一旦光照不均，它就一边过曝一边欠曝，得先做归一化或改用局部阈值。
+
+concepts:
+  - concept-otsu-threshold
+  - concept-histogram
+
+chapters:
+  - ch-05-segmentation
+
+evolvedFrom: null
+
+dependsOn:
+  - op-histogram
+
+replacedBy:
+  - "自适应的局部阈值法（cv2.adaptiveThreshold）"
+
+inheritedBy:
+  - "一维 2-means / K-means 聚类的全局最优特例"
+
+papers:
+  - paper-otsu-1979
+
+implementations:
+  - lib: "OpenCV"
+    func: "cv2.threshold(..., cv2.THRESH_OTSU)"
+    since: "OpenCV 1.0"
+  - lib: "scikit-image"
+    func: "skimage.filters.threshold_otsu"
+  - lib: "MATLAB"
+    func: "graythresh"
+
+metrics:
+  - name: "速度（1080p 灰度，OpenCV）"
+    value: "约 3 ms（几乎等于算一次直方图）"
+    hardware: "Intel i5"
+  - name: "复杂度"
+    value: "O(L + 256)，与图像大小基本无关（直方图 + 前缀递推）"
+  - name: "双峰图像上的最优性"
+    value: "等价于一维 2-means 的全局最优解"
+    dataset: "合成双峰直方图"
+
+applications:
+  - app-document-scan
+  - app-industrial-defect
+
+layer: L3
+docsPath: "/algorithms/otsu/"
+status: stable
+tags: ["阈值分割", "二值化", "基础算子", "1979"]

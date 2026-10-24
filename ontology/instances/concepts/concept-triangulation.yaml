@@ -1,0 +1,21 @@
+id: concept-triangulation
+type: Concept
+name: "三角化（Triangulation）"
+plainTalk: >
+  「两条视线在空间中的交点」：同一个空间点，左相机看到它在左图的位置、
+  右相机看到它在右图的位置，从两个相机中心各射出一条视线，
+  这两条线在空间中的交点就是它的三维位置。
+  实际因为有噪声，两条线不一定严格相交，所以取「最近的公共点」。
+layer: L2
+relatedAlgorithms:
+  - algo-epipolar
+prerequisites:
+  - concept-epipolar-geometry
+  - concept-fundamental-matrix
+keyFormula: "两条射线求最近点（最小二乘）：min ‖x₁ + λ₁d₁ − (x₂ + λ₂d₂)‖²"
+usedIn:
+  - "三维重建（SfM）"
+  - "视觉 SLAM"
+  - "双目深度估计"
+docsPath: "/branches/geometry/epipolar"
+tags: ["概念", "几何", "三维重建", "三角化"]

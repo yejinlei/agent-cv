@@ -1,0 +1,19 @@
+id: ch-03-preprocessing
+type: Chapter
+number: 3
+name: 图像预处理
+plainTalk: 对原始照片做「打底美颜」——去掉噪点、调亮对比度，让后面看清细节的工作更好做。
+level: 低层
+branches:
+  - branch-image-processing
+coreQuestion: 拿到一张原始脏图，怎么把它清理干净，让后续算法更容易看清内容？
+concepts:
+  - concept-gaussian-blur
+  - concept-histogram
+  - concept-otsu-threshold
+  - concept-brightness-constancy
+papers:
+  - paper-otsu-1979
+docsPath: /chapters/ch03-preprocessing
+prevChapter: null
+nextChapter: ch-04-primitives

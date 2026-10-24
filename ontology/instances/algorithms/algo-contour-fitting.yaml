@@ -1,0 +1,26 @@
+id: algo-contour-fitting
+type: Algorithm
+name: "轮廓拟合与多边形逼近"
+nameEn: "Contour Fitting & Polygon Approximation"
+year: 1973
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/contour-fitting/
+plainTalk: "沿着物体边缘走一圈会留下密密麻麻的点，就像手绘地图上无数个脚印。多边形逼近就是只保留几个拐弯处的大转角，把上千个脚印压缩成几个关键顶点，圆滑的轮廓也能用最少的笔画勾勒出来。"
+concepts:
+  - concept-contour-approximation
+tags:
+  - classic-cv
+  - shape
+  - contour
+  - simplification
+papers:
+  - paper-douglas-peucker-1973
+evolvedFrom: null
+replacedBy: []
+dependsOn:
+  - op-find-contours
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

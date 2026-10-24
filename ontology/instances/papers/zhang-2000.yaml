@@ -1,0 +1,66 @@
+id: paper-zhang-2000
+type: Paper
+title: "A Flexible New Technique for Camera Calibration"
+authors:
+  - "Zhengyou Zhang"
+year: 2000
+venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)"
+venueType: journal
+doi: "10.1109/34.888718"
+url: "https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr98-71.pdf"
+citationCount: 27000
+
+contribution: >
+  证明了「仅用平面靶标（打印棋盘格），从不同角度拍≥3张照片，
+  就能高精度标定相机内参和畸变」——成本从几千元的3D精密标定物降到一张A4纸。
+  数学上利用平面单应矩阵 H 对内参 K 的约束闭解出5个内参，
+  再用LM非线性优化精化，重投影误差可达0.1像素。
+  这是 OpenCV/Matlab/HALCON/ROS 等几乎所有标定工具的底层理论基础。
+
+keyInsight: >
+  「当所有标定点共面时，世界→图像变换是单应矩阵 H（8自由度），
+  而 H 内藏内参 K 的正交约束；多姿态 H 累积的约束足够闭解出 K，无需3D标定物。」
+
+novelty:
+  - "用平面靶标替代3D标定物，成本降两个数量级而精度相当"
+  - "B矩阵闭式分解：从多个单应直接解出内参K（3张图即够）"
+  - "闭解阶段同时估计径向畸变k1、k2"
+  - "LM最大似然精化：同时优化内参+畸变+所有外参"
+  - "分析了姿态退化情况（平行拍摄约束不足）"
+
+limitations:
+  - "仍需标定板（不能完全自标定）"
+  - "对拍摄姿态分布敏感，需要足够多样的倾斜角度"
+  - "棋盘必须平整（否则引入系统性误差）"
+  - "默认针孔模型，>150°鱼眼需专用fisheye模型"
+
+relatedAlgorithms:
+  - algo-zhang-calibration
+
+influencedBy:
+  - "Tsai 1987 两步法（3D标定物经典方法）"
+  - "DLT直接线性变换（Abdel-Aziz 1971）"
+  - "Faugeras 1986 自标定思路"
+
+influenced:
+  - "OpenCV calibrateCamera（工业事实标准）"
+  - "Matlab Camera Calibrator Toolbox"
+  - "Kalibr多相机/IMU标定"
+  - "AprilCal、ChArUco等现代标定工具"
+
+readStatus: deep-read
+
+bibtex: |
+  @article{zhang2000flexible,
+    title={A flexible new technique for camera calibration},
+    author={Zhang, Zhengyou},
+    journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+    volume={22},
+    number={11},
+    pages={1330--1334},
+    year={2000},
+    publisher={IEEE}
+  }
+
+docsPath: "/algorithms/zhang-calibration/paper"
+tags: ["camera-calibration", "geometry", "zhang-method", "2000"]

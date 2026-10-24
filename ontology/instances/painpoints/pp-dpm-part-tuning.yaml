@@ -1,0 +1,19 @@
+id: pp-dpm-part-tuning
+type: PainPoint
+name: "部件数量与锚点难调"
+severity: medium
+symptom: >
+  加了部件模型反而不如纯 HOG 根模型效果好；或部件滤波器训练出来互相干扰、位置全歪。
+rootCause: >
+  部件数量、部件锚点（anchor location）、变形代价系数都是手工设定/通过 latent SVM 学习；
+  数据不足、标注只有整框（没有部件标注）时，部件位置是潜在变量，训练容易陷入局部最优。
+fix: >
+  1）先用官方默认的 8 部件配置，不要自己乱加；
+  2）保证正样本 >2000 张且姿态变化充分；
+  3）部件太多（>12）反而过拟合——"少即是多"；
+  4）数据量小时直接用 HOG+SVM 单模板更稳。
+detection: "可视化部件滤波器的响应图——如果响应一片糊没有明显峰值，说明部件没学到东西"
+relatedAlgorithms:
+  - algo-dpm
+docsPath: "/branches/detection/dpm"
+tags: ["调参", "部件模型", "DPM"]

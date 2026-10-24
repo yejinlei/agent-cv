@@ -1,0 +1,47 @@
+id: app-security-surveillance
+type: Application
+name: "安防监控"
+domain: security
+
+plainTalk: >
+  摄像头 24 小时盯着，有人进画面就报警，或者统计进出人数。
+  早期主要靠「帧间差分找动的区域」+「人脸检测」两套传统方法。
+
+algorithmStack:
+  - algo-canny
+  - algo-viola-jones
+  - algo-optical-flow
+
+hardware:
+  device: "DVR / NVR / 工控机"
+  needsGPU: false
+  fps: "15–30 fps"
+  resolution: "720p / 1080p"
+
+constraints:
+  - "7×24 连续运行（稳定性优先）"
+  - "夜间低照度（噪声大）"
+  - "成本敏感（设备量大）"
+  - "误报会疲劳值班人员"
+
+metrics:
+  - name: "人脸检出率"
+    target: "正脸 > 95%（Viola-Jones）"
+    note: "受光照影响较大"
+  - name: "误报率"
+    target: "< 1 次/小时"
+
+whyClassic: >
+  ① 低成本设备大量部署，无 GPU；
+  ② 7×24 运行要求算法稳定、无内存泄漏；
+  ③ 简单任务（运动检测、人脸检测）传统方法足够；
+  ④ 行为可预测，便于远程运维。
+
+substituteByDL: >
+  智能安防已大量转向深度学习（人形检测、行为识别、车牌识别），
+  但底层的运动检测、画面稳定、光照增强仍大量使用传统方法。
+
+caseStudies: []
+
+docsPath: "/cases/"
+tags: ["安防", "监控", "低功耗"]

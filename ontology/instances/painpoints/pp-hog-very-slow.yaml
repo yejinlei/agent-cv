@@ -1,0 +1,12 @@
+id: pp-hog-very-slow
+type: PainPoint
+name: "HOG + 多尺度滑动极慢"
+severity: high
+symptom: "单张图检测要几秒，无法实时。"
+rootCause: "多尺度滑动窗口意味着要把同一张图用几十个尺度扫一遍，计算量随尺度数线性增长。"
+fix: "① 限制尺度范围与步长；② 只在 ROI 内检测；③ 降分辨率；④ 用累加通道特征（ACF，比 HOG 快一个数量级）；⑤ 用 GPU 版 HOG 或换深度学习方案。"
+detection: "统计「每个尺度的耗时 × 尺度数」。"
+relatedAlgorithms:
+  - algo-hog-svm
+docsPath: "/algorithms/hog-svm/painpoints"
+tags: ["踩坑", "HOG", "性能"]

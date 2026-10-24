@@ -1,0 +1,31 @@
+id: paper-hirschmueller-2005-sgm
+type: Paper
+title: Stereo Processing by Semiglobal Matching and Mutual Information
+authors:
+- Heiko Hirschmüller
+year: 2005
+venue: IEEE Transactions on Pattern Analysis and Machine Intelligence
+venueType: journal
+contribution: 半全局匹配 SGM：沿 8/16 个方向做一维动态规划聚合代价，速度接近局部、精度接近全局。
+keyInsight: 全局 2D 能量最小化太慢，但沿多个独立方向做 1D 动态规划再聚合，就能『半全局』逼近最优。
+novelty:
+- 8/16 方向路径代价聚合
+- P1/P2 两个平滑惩罚参数
+- 互信息作为匹配代价，抗光照变化
+limitations:
+- 内存占用大（需 H×W×D 代价体）
+- 参数 P1/P2 需场景调优
+- 在重复纹理/遮挡区域仍有误差
+relatedAlgorithms:
+- algo-sgbm
+influencedBy:
+- 动态规划立体匹配（Cox 等）
+- 互信息配准（Viola）
+influenced:
+- OpenCV StereoSGBM
+- 自动驾驶双目视觉、KITTI 基线方法
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/TPAMI.2007.1166
+citationCount: 9500

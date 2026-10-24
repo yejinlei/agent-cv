@@ -1,0 +1,26 @@
+id: algo-hough-circles
+type: Algorithm
+name: "霍夫圆变换"
+nameEn: "Hough Circle Transform"
+year: 1972
+branch: branch-feature-detection
+status: stable
+docsPath: /algorithms/hough-circles/
+plainTalk: "桌上一堆散落的圆点，你要找出它们属于哪些圆。每个人拿把尺子猜一个圆心，猜中的人举表投票，票最多的圆心就是真正的圆心——这就是霍夫圆变换：让每个边缘点去给『可能的圆心』投票，票仓最高的位置即圆心。"
+concepts:
+  - concept-hough-transform
+  - concept-parameter-space
+tags:
+  - classic-cv
+  - shape
+  - voting
+  - circle
+papers:
+  - paper-duda-hart-1972-hough
+evolvedFrom: algo-hough
+replacedBy: []
+dependsOn: []
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L2

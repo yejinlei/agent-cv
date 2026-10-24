@@ -1,0 +1,18 @@
+id: concept-non-maximum-suppression
+type: Concept
+name: "非极大值抑制（NMS）"
+plainTalk: >
+  「粗线削成细线」：描出来的边往往有好几个像素宽，但真正的边只有一条。
+  沿边的垂直方向看，只留下最亮的那个点，其他的都抹掉。
+  注意目标检测里的 NMS 是「框去重」，含义不同但思路一致：只留最好的那个。
+layer: L2
+relatedAlgorithms:
+  - algo-canny
+prerequisites:
+  - concept-gradient-magnitude
+keyFormula: "保留 (x,y) 当且仅当 M(x,y) ≥ 沿梯度方向的两个邻居"
+usedIn:
+  - "Canny 边缘细化"
+  - "目标检测候选框去重"
+docsPath: "/algorithms/canny/concepts"
+tags: ["概念", "细化", "Canny核心"]

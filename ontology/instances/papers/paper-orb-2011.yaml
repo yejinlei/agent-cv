@@ -1,0 +1,27 @@
+id: paper-orb-2011
+type: Paper
+title: 'ORB: an efficient alternative to SIFT or SURF'
+authors:
+- Ethan Rublee
+- Vincent Rabaud
+- Kurt Konolige
+- Gary Bradski
+year: 2011
+venue: ICCV 2011
+relatedAlgorithms:
+- algo-orb
+doi: 10.1109/ICCV.2011.6126544
+tags:
+- classic-cv
+venueType: conference
+keyInsight: 把带方向的 FAST 角点 + 旋转 BRIEF 二进制描述子组合起来，做出免费且最快的 SIFT 替代品。
+novelty:
+- oFAST：给 FAST 角点加主方向
+- rBRIEF：学习旋转不变的二进制采样对
+limitations:
+- 尺度不变性靠图像金字塔近似
+- 对非刚性形变描述能力弱
+readStatus: deep-read
+citationCount: 12000
+contribution: 提出 oFAST（带方向 FAST）+ rBRIEF（旋转 BRIEF）组合，开源免费、速度极快，成为 SIFT/SURF 的工业替代品并被
+  OpenCV 内置。

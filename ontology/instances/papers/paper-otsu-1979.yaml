@@ -1,0 +1,23 @@
+id: paper-otsu-1979
+type: Paper
+title: A Threshold Selection Method from Gray-Level Histograms
+authors:
+- Nobuyuki Otsu
+year: 1979
+venue: IEEE Trans. Systems, Man, and Cybernetics
+relatedAlgorithms:
+- algo-otsu
+doi: 10.1109/TSMC.1979.4310076
+tags:
+- classic-cv
+venueType: journal
+keyInsight: 阈值应该让前景和背景的类间方差最大，而不是让人眼满意。
+novelty:
+- 把阈值选择转化为类间方差最大化问题
+- 给出 O(L) 直方图算法
+limitations:
+- 单峰或双峰不明显的直方图效果差
+- 对光照不均、阴影敏感
+readStatus: deep-read
+citationCount: 25000
+contribution: 提出基于类间方差最大化的自动阈值选择法，把二值化从肉眼挑阈值变成有数学目标的自动过程，文档/工业分割沿用至今。

@@ -1,0 +1,58 @@
+id: paper-hartley-zisserman-2003
+type: Paper
+title: "Multiple View Geometry in Computer Vision (2nd Edition)"
+authors:
+  - "Richard Hartley"
+  - "Andrew Zisserman"
+year: 2003
+venue: "Cambridge University Press"
+venueType: journal
+doi: "10.1017/CBO9780511811685"
+url: "https://www.cambridge.org/core/books/multiple-view-geometry-in-computer-vision/0B6F289C78B2B23F596CAA76D3D43F7A"
+citationCount: 30000
+
+contribution: >
+  这不是一篇论文，而是把「多视图几何」这个分支从零散论文整理成一套自洽理论体系的教科书。
+  它统一了单应、基础矩阵、本质矩阵、三角化、光束法平差等概念的定义与推导，
+  并系统性地引入 RANSAC 作为鲁棒估计的标准工具。此后所有三维视觉工作都以它为准绳。
+
+keyInsight: >
+  「多个视角看到的同一个三维点，其约束可以用一组代数关系精确刻画」——几何可视化成了线性代数。
+
+novelty:
+  - "系统整合投影几何、相机模型、两视图/三视图几何的理论框架"
+  - "引入并推广 RANSAC 与最小中值法（LMedS）用于鲁棒估计"
+  - "给出归一化 8 点法等数值稳定算法"
+  - "把相机标定、自标定、光束法平差纳入统一体系"
+
+limitations:
+  - "理论假设理想针孔相机，未充分覆盖镜头畸变（需先畸变校正）"
+  - "对纯旋转、退化配置（所有点共面）需特殊处理"
+  - "不涉及学习类方法（成书早于深度学习兴起）"
+
+relatedAlgorithms:
+  - algo-homography
+  - algo-epipolar
+
+influencedBy:
+  - "Longuet-Higgins 的八点法（1981）"
+  - "Faugeras 与 Luong 的自标定工作"
+  - "Fischler & Bolles 的 RANSAC（1981）"
+
+influenced:
+  - "COLMAP、OpenMVG 等现代 SFM 工具链的理论基础"
+  - "SLAM 系统中的几何后端"
+  - "AR/VR 中的平面追踪与姿态估计"
+
+readStatus: skimmed
+
+bibtex: |
+  @book{hartley2003multiple,
+    title={Multiple view geometry in computer vision},
+    author={Hartley, Richard and Zisserman, Andrew},
+    year={2003},
+    publisher={Cambridge University Press}
+  }
+
+docsPath: "/branches/geometry/"
+tags: ["几何", "教材", "RANSAC", "三维重建"]

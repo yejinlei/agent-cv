@@ -1,0 +1,47 @@
+id: app-sfm-reconstruction
+type: Application
+name: "三维重建（SFM / 摄影测量）"
+domain: research
+
+plainTalk: >
+  拿着相机绕着一个小雕塑拍几十张，软件能自动算出「相机在哪儿拍的」，
+  并且把雕塑的三维形状还原出来，得到一个可以在电脑上旋转查看的模型。
+
+algorithmStack:
+  - algo-sift
+  - algo-homography
+  - algo-epipolar
+
+hardware:
+  device: "PC（CPU 可跑，GPU 加速更快）"
+  needsGPU: false
+  fps: "离线（分钟到小时）"
+
+constraints:
+  - "需要足够的视角变化（不能只旋转）"
+  - "需要充足纹理（纯色物体失败）"
+  - "内存需求随图像数量增长"
+  - "尺度歧义（单目重建无法得到真实尺寸）"
+
+metrics:
+  - name: "重投影误差"
+    target: "< 1 px"
+    note: "光束法平差后"
+  - name: "重建完整度"
+    target: "视数据集而定"
+    note: "用 COLMAP 作基准"
+
+whyClassic: >
+  ① SFM 的核心（特征匹配、对极几何、三角化、光束法平差）全部是传统方法；
+  ② 即使前端用学习式特征，几何求解部分仍是传统方法；
+  ③ COLMAP 等成熟开源工具链可直接使用；
+  ④ 无需标注数据。
+
+substituteByDL: >
+  深度学习可提升稀疏重建的鲁棒性（如学习式匹配、学习式 MVS），
+  但几何优化（BA）仍是经典方法，两者是互补而非替代。
+
+caseStudies: []
+
+docsPath: "/branches/geometry/stereo-sfm"
+tags: ["三维重建", "SFM", "对极几何"]

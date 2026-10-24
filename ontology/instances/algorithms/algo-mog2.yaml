@@ -1,0 +1,24 @@
+id: algo-mog2
+type: Algorithm
+name: "MOG2 背景减除"
+year: 2004
+branch: branch-geometry
+status: stable
+docsPath: "/algorithms/mog2/"
+
+plainTalk: >
+  每个像素都记住「平时是什么颜色」，来了不一样的就当闯入者。K 个高斯自适应，集成阴影检测。
+
+concepts:
+  - concept-background-model
+  - concept-gaussian-mixture
+  - concept-shadow-detection
+
+tags: ["classic-cv", "background-subtraction", "surveillance", "motion"]
+papers: ["paper-zivkovic-2004-mog2"]
+dependsOn:
+  - op-morphology
+  - op-connected-components
+painPoints: []
+tricks: []
+layer: L2

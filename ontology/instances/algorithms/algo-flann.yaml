@@ -1,0 +1,26 @@
+id: algo-flann
+type: Algorithm
+name: "FLANN 快速最近邻搜索"
+nameEn: "Fast Library for Approximate Nearest Neighbors"
+year: 2009
+branch: branch-feature-matching
+status: stable
+docsPath: /algorithms/flann/
+plainTalk: "面对成千上万个特征点，要找出最像的那一个。FLANN 不比所有人逐一对照，而是先按特征相似度建一棵会自我修剪的目录树，只翻最有可能的几页，用『差不多最像』换来几十倍的搜索速度。"
+concepts:
+  - concept-nearest-neighbor
+tags:
+  - classic-cv
+  - matching
+  - approximate-nn
+  - kdtree
+papers:
+  - paper-muja-2009-flann
+evolvedFrom: null
+replacedBy: []
+dependsOn:
+  - op-bfmatcher
+inheritedBy: []
+painPoints: []
+tricks: []
+layer: L3

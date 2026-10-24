@@ -1,0 +1,40 @@
+id: algo-dpm
+type: Algorithm
+name: "可变形部件模型 DPM"
+nameEn: "Deformable Part-based Model"
+year: 2008
+branch: branch-detection
+status: legacy
+docsPath: "/algorithms/dpm/"
+chapters:
+  - ch-12-recognition
+
+plainTalk: >
+  「先看到人，再找到他的头、手、脚」：DPM 把物体看成「一个整体轮廓 + 几个可动部件」。
+  它不要求这些部件位置严格对齐，而是允许它们"在大致位置附近晃"，
+  并给"偏离标准位置"扣分（像弹簧一样的二次形变代价）。
+  用距离变换 O(HW) 求每个部件的最优位置，用隐变量 SVM（Latent SVM）自动学习部件位置，
+  多 component 混合模型覆盖多视角。它是传统目标检测的巅峰之作，拿过 PASCAL VOC 终身成就奖。
+
+concepts:
+  - concept-hog
+  - concept-sliding-window
+  - concept-pyramid
+  - concept-image-pyramid
+  - concept-hard-negative-mining
+  - concept-svm-hyperplane
+
+tags: ["classic-cv", "object-detection", "part-model", "pedestrian"]
+papers:
+  - paper-felzenszwalb-2008-dpm
+  - paper-felzenszwalb-2010-dpm
+evolvedFrom: algo-hog-svm
+dependsOn:
+  - op-histogram
+  - op-svm-training
+painPoints:
+  - pp-dpm-slow
+  - pp-dpm-part-tuning
+tricks:
+  - trick-dpm-hard-negative
+layer: L3

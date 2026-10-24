@@ -1,0 +1,24 @@
+id: algo-pnpsolver
+type: Algorithm
+name: PnP 位姿估计
+year: 2009
+branch: branch-geometry
+status: stable
+docsPath: /algorithms/pnpsolver/
+plainTalk: 知道几个 3D 点和它们在图上的投影，反推相机在哪朝哪，AR 标记和机器人抓取的几何核心。
+layer: L3
+tags:
+- classic-cv
+- pose-estimation
+- AR
+- pnp
+papers:
+- paper-lepetit-2009-epnp
+dependsOn:
+- algo-zhang-calibration
+concepts:
+- concept-reprojection-error
+- concept-lm-optimization
+- concept-radial-distortion
+painPoints: []
+tricks: []

@@ -1,0 +1,19 @@
+id: pp-bovw-spatial
+type: PainPoint
+name: "词袋丢失空间信息"
+severity: high
+symptom: >
+  两张完全不同的图（比如"猫在草地上"和"草堆上有个猫形色块"），因为单词出现频率差不多，被误判为同类；
+  整体分类尚可，定位能力几乎为零。
+rootCause: >
+  BoVW 只统计"出现了什么单词"，完全丢弃了"单词出现在哪"——
+  就像把一句话里的单词剪碎打乱，只数每个字出现多少次，语义会严重丢失。
+fix: >
+  1）用 Spatial Pyramid Matching（SPM，Lazebnik 2006）：把图分成 1×1 + 2×2 + 4×4 子块，
+  每块单独做词袋直方图再拼接，找回粗糙的空间信息；
+  2）升级到 CNN（卷积特征天然带空间信息）。
+detection: "可视化一下误分类样本，往往是「物体在背景里」「背景和正样本同色」的场景"
+relatedAlgorithms:
+  - algo-bovw
+docsPath: "/branches/detection/bovw"
+tags: ["空间信息", "特征表达", "BoVW"]

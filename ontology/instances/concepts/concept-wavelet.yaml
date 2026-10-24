@@ -1,0 +1,13 @@
+id: concept-wavelet
+type: Concept
+name: "小波变换"
+layer: L1
+plainTalk: "一种『层层切分』的分析工具：先看大尺度的整体趋势，再看局部细节差异，每层都记下平均与差异。图像里大部分差异都很小，可以丢掉，因此既能压缩又能保留边缘。"
+formal: "用一族在时间/空间上可平移、可伸缩的基函数（母小波的平移缩放）分解信号，得到多分辨率的时频（空间-频率）表示。"
+usedBy:
+  - algo-haar-wavelet
+docsPath: /algorithms/haar-wavelet/concepts
+tags:
+  - transform
+  - multiresolution
+  - frequency

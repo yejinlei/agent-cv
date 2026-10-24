@@ -1,0 +1,32 @@
+id: paper-besl-1992-icp
+type: Paper
+title: A Method for Registration of 3-D Shapes
+authors:
+- Paul Besl
+- Neil McKay
+year: 1992
+venue: IEEE Transactions on Pattern Analysis and Machine Intelligence
+venueType: journal
+contribution: ICP 迭代最近点：两帧点云配准的标准算法，成为 SLAM/三维重建的核心基础。
+keyInsight: 刚体配准不需要已知对应——猜一个初值，反复找最近点+SVD 求刚体变换，必然收敛。
+novelty:
+- 最近点对应+SVD 刚体估计的迭代框架
+- 严格收敛性证明
+- 点/线/面多种几何表示统一处理
+limitations:
+- 需要良好初值，否则陷入局部最优
+- 每次迭代 O(N²)（需 KD-Tree 加速）
+- 对应点误匹配影响鲁棒性
+relatedAlgorithms:
+- algo-icp
+influencedBy:
+- Horn 四元数刚体变换
+- Arun SVD 配准
+influenced:
+- KinectFusion、Point Cloud Library (PCL)
+- 自动驾驶激光雷达定位、工业三维扫描
+readStatus: skimmed
+tags:
+- classic
+doi: 10.1109/34.121791
+citationCount: 25000

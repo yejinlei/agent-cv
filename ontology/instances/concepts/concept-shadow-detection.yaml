@@ -1,0 +1,6 @@
+id: concept-shadow-detection
+type: Concept
+name: "阴影检测 Shadow Detection"
+layer: L1
+plainTalk: "把物体投下的黑影和物体本身区分开"
+docsPath: "/algorithms/"

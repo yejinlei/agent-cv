@@ -1,0 +1,114 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://agent-cv.dev/ontology/schema/chapter.schema.yaml"
+title: Chapter
+description: >
+  Chapter（章）：章毓晋《计算机视觉教程》第 3–15 章中的一章，代表本站的「纵轴」
+  （学习路径）坐标。它不是一个算法，而是一个「知识容器」——把若干算法、概念、论文、
+  场景按抽象层次归到一条线上。可以是跨分支的（如第6章横跨特征检测与特征匹配）。
+type: object
+
+required:
+  - id
+  - type
+  - number
+  - name
+  - plainTalk
+  - level
+  - branches
+  - coreQuestion
+  - docsPath
+
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: "^ch-[0-9]{2}-[a-z0-9-]+$"
+    description: 全局唯一标识，形如 ch-04-primitives
+
+  type:
+    const: Chapter
+
+  number:
+    type: integer
+    minimum: 3
+    maximum: 15
+    description: 教材章号（本站只收录技术主体第 3–15 章）
+
+  name:
+    type: string
+    minLength: 2
+    description: 章的规范名，如 "基元检测"
+
+  plainTalk:
+    type: string
+    minLength: 10
+    description: >
+      白话解释——必须让「老奶奶也听得懂」。
+      要求：一句话说清这章管什么，禁止出现公式与术语堆砌。
+
+  level:
+    type: string
+    enum:
+      - 低层
+      - 中层
+      - 高层
+    description: 抽象层次（低层：像素→基元；中层：基元→目标；高层：目标→语义）
+
+  branches:
+    type: array
+    minItems: 1
+    items:
+      type: string
+      enum:
+        - branch-image-processing
+        - branch-feature-detection
+        - branch-feature-matching
+        - branch-segmentation
+        - branch-detection
+        - branch-geometry
+        - branch-engineering
+    description: >
+      本章对应哪几条技术分支（可多条——第6章/第7章/第8章就是跨分支的横切章）。
+      第14/15章属于应用层，可填 branch-engineering 表示依赖工程实现层。
+
+  coreQuestion:
+    type: string
+    minLength: 6
+    description: 这一章要回答的那一个核心问题，如 "图像里哪些位置有结构？"
+
+  algorithms:
+    type: array
+    items:
+      type: string
+      pattern: "^algo-[a-z0-9-]+$"
+    description: 本章的代表算法 ID 列表
+
+  concepts:
+    type: array
+    items:
+      type: string
+      pattern: "^concept-[a-z0-9-]+$"
+    description: 本章关联的核心概念 ID 列表
+
+  papers:
+    type: array
+    items:
+      type: string
+      pattern: "^paper-[a-z0-9-]+$"
+    description: 本章的经典论文 ID 列表
+
+  docsPath:
+    type: string
+    pattern: "^/chapters/.+$"
+    description: 章的导览页路径
+
+  prevChapter:
+    type: [string, "null"]
+    pattern: "^ch-[0-9]{2}-[a-z0-9-]+$"
+    description: 上一章 ID；第 3 章填 null
+
+  nextChapter:
+    type: [string, "null"]
+    pattern: "^ch-[0-9]{2}-[a-z0-9-]+$"
+    description: 下一章 ID；第 15 章填 null

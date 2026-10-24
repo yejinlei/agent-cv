@@ -1,0 +1,10 @@
+id: paper-csurka-2004
+type: Paper
+title: "Visual Categorization with Bags of Keypoints"
+authors: ["Gabriella Csurka", "Christopher R. Dance", "Lixin Fan", "Jutta Willamowski", "Cedric Bray"]
+year: 2004
+venue: "ECCV 2004 Workshop on Statistical Learning in Computer Vision"
+contribution: >
+  把 BoVW 从视频检索扩展到图像分类：用 SIFT/Harris-Affine 关键点+K-means 构建词袋，
+  再训练 SVM 分类器，在物体分类上获得显著效果。BoVW 作为图像分类 baseline 的正式确立。
+url: "https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/csurka-eccv-04.pdf"

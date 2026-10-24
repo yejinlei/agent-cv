@@ -1,0 +1,20 @@
+id: concept-optical-flow
+type: Concept
+name: "光流"
+plainTalk: >
+  像看动画片：同一辆车在一帧里在左边，下一帧挪到了右边一点点。
+  光流就是记录「画面里每个小点在两帧之间挪了多少、朝哪个方向挪」。
+  它把视频从「一叠照片」变成了「运动的量」。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-optical-flow
+prerequisites:
+  - op-sobel
+keyFormula: "Iₓu + I_yv + I_t = 0（光流约束方程）"
+usedIn:
+  - "视频中的运动估计"
+  - "目标跟踪（KLT 跟踪器）"
+  - "视频压缩的运动补偿"
+docsPath: "/branches/geometry/optical-flow"
+tags: ["概念", "运动", "视频"]

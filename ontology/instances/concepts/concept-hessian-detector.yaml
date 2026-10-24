@@ -1,0 +1,19 @@
+id: concept-hessian-detector
+type: Concept
+name: "Hessian 行列式斑点检测"
+plainTalk: >
+  想知道图上哪里是「一个明显的疙瘩或亮点」，可以看这个点的二阶变化率。
+  如果用 Hessian 矩阵的行列式来判断，那么无论这个疙瘩是亮的还是暗的，
+  算出来的数值都是正的，于是「明暗斑点」能用同一个公式统一检测。
+layer: L2
+plainTalkForGranny: true
+relatedAlgorithms:
+  - algo-surf
+prerequisites:
+  - concept-scale-space
+keyFormula: "det(H) = Lxx·Lyy − Lxy²"
+usedIn:
+  - "SURF 的尺度空间关键点检测"
+  - "斑点检测（blob detection）"
+docsPath: "/branches/feature-matching/descriptors"
+tags: ["概念", "Hessian", "斑点检测"]

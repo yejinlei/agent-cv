@@ -1,0 +1,32 @@
+id: paper-bradski-1998-camshift
+type: Paper
+title: Computer Face Perception for Perceptual User Interfaces
+authors:
+- Gary Bradski
+year: 1998
+venue: Perceptual User Interfaces Workshop (PUI)
+venueType: workshop
+contribution: CamShift（连续自适应 MeanShift）：肤色概率分布+动态窗口 MeanShift，成为实时人脸跟踪经典。
+keyInsight: 人脸跟踪不需要精确模型——在 HSV 肤色概率图上，让窗口沿密度中心『追着跑』并自适应大小。
+novelty:
+- 基于 HSV 肤色的反投影概率图
+- 窗口大小随目标尺度自适应
+- 连续序列实时跟踪
+limitations:
+- 只靠肤色，易被背景肤色/光照干扰
+- 对快速运动和遮挡鲁棒性差
+- 无多目标跟踪能力
+relatedAlgorithms:
+- algo-camshift
+- algo-meanshift
+influencedBy:
+- Mean Shift 跟踪（Comaniciu）
+- Fukunaga 密度估计
+influenced:
+- OpenCV CamShift 示例
+- 早期人脸交互、手势跟踪系统
+readStatus: skimmed
+tags:
+- classic
+citationCount: 5500
+url: https://www.researchgate.net/publication/2454644_Computer_Face_Perception_for_Perceptual_User_Interfaces

@@ -1,0 +1,16 @@
+id: concept-hough-transform
+type: Concept
+name: "霍夫变换"
+layer: L2
+plainTalk: "参数空间投票：每个边缘点给所有过它的形状投一票，票多者真"
+formal: "在极坐标参数化下，直线 ρ = x cosθ + y sinθ；每个边缘点对应参数空间一条正弦曲线，曲线交点即直线参数"
+docsPath: "/algorithms/hough/"
+tags:
+  - classic-cv
+relatedAlgorithms:
+  - algo-hough
+relatedConcepts:
+  - concept-canny
+  - concept-nms
+usedBy:
+  - algo-hough
