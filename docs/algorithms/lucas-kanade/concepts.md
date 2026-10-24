@@ -147,3 +147,5 @@ flowchart LR
 | 孔径问题 | ✅ 知道为什么只追角点 | ✅ 知道 M 特征值的意义 | ✅ 知道广义 aperture 和纹理 aperture |
 | 局部一致 | ✅ 知道 winSize 的 tradeoff | ✅ 知道窗口跨边界的问题 | ✅ 知道 affine LK / homography LK |
 | 金字塔 | ✅ 知道 maxLevel 怎么设 | ✅ 知道逐层 warp 的逻辑 | ✅ 知道 coarse-to-fine 的 warping 误差累积 |
+
+> 🧪 **看不懂公式？去[数学实验室](/math-lab/)拖动滑块直观体验**——卷积、梯度、高斯、霍夫、角点、RANSAC、光流都有实时互动demo，看完再回来。

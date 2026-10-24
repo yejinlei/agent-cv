@@ -177,3 +177,5 @@ flowchart TB
     - "op-non-max-suppression"
     - "op-hysteresis-threshold"
 ```
+
+> 🧪 **看不懂公式？去[数学实验室](/math-lab/)拖动滑块直观体验**——卷积、梯度、高斯、霍夫、角点、RANSAC、光流都有实时互动demo，看完再回来。
