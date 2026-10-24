@@ -1,12 +1,15 @@
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+docs/.vitepress/.temp/
+.vitepress/
 *.log
 .DS_Store
 nohup.out
 /tmp/
 __pycache__/
 *.pyc
+*.status
 
 # 开发用生成脚本，不进仓库
 gen_*.py
