@@ -25,7 +25,8 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '🌱 小白入门', link: '/for-beginners' },
       { text: '🧭 学习路径', link: '/learning-path' },
-      { text: '🎮 交互 Playground', link: '/playgrounds/' },
+      { text: '🧪 数学实验室', link: '/math-lab/' },
+      { text: '🎮 算法Playground', link: '/playgrounds/' },
       {
         text: '📚 章节体系（纵轴）',
         items: [

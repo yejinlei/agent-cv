@@ -113,12 +113,19 @@ flowchart LR
 
 </div>
 
-## 🎮 在线交互 Playground
+## 🧪 数学概念互动实验室（CV 小白友好）
+
+觉得卷积、梯度、傅里叶、霍夫、RANSAC、角点、光流这些词太晦涩？先玩这里——
+**14 个核心数学/算法概念全部做成互动demo**，拖动滑块就能看效果，不用写代码、不用背公式，玩两遍就懂。
+
+<AlgorithmCard name="🧪 打开数学实验室" airdate="14 个核心概念" family="纯Canvas · 秒开 · 零依赖" tagline="像素/卷积/梯度/高斯/频域/霍夫/RANSAC/角点/光流/形态学… 拖滑块秒懂。" link="/math-lab/" accent="#ff6b6b" />
+
+## 🎮 真实算法 Playground（OpenCV.js 真机跑）
 
 不想装环境、不想写代码？直接在这里**真机跑**传统 CV 算法——底层是 WebAssembly 版 OpenCV，
 图片不出浏览器，滑条一拖就能看到 Canny、霍夫圆、ORB 匹配、Viola-Jones 人脸检测的实时效果。
 
-<AlgorithmCard name="🎮 打开交互 Playground" airdate="39 种算法" family="浏览器内 · 零安装 · 不上传" tagline="选图 → 选算法 → 拖参数 → 看结果与耗时，六分支一次体验完。" link="/playgrounds/" accent="#7c5cff" />
+<AlgorithmCard name="🎮 打开算法 Playground" airdate="39 种算法" family="浏览器内 · 零安装 · 不上传" tagline="选图 → 选算法 → 拖参数 → 看结果与耗时，六分支一次体验完。" link="/playgrounds/" accent="#7c5cff" />
 
 ## 📚 精选算法档案
 
