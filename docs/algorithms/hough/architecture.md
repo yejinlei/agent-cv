@@ -10,16 +10,16 @@
 flowchart TB
   S([输入图像]) --> G[转灰度]
   G --> C[Canny 边缘检测<br/>得到二值边缘图 E]
-  C --> I[初始化累加器<br/>A[rho_bins, theta_bins] = 0]
-  I --> L{遍历每个<br/>边缘点 (x,y)}
+  C --> I["初始化累加器<br/>A[rho_bins, theta_bins] = 0"]
+  I --> L{"遍历每个<br/>边缘点 (x,y)"}
   L --> T{遍历每个<br/>θ_k}
   T --> R[计算 ρ_k = x cos θ_k + y sin θ_k]
-  R --> V[A[rho_idx, k]++]
+  R --> V["A[rho_idx, k]++"]
   V --> T
   T -->|θ 遍历完| L
-  L -->|点遍历完| N[找 A 的局部极大值<br/>阈值 > T]
+  L -->|点遍历完| N["找 A 的局部极大值<br/>阈值 &gt; T"]
   N --> NM[NMS 邻域抑制]
-  NM --> O([输出直线 (ρ, θ)])
+  NM --> O(["输出直线 (ρ, θ)"])
 ```
 
 ### 步骤拆解
@@ -73,10 +73,10 @@ flowchart TB
   R --> V[p 对累加器 A 投票]
   V --> T{存在 bin<br/>票数 >= 阈值?}
   T -->|否| E
-  T -->|是| W[沿 (ρ,θ) 方向<br/>从 p 沿直线边缘行走]
+  T -->|是| W["沿 (ρ,θ) 方向<br/>从 p 沿直线边缘行走"]
   W --> EP[寻找最长线段段<br/>记录两端点 pt1, pt2]
   EP --> RM[把线段上所有边缘点<br/>从池和累加器移除]
-  RM --> ADD[把线段 (pt1,pt2)<br/>加入输出列表]
+  RM --> ADD["把线段 (pt1,pt2)<br/>加入输出列表"]
   ADD --> E
 ```
 
@@ -106,16 +106,16 @@ flowchart TB
   S([输入灰度图]) --> BL[高斯模糊<br/>HoughCircles 内置]
   BL --> CY[Sobel 算梯度<br/>dx, dy]
   CY --> CAN[内置 Canny<br/>找边缘点]
-  CAN --> A2[初始化圆心累加器<br/>A[a, b] = 0]
+  CAN --> A2["初始化圆心累加器<br/>A[a, b] = 0"]
   A2 --> L{遍历每个<br/>边缘点 p}
   L --> N[沿梯度方向 ± 半径范围<br/>投票圆心候选点]
-  N --> C[A[a,b]++]
+  N --> C["A[a,b]++"]
   C --> L
   L -->|遍历完| NP[NMS 找圆心峰值<br/>阈值 = param2]
   NP --> R{遍历每个<br/>候选圆心}
   R --> RV[对该圆心<br/>在半径维投 1D 票]
   RV --> RR[找半径峰值]
-  RR -->|输出圆 (a,b,r)| R
+  RR -->|"输出圆 (a,b,r)"| R
   R -->|完| OUT
 ```
 

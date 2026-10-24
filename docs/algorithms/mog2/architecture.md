@@ -6,12 +6,12 @@ flowchart TD
   INIT --否--> INITM[用第一帧初始化 K 个高斯]
   INIT --是--> MATCH
   INITM --> MATCH[对每个像素 x]
-  MATCH --> TEST[对 K 个高斯: |I[x]-μ_k|<2.5σ_k ?]
+  MATCH --> TEST["对 K 个高斯: |I[x]-μ_k| &lt; 2.5σ_k ?"]
   TEST --匹配到一个--> UPD[更新该高斯的 μ,σ,权重 w]
   TEST --一个都没匹配--> NEW[若 K<上限: 新建一个高斯<br/>否则替换权重最小的]
   UPD --> RANK[按 w/σ 从大到小排序高斯]
   NEW --> RANK
-  RANK --> TH[取前 B 个: Σw > T → 这 B 个是"背景高斯"]
+  RANK --> TH["取前 B 个: Σw &gt; T → 这 B 个是「背景高斯」"]
   TH --> JUDGE{x 落在前 B 个里?}
   JUDGE --是--> BGM[前景掩码=0 背景]
   JUDGE --否--> FGM[前景掩码=255 运动物体]

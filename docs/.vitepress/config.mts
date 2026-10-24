@@ -29,7 +29,8 @@ export default defineConfig({
       {
         text: '📚 章节体系（纵轴）',
         items: [
-          { text: '总览：13 章地图', link: '/chapters/' },
+          { text: '总览：章体系地图（预备篇 + 13 章）', link: '/chapters/' },
+          { text: '第 1–2 章 · 视觉与图像基础', link: '/chapters/ch01-foundation' },
           { text: '第 3 章 · 图像预处理', link: '/chapters/ch03-preprocessing' },
           { text: '第 4 章 · 基元检测', link: '/chapters/ch04-primitives' },
           { text: '第 5 章 · 目标分割', link: '/chapters/ch05-segmentation' },
@@ -298,7 +299,11 @@ export default defineConfig({
       '/chapters/': [
         {
           text: '📚 章节体系（纵轴学习路径）',
-          items: [{ text: '13 章地图总览', link: '/chapters/' }]
+          items: [{ text: '章体系地图总览', link: '/chapters/' }]
+        },
+        {
+          text: '预备知识（打地基）',
+          items: [{ text: '第 1–2 章 · 视觉与图像基础', link: '/chapters/ch01-foundation' }]
         },
         {
           text: '低层视觉（像素 → 特征）',

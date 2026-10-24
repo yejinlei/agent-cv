@@ -1,6 +1,10 @@
 ---
 layout: doc
 outline: deep
+head:
+  - - link
+    - rel: prefetch
+      href: /agent-cv/lib/opencv.js
 ---
 
 # 🎮 在线交互 Playground

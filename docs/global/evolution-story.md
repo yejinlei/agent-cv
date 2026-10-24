@@ -17,7 +17,7 @@ flowchart TD
   S3 --> D3
   D3{角点怎么稳定检测?<br/>1988} -->|Harris: 自相关矩阵| S4[Harris]
   S4 --> D4{角点能更快吗?<br/>1994} -->|Shi-Tomasi: 改响应函数| S5[Shi-Tomasi]
-  S5 --> D5{能让角点"跟"起来吗?<br/>1981~1994} -->|Lucas-Kanade+KLT| S6[KLT 光流跟踪]
+  S5 --> D5{能让角点「跟」起来吗?<br/>1981~1994} -->|Lucas-Kanade+KLT| S6[KLT 光流跟踪]
   S4 --> D6{特征点能跨尺度吗?<br/>2004} -->|Lowe: DoG尺度空间+128维描述子| S7[SIFT]
   S7 --> D7{能跑实时吗?<br/>2006} -->|Bay: 积分图+Hessian近似| S8[SURF]
   S7 --> D9{能免专利+更快吗?<br/>2011} -->|Rublee: FAST+rBRIEF| S10[ORB]

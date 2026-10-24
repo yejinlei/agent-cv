@@ -15,8 +15,8 @@ graph LR
 ```mermaid
 flowchart LR
   subgraph 权重计算
-    S[空间距离 ||p-q||] --> GS["G<sub>σs</sub> 空间高斯"]
-    C[色差 |I[p]-I[q]|] --> GR["G<sub>σr</sub> 值域高斯"]
+    S["空间距离 ‖p-q‖"] --> GS["G<sub>σs</sub> 空间高斯"]
+    C["色差 |I[p]-I[q]|"] --> GR["G<sub>σr</sub> 值域高斯"]
     GS --> W["w = Gs × Gr（乘积）"]
     GR --> W
   end

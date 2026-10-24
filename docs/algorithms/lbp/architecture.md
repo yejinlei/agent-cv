@@ -10,7 +10,7 @@ flowchart TD
   BIN --> DEC[映射为 0~P²-1 的十进制码]
   DEC --> UNI{Uniform 模式?}
   UNI --跳变≤2--> BINID[映射到 0~57]
-  UNI --否--> BIN58[归到 58 号"非均匀"桶]
+  UNI --否--> BIN58["归到 58 号「非均匀」桶"]
   BINID --> CELL[图像切成 K×K 个 cell]
   BIN58 --> CELL
   CELL --> HIS[每个 cell 统计 59 维 LBP 直方图]

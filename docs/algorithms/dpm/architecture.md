@@ -104,7 +104,6 @@ flowchart TB
   BBR --> SAVE["保存模型 xml/mat"]
 
   style SVM fill:#fff3e0
-  style DT_FAST["distance transform O(HW)"]
   style SAVE fill:#e8f5e9
 ```
 

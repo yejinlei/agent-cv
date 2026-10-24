@@ -95,7 +95,7 @@ const samples = [
 ]
 
 const status = ref('loading')
-const statusText = ref('正在加载 OpenCV.js（约 11 MB，首次加载稍慢）…')
+const statusText = ref('正在加载本站内置的 OpenCV.js（约 11 MB，本地运算，不依赖外部 CDN）…')
 const errorMsg = ref('')
 const srcCanvas = ref(null)
 const dstCanvas = ref(null)
@@ -883,17 +883,46 @@ function rgba2color(rgba) {
 /* ---------------- 加载 opencv.js ---------------- */
 function loadOpencv() {
   return new Promise((resolve, reject) => {
-    if (window.cv && window.cv.Mat) return resolve(window.cv)
+    // 统一出口：把真正的 Module 对象写回 window.cv，供其它逻辑直接使用
+    const finish = (mod) => {
+      if (mod && mod.Mat) { window.cv = mod; resolve(mod) }
+      else reject(new Error('opencv.js 已加载，但未暴露可用的 Mat'))
+    }
+    // 已经加载过（含 HMR 热更新场景）
+    if (window.cv) {
+      if (window.cv.Mat) return finish(window.cv)
+      // 该构建使用 MODULARIZE，window.cv 是一个 Promise，需要 await 它拿到 Module
+      if (typeof window.cv.then === 'function') {
+        return window.cv.then(finish).catch(reject)
+      }
+    }
     const prev = document.getElementById('opencv-js-loader')
     if (prev) prev.remove()
     const s = document.createElement('script')
     s.id = 'opencv-js-loader'
     s.src = OCV_URL
     s.async = true
-    s.onload = () => {
-      if (window.cv && window.cv.Mat) return resolve(window.cv)
-      // 有些构建需要等运行时初始化
-      window.cv['onRuntimeInitialized'] = () => resolve(window.cv)
+    s.onload = async () => {
+      let mod = window.cv
+      // 情况一：window.cv 是 Promise（本构建即如此），await 后即得 Module
+      if (mod && typeof mod.then === 'function') {
+        try { mod = await mod } catch (e) { return reject(e) }
+        return finish(mod)
+      }
+      // 情况二：已经是就绪的 Module
+      if (mod && mod.Mat) return finish(mod)
+      // 情况三：老式构建，等 onRuntimeInitialized 回调（并加超时兜底）
+      if (mod) {
+        let settled = false
+        const done = () => { if (!settled) { settled = true; finish(mod) } }
+        mod['onRuntimeInitialized'] = done
+        const t = setInterval(() => {
+          if (mod.Mat) { settled = true; clearInterval(t); finish(mod) }
+        }, 200)
+        setTimeout(() => clearInterval(t), 60000)
+      } else {
+        reject(new Error('opencv.js 已加载，但未暴露 cv 全局对象'))
+      }
     }
     s.onerror = () => reject(new Error('无法加载 ' + OCV_URL))
     document.head.appendChild(s)

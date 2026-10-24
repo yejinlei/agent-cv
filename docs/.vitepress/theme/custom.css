@@ -29,6 +29,20 @@
   max-width: 100%;
   height: auto;
 }
+.mermaid-error {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px dashed #e0a09a;
+  border-radius: 8px;
+  background: #fff6f5;
+  color: #a1332a;
+  font-size: 13px;
+  text-align: left;
+}
+/* 渲染前占位：避免大图出现前页面高度剧烈抖动 */
+.mermaid-wrapper:not([data-rendered]) {
+  min-height: 40px;
+}
 
 /* 首页 hero 徽标 */
 .VPHero .name {

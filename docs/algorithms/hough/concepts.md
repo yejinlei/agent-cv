@@ -132,7 +132,7 @@ flowchart TB
   end
   subgraph 参数化
     P1[直线: ρ = xcosθ + ysinθ<br/>Duda-Hart 1972]
-    P2[圆: (x-a)²+(y-b)²=r²<br/>21HT 梯度降维]
+    P2["圆: (x-a)²+(y-b)²=r²<br/>21HT 梯度降维"]
     P3[任意: R-table 查表<br/>GHT Ballard 1981]
   end
   subgraph 投票
@@ -143,9 +143,9 @@ flowchart TB
   end
   subgraph 输出
     N[NMS 非极大抑制]
-    O1[直线 (ρ,θ)]
-    O2[线段 (x1,y1)-(x2,y2)]
-    O3[圆 (a,b,r)]
+    O1["直线 (ρ,θ)"]
+    O2["线段 (x1,y1)-(x2,y2)"]
+    O3["圆 (a,b,r)"]
   end
 
   E --> P1 --> V1 --> A

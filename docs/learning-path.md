@@ -1,6 +1,6 @@
 # 🧭 学习路径：从像素到场景
 
-> 这是本站的**纵轴**。横轴是 [六大技术分支](/branches/)（按「算法家族」切），这里按**"抽象层次从低到高"**把传统 CV 从基础到应用排成一条学习路径——直接对齐章毓晋《计算机视觉教程》第 3–15 章的经典框架。
+> 这是本站的**纵轴**。横轴是 [六大技术分支](/branches/)（按「算法家族」切），这里按**"抽象层次从低到高"**把传统 CV 从基础到应用排成一条学习路径——直接对齐章毓晋《计算机视觉教程》的经典框架（第 1–2 章为预备基础，技术主体为第 3–15 章）。
 >
 > **怎么用？** 如果你是新手，按 ① → ② → ③ 顺着读；如果你要做具体任务，直接跳到对应章；如果你想查某个算法的谱系关系，回到 [六大分支](/branches/) 看横向网络。
 
@@ -10,6 +10,8 @@
 
 ```mermaid
 flowchart TB
+  C0["第1–2章<br/>视觉与图像基础<br/><small>图像到底是什么</small>"]
+
   subgraph L1["🟦 低层视觉 · 从像素到基元"]
     direction TB
     C3["第3章<br/>图像预处理<br/><small>把照片打扫干净</small>"]
@@ -35,6 +37,7 @@ flowchart TB
     C15["第15章<br/>场景解释<br/><small>讲清整幅画面的故事</small>"]
   end
 
+  C0 --> C3
   C3 --> C4 --> C5 --> C6
   C6 --> C7 & C8
   C7 & C8 --> C9
@@ -44,7 +47,7 @@ flowchart TB
   classDef lvl1 fill:#e7f1ff,stroke:#4a90e2,color:#0a3b6b
   classDef lvl2 fill:#e8f8ec,stroke:#52c77a,color:#0b4d24
   classDef lvl3 fill:#ffece8,stroke:#ef6b4a,color:#6b1a08
-  class C3,C4 lvl1
+  class C0,C3,C4 lvl1
   class C5,C6,C7,C8 lvl2
   class C9,C10,C11,C12,C13,C14,C15 lvl3
 ```
@@ -57,6 +60,7 @@ flowchart TB
 
 | 章 | 白话理解 | 核心问题 | 代表算法 | 对应分支 |
 |---|---|---|---|---|
+| **[第1–2章 视觉与图像基础](/chapters/ch01-foundation)** | 打地基：图像到底是什么——成像、采样、量化、邻域、颜色空间 | 图像怎么变成计算机能算的数？ | 灰度化、直方图、连通域、距离度量 | [图像处理](/branches/image-processing/) |
 | **第3章 图像预处理** | 把照片"打扫干净"：去噪、调亮、矫正畸变 | 怎么让图像变"好用"？ | 高斯滤波、中值滤波、直方图均衡、二值化、形态学开闭运算 | [图像处理](/branches/image-processing/) |
 | **[第4章 基元检测](/chapters/ch04-primitives)** | 找出最基础的"零件"：边、角、线、圆 | 像素里哪些地方"有结构"？ | Canny、Sobel、LoG、Harris 角点、SUSAN、霍夫变换、SIFT 关键点 | [特征检测](/branches/feature-detection/) |
 
@@ -105,6 +109,7 @@ flowchart TB
 
 |  | 图像处理 | 特征检测 | 特征匹配 | 图像分割 | 目标检测 | 几何视觉 |
 |---|---|---|---|---|---|---|
+| **[第1–2章 基础](/chapters/ch01-foundation)** | ✅ 采样/量化、灰度化、直方图、连通域 | — | — | — | — | — |
 | **[第3章 预处理](/chapters/ch03-preprocessing)** | ✅ 高斯/中值滤波、直方图均衡、形态学 | — | — | — | — | — |
 | **[第4章 基元检测](/chapters/ch04-primitives)** | — | ✅ Canny、Sobel、Harris、Hough、LoG、SIFT 关键点 | — | — | — | — |
 | **[第5章 目标分割](/chapters/ch05-segmentation)** | ✅ 阈值 | ✅ 边缘闭合 | — | ✅ 区域生长、分水岭、GrabCut | — | — |
@@ -136,4 +141,4 @@ flowchart TB
 - **工业检测路径**（最短，2 周上手）：第3章预处理 → 第4章边缘/霍夫 → 第5章阈值分割 → 第8章形状分析 → [工业缺陷案例](/cases/industrial-defect)
 - **特征匹配/SLAM 路径**：第3章 → 第4章角点/SIFT → 第6章描述子 → 第13章 RANSAC → 第9章立体 → [SIFT 档案](/algorithms/sift/)
 - **目标检测路径**（传统）：第3章 → 第4章 → 第6章 HOG → 第12章滑窗+SVM → [HOG+SVM 档案](/algorithms/hog-svm/) → 第 13 章 → 传承到 [YOLO 一脉](/legacy/)
-- **完整学习路径**（系统化）：按第3→15章顺序读，每章配合 [术语表](/glossary) 补概念
+- **完整学习路径**（系统化）：预备篇（第1–2章）→ 第3→15章顺序读，每章配合 [术语表](/glossary) 补概念

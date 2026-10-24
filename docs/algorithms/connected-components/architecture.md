@@ -16,7 +16,7 @@ flowchart TD
     H --> J[贴到当前像素]
     I --> J
     J --> K[扫完全图]
-    K --> L[第二遍扫描<br/>每个 label → find(label) 根]
+    K --> L["第二遍扫描<br/>每个 label → find(label) 根"]
     L --> M[累加每个根标签的<br/>面积/bbox/质心]
     M --> N[输出 labels 图 + stats + centroids]
 

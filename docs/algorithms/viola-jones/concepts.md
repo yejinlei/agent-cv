@@ -178,7 +178,7 @@ flowchart TB
   II --> PYRA["图像金字塔<br/>多尺度"]
   PYRA --> WIN["滑窗<br/>24×24 固定窗口"]
   WIN --> CASCADE{"级联分类器"}
-  H["Haar 特征<br/>（矩形差）"] -->|积分图 O(1)| WC["弱分类器<br/>阈值判断"]
+  H["Haar 特征<br/>（矩形差）"] -->|"积分图 O(1)"| WC["弱分类器<br/>阈值判断"]
   WC -->|AdaBoost 挑选+加权| SC["强分类器<br/>Stage"]
   SC --> CASCADE
   CASCADE -->|"前几级拒"| REJ["❌ 非人脸"]
