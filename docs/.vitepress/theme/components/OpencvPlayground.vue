@@ -883,48 +883,53 @@ function rgba2color(rgba) {
 /* ---------------- 加载 opencv.js ---------------- */
 function loadOpencv() {
   return new Promise((resolve, reject) => {
+    let settled = false
     // 统一出口：把真正的 Module 对象写回 window.cv，供其它逻辑直接使用
     const finish = (mod) => {
+      if (settled) return
+      settled = true
       if (mod && mod.Mat) { window.cv = mod; resolve(mod) }
       else reject(new Error('opencv.js 已加载，但未暴露可用的 Mat'))
     }
-    // 已经加载过（含 HMR 热更新场景）
-    if (window.cv) {
-      if (window.cv.Mat) return finish(window.cv)
-      // 该构建使用 MODULARIZE，window.cv 是一个 Promise，需要 await 它拿到 Module
-      if (typeof window.cv.then === 'function') {
-        return window.cv.then(finish).catch(reject)
+    const fail = (e) => { if (!settled) { settled = true; reject(e) } }
+
+    // 关键：本构建使用 MODULARIZE，脚本执行后 window.cv 是一个 Promise，
+    // 且 script 的 load 事件并不保证可靠触发（实测可能长期不到达）。
+    // 因此这里不依赖任何事件，直接轮询 window.cv，一旦可用立刻就绪。
+    let tries = 0
+    const poll = setInterval(() => {
+      tries++
+      const c = window.cv
+      if (c && c.Mat) { clearInterval(poll); return finish(c) }
+      if (c && typeof c.then === 'function') {
+        clearInterval(poll)
+        c.then(finish).catch(fail)
+        return
       }
-    }
+      if (tries >= 240) { // 约 60 秒仍未就绪，给出明确提示而不是无限转圈
+        clearInterval(poll)
+        fail(new Error('OpenCV.js 初始化超时，请刷新页面重试'))
+      }
+    }, 250)
+
+    // 已经加载过（含 HMR 热更新场景）：轮询已能覆盖，这里只做快速返回
+    if (window.cv && window.cv.Mat) { clearInterval(poll); return finish(window.cv) }
+
     const prev = document.getElementById('opencv-js-loader')
     if (prev) prev.remove()
     const s = document.createElement('script')
     s.id = 'opencv-js-loader'
     s.src = OCV_URL
     s.async = true
+    // 事件路径（能用就用，不能用到时轮询会接手）
     s.onload = async () => {
       let mod = window.cv
-      // 情况一：window.cv 是 Promise（本构建即如此），await 后即得 Module
       if (mod && typeof mod.then === 'function') {
-        try { mod = await mod } catch (e) { return reject(e) }
-        return finish(mod)
+        try { mod = await mod } catch (e) { return fail(e) }
       }
-      // 情况二：已经是就绪的 Module
-      if (mod && mod.Mat) return finish(mod)
-      // 情况三：老式构建，等 onRuntimeInitialized 回调（并加超时兜底）
-      if (mod) {
-        let settled = false
-        const done = () => { if (!settled) { settled = true; finish(mod) } }
-        mod['onRuntimeInitialized'] = done
-        const t = setInterval(() => {
-          if (mod.Mat) { settled = true; clearInterval(t); finish(mod) }
-        }, 200)
-        setTimeout(() => clearInterval(t), 60000)
-      } else {
-        reject(new Error('opencv.js 已加载，但未暴露 cv 全局对象'))
-      }
+      if (mod && mod.Mat) { clearInterval(poll); finish(mod) }
     }
-    s.onerror = () => reject(new Error('无法加载 ' + OCV_URL))
+    s.onerror = () => { clearInterval(poll); fail(new Error('无法加载 ' + OCV_URL)) }
     document.head.appendChild(s)
   })
 }
