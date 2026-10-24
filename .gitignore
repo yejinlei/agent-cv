@@ -9,6 +9,7 @@ nohup.out
 __pycache__/
 *.pyc
 *.status
+.shots/
 
 # 开发用生成脚本，不进仓库
 gen_*.py

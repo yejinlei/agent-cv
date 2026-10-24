@@ -20,6 +20,46 @@
   text-align: center;
   overflow-x: auto;
 }
+
+/* ⚠ 彻底修复 Mermaid 节点文字「溢出 / 遮挡 / 叠字」
+   三层防线：
+   1) 全局 line-height 穿透问题：VitePress 的 .vp-doc p { line-height: 28px }
+      会穿透 Mermaid 的 foreignObject，导致文字行高 > 节点预设高度，上下叠。
+      → 把 Mermaid 内部所有文字盒子强制复位。
+   2) 字号/字体族穿透：防止全局 body 字体把节点文字撑大。
+   3) 节点标签 padding：确保多行文字有呼吸空间。 */
+.mermaid-wrapper svg,
+.mermaid-wrapper svg * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+    sans-serif !important;
+}
+.mermaid-wrapper svg foreignObject,
+.mermaid-wrapper svg foreignObject *,
+.mermaid-wrapper svg .nodeLabel,
+.mermaid-wrapper svg .edgeLabel,
+.mermaid-wrapper svg .label {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.4 !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+.mermaid-wrapper svg .nodeLabel {
+  padding: 4px 6px !important;
+}
+.mermaid-wrapper svg .edgeLabel {
+  padding: 2px 4px !important;
+  background: var(--vp-c-bg, #fff) !important;
+}
+.mermaid-wrapper svg rect {
+  rx: 6;
+  ry: 6;
+}
 .mermaid-wrapper pre.mermaid {
   background: transparent;
   border: none;
