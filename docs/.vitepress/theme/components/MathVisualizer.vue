@@ -206,6 +206,13 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 
+const props = defineProps({
+  // 嵌入算法页时，指定默认选中的原理标签（如 'grad'）
+  initialTab: { type: String, default: '' },
+  // 紧凑模式：算法页内嵌时用，收窄留白并加一行说明
+  compact:    { type: Boolean, default: false },
+})
+
 const tabs = [
   {id:'pixel', name:'像素矩阵'},
   {id:'neighbor', name:'邻域与距离'},
@@ -222,7 +229,7 @@ const tabs = [
   {id:'color', name:'颜色空间'},
   {id:'hist', name:'直方图'},
 ]
-const current = ref('pixel')
+const current = ref(tabs.some(t => t.id === props.initialTab) ? props.initialTab : 'pixel')
 
 // ---- refs ----
 const pixelCanvas = ref(null), neighborCanvas = ref(null), convCanvas = ref(null), gradCanvas = ref(null)
@@ -1034,6 +1041,9 @@ onMounted(()=>{
 
 <style scoped>
 .math-vis{border:1px solid #e0e0e0;border-radius:10px;background:#fafafa;padding:15px;margin:20px 0}
+.math-vis-compact{padding:10px 12px;margin:14px 0}
+.math-vis-compact .tab-bar{margin-bottom:10px}
+.embed-hint{font-size:13px;line-height:1.6;color:#4a5568;background:#eef6ff;border-left:3px solid #4a90d9;padding:8px 12px;border-radius:4px;margin:0 0 10px}
 .tab-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px}
 .tab-btn{padding:8px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;cursor:pointer;font-size:13px;transition:.2s}
 .tab-btn:hover{background:#f0f7ff}
