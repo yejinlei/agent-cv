@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="camshift" />
+
 # CamShift 连续自适应 MeanShift · 核心概念
 
 <AlgorithmCard

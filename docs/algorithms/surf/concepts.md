@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="surf" />
+
 # SURF 核心概念
 
 理解 SURF，只要搞懂四样东西：**积分图**、**Hessian 行列式**、**箱式滤波近似**、**Haar 小波响应**。

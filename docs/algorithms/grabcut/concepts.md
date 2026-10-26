@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="grabcut" />
+
 # GrabCut 抠图 · 核心概念
 
 <AlgorithmCard

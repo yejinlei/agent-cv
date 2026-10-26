@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="brief" />
+
 # BRIEF 二进制描述子 · 核心概念
 
 <AlgorithmCard

@@ -21,3 +21,7 @@ add_*.py
 check_*.py
 verify_*.py
 scan_*.py
+
+# 临时草稿 / 心跳文件
+_*.js
+_hb.txt

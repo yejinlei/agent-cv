@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="sgbm" />
+
 # SGM 半全局立体匹配 · 核心概念
 
 <AlgorithmCard

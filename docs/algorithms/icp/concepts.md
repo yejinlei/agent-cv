@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="icp" />
+
 # ICP 迭代最近点 · 核心概念
 
 <AlgorithmCard

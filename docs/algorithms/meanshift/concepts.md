@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="meanshift" />
+
 # MeanShift 均值漂移 · 核心概念
 
 <AlgorithmCard

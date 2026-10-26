@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="zhang-calibration" />
+
 # 核心概念：张氏标定到底在算什么
 
 > 张氏标定看起来参数很多（f, c, k1, k2, R, t），但本质上就是解决**三件事**：

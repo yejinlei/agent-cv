@@ -9,6 +9,7 @@ import AlgorithmCard from './components/AlgorithmCard.vue'
 import OpencvPlayground from './components/OpencvPlayground.vue'
 import MathVisualizer from './components/MathVisualizer.vue'
 import ConvDemo from './components/ConvDemo.vue'
+import AlgoVisualizer from './components/AlgoVisualizer.vue'
 
 export default {
   extends: DefaultTheme,
@@ -23,5 +24,6 @@ export default {
     app.component('OpencvPlayground', OpencvPlayground)
     app.component('MathVisualizer', MathVisualizer)
     app.component('ConvDemo', ConvDemo)
+    app.component('AlgoVisualizer', AlgoVisualizer)
   }
 } satisfies Theme

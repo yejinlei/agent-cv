@@ -1,5 +1,13 @@
 # GrabCut 抠图
 
+## 🚀 动手体验
+
+> 🧪 **先懂原理**：翻到下一节「核心概念」，页面里直接嵌入了可拖动滑块的原理动画（SIFT高斯金字塔、FLANN KD树、GrabCut迭代、KCF响应峰、ICP配准等），拖一拖就懂。
+
+> 🎮 **再跑真机**：跳到第5页「源码实现」，底部有真机实验室（OpenCV.js 浏览器本地运行），选图调参即可看到真实效果与三语代码。
+
+---
+
 <AlgorithmCard
   name="GrabCut 抠图"
   enName="GrabCut Interactive Foreground Extraction"

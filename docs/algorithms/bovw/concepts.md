@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="bovw" />
+
 # BoVW 核心概念
 
 理解 BoVW，要搞懂六样东西：**局部特征**、**K-Means 聚类**、**视觉词典**、**硬/软分配**、**词频直方图与 TF-IDF**、**空间金字塔匹配**。

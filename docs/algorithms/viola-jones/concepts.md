@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="viola-jones" />
+
 # Viola-Jones 核心概念
 
 理解 Viola-Jones，要搞懂五样东西：**Haar-like 特征**、**积分图**、**AdaBoost 特征选择**、**级联分类器**、**多尺度滑窗**。

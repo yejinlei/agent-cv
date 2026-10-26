@@ -1,3 +1,11 @@
+---
+outline: deep
+---
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="sift" />
+
 # SIFT 核心概念
 
 > SIFT 里 6 个关键概念，每个都讲清楚「为什么需要它」。
