@@ -25,3 +25,19 @@
 - [ ] 核心参数已按场景粗调到合理区间
 - [ ] 输出结果做了必要的后处理（normalize 归一化到 [0,1] 或 [0,255]）
 - [ ] 速度/精度做了 benchmark
+
+<!-- AUTO-EXTENSION -->
+
+## 🎯 典型三步用法
+
+```python
+# 1. 二值化（前景是 255）
+_, bw = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+# 2. 距离变换，归一化到 0~1
+dist = cv2.distanceTransform(bw, cv2.DIST_L2, 5)
+cv2.normalize(dist, dist, 0, 1.0, cv2.NORM_MINMAX)
+# 3. 再阈值化——得到确定前景（峰值区域）
+_, sure_fg = cv2.threshold(dist, 0.5*dist.max(), 255, 0)
+```
+
+这正是 Watershed 分割里"找确定前景"的标准套路——距离变换在 Watershed 里几乎是必用前处理。

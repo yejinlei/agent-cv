@@ -78,3 +78,16 @@ Z = lab.reshape(-1,3).astype(np.float32)
 
 **不适用场景**：必须指定 K、只看颜色不看位置、对初始值敏感
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 颜色量化 3 行代码
+
+```python
+Z = img.reshape((-1,3)).astype(np.float32)
+_, labels, centers = cv2.kmeans(Z, K=8, bestLabels=None,
+    criteria=(cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER, 100, 0.2),
+    attempts=10, flags=cv2.KMEANS_PP_CENTERS)
+quant = centers[labels.flatten()].reshape(img.shape).astype(np.uint8)
+```
+
+**K-Means++ 初始化**（默认 flags）比随机初始化稳定，一定要用。**attempts=10** 表示跑 10 次不同初始值取最优，避免局部最优。

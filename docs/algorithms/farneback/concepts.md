@@ -70,3 +70,29 @@ flowchart LR
 </ClientOnly>
 
 > 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🧓 大白话：Farnebäck 光流 = "每像素一个多项式展开，看它怎么飘"
+
+Farnebäck（2003）是 OpenCV 内置的**稠密光流**算法，原理：
+1. 对每张图的每一个像素邻域用**二次多项式**近似（通过不同方向的滤波核卷积得到系数）；
+2. 根据多项式系数在两帧之间的变化，估计每个像素的位移；
+3. 结合多尺度金字塔（由粗到精）处理大位移；
+4. 做邻域平均提高稳定性。
+
+输出是和原图一样大的 2 通道矩阵（dx, dy）——每个像素都有光流向量。
+
+## 用法
+
+```python
+flow = cv2.calcOpticalFlowFarneback(prev_gray, gray, None,
+    pyr_scale=0.5, levels=3, winsize=15, iterations=3, poly_n=5, poly_sigma=1.2, flags=0)
+mag, ang = cv2.cartToPolar(flow[...,0], flow[...,1])
+# HSV 可视化
+hsv[...,0] = ang*180/np.pi/2
+hsv[...,1] = 255
+hsv[...,2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
+```
+
+**winsize 越大越平滑但越糊，典型 9~21；poly_n=5/poly_sigma=1.2 是标准配置。**

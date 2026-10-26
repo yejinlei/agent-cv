@@ -25,3 +25,13 @@
 - [ ] 核心参数已按场景粗调到合理区间
 - [ ] 输出结果做了必要的后处理（RANSAC 几何校验）
 - [ ] 速度/精度做了 benchmark
+
+<!-- AUTO-EXTENSION -->
+
+## 🎯 参数建议
+
+- `thresh`（AGAST 阈值）：默认 30；低一点关键点多（适合匹配稀疏场景），高一点关键点少但质量高；
+- `octaves`：默认 4；大尺度变化（无人机拍摄）设 6~8；
+- `patternScale`：默认 1.0；图像分辨率高（>1080p）可设到 1.2~1.5 让采样更大范围。
+
+**BRISK 描述子 512 bit**，匹配必须用 **HAMMING 距离**，BFMatcher 或 FlannBasedMatcher(LSH) 都可以。

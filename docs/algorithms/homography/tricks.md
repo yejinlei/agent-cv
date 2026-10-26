@@ -69,3 +69,18 @@ approx = cv2.approxPolyDP(cnt, eps, True)
 
 **不适用场景**：仅平面/纯旋转成立、有深度差时错位、点共线退化
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 实战标准流程
+
+```python
+# 1. 特征匹配得到对应点
+# 2. RANSAC 求 H
+H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+# 3. 用 H 做透视变换
+warped = cv2.warpPerspective(img, H, (new_w, new_h))
+```
+
+**RANSAC 阈值 5.0**（像素重投影误差）是标准起点；场景模糊/低分辨率时调到 8。
+
+**技巧**：拼接前先做**柱面/球面投影**，多张图能拼成无缝全景；文档校正时 `getPerspectiveTransform` 只需要 4 个点（文档四角）。

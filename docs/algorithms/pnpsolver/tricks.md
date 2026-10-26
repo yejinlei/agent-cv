@@ -70,3 +70,16 @@ PnP 算出的 t 是相机在物体坐标系下的位姿，要转换到机械臂�
 
 **不适用场景**：需要已知内参、3D 点精度要高、点共面/共线退化
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 典型用法
+
+```python
+success, rvec, tvec, inliers = cv2.solvePnPRansac(
+    objectPoints, imagePoints, K, dist_coeffs,
+    flags=cv2.SOLVEPNP_EPNP, iterationsCount=100, reprojectionError=8.0)
+# 可选：用 ITERATIVE 再精修一轮
+success, rvec, tvec = cv2.solvePnP(objectPoints[inliers], imagePoints[inliers], K, dist_coeffs,
+                                   rvec, tvec, useExtrinsicGuess=True, flags=cv2.SOLVEPNP_ITERATIVE)
+```
+⚠️ OpenCV.js 构建里 `solvePnP` 部分版本可用但 RANSAC 不稳定，建议在 Python/C++ 端做位姿求解。

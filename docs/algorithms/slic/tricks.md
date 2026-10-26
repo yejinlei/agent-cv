@@ -67,3 +67,16 @@ skimage 有 `enforce_connectivity=True` 参数（默认），自动把过小孤�
 
 **不适用场景**：必须指定超像素数、OpenCV 主分支没有、紧凑度 m 影响边界
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 参数
+
+- `region_size`（S）：期望超像素边长，典型 10~50 像素；
+- `ruler`（m）：空间距离权重，典型 10~30；大了超像素更方整但贴边差，小了贴边但形状乱。
+
+```python
+slic = cv2.ximgproc.createSuperpixelSLIC(img, region_size=20, ruler=20.0)
+slic.iterate(10)
+slic.enforceLabelConnectivity(50)
+labels = slic.getLabels()
+```

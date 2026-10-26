@@ -49,3 +49,22 @@ E 分解得到位姿 → 三角化建初始点云 → 光束法平差联合优�
 ::: tip 一句话
 两条「视线」在空间里交于一点——那个交点就是场景点的 3D 位置
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 三角化的 4 个坑
+
+1. **必须先做相机标定**：内外参错 1%，深度就错 5%+；
+2. **点必须在两视图上都可见**：被遮挡的点不能三角化；
+3. **要做 cheirality check**：三角化出的点必须在两个相机**前方**（深度为正），否则是错误解；
+4. **远景点不要硬三角化**：三角化后做重投影误差检查，误差 >1px 的点扔掉。
+
+### OpenCV 调用
+
+```python
+P1 = K @ np.hstack([R1, t1])  # 相机1投影矩阵 3×4
+P2 = K @ np.hstack([R2, t2])
+points4d = cv2.triangulatePoints(P1, P2, pts1.T, pts2.T)
+points3d = (points4d[:3] / points4d[3]).T  # 齐次坐标转非齐次
+```
+（注意：OpenCV.js 构建不带 `triangulatePoints`，请在 Python/C++ 环境使用）

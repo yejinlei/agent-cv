@@ -66,3 +66,20 @@ uniqueness 十五，speckle 一百加二；
 
 **不适用场景**：参数多、无纹理区域失败、重复纹理误匹配
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 参数建议
+
+| 参数 | 推荐值 | 说明 |
+| --- | --- | --- |
+| `minDisparity` | 0 | 最小视差 |
+| `numDisparities` | 16 的倍数，如 96/128 | 越大越能看近处 |
+| `blockSize` | 5~9 | 越小越细但越噪 |
+| `P1`/`P2` | 8×channels×SADWindowSize² / 32×… | 平滑惩罚，P2>P1 |
+| `disp12MaxDiff` | 1 | 左右一致性检查阈值 |
+| `uniquenessRatio` | 5~10 | 最低峰值比，去掉弱匹配 |
+| `speckleWindowSize` | 100 | 散斑滤波窗口 |
+| `speckleRange` | 2 | 散斑视差差阈值 |
+
+**必做前后处理**：先做 CLAHE 增强纹理、后用 `wlsFilter` 做左右一致滤波。
+⚠️ OpenCV.js 不包含 SGBM（stereo 模块未编译），请在 Python/C++ 使用。

@@ -63,3 +63,29 @@ flowchart TB
 
 标记分水岭常用**距离变换**自动找前景种子：对二值前景图做距离变换（每个前景像素到最近背景的距离），距离变换的局部峰值就是「确定前景中心」（硬币圆心、细胞中心）。
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🧓 大白话补充：Watershed = "把灰度图当山地，往盆地灌水，水碰到的地方就是分割线"
+
+把灰度图想象成地形：亮的是山、暗的是谷。从每个"确定谷底"（你标记的种子点）同时灌不同颜色的水，**两个颜色水相遇的地方筑起水坝**——这些水坝就是分割边界。
+
+## 必做的 4 步（否则必翻车）
+
+```python
+# 1. 先二值化
+_, bw = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+# 2. 开闭运算去噪
+bw = cv2.morphologyEx(bw, cv2.MORPH_OPEN, np.ones((3,3),np.uint8), iterations=2)
+# 3. 距离变换找确定前景
+dist = cv2.distanceTransform(bw, cv2.DIST_L2, 5)
+_, sure_fg = cv2.threshold(dist, 0.5*dist.max(), 255, 0)
+# 4. 找未知区域，connectedComponents 标种子，未知区设 0
+_, markers = cv2.connectedComponents(sure_fg.astype(np.uint8))
+markers += 1
+unknown = cv2.subtract(cv2.dilate(bw,np.ones((3,3)),iterations=3), sure_fg.astype(np.uint8))
+markers[unknown==255] = 0
+markers = cv2.watershed(img, markers)
+img[markers==-1] = [0,0,255]  # 边界画红
+```
+
+**99% 的 Watershed 失败都是因为第 3 步确定前景找错了**——要么太少（漏检物体），要么太大（粘连），距离变换阈值是命门。

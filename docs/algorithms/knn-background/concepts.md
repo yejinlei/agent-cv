@@ -53,3 +53,18 @@ flowchart LR
 ::: tip 记忆锚点
 记住「KNN 存历史样本，MOG2 存高斯——KNN 更稳更慢」。
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🧓 大白话：KNN 背景建模 = "最近几个邻居投票"
+
+MOG2 假设每个像素是"几个高斯叠加"，KNN 更朴素——**保留最近 N 帧每个像素的颜色样本**，新像素来了看"和前 K 个最近样本的距离是不是都小于阈值"，是就当背景。
+
+**和 MOG2 的区别**：
+- KNN 不假设分布形状（非参数模型），对多模态背景（树叶、水面）适应性略好；
+- MOG2 有显式的高斯均值/方差，更新更平滑；
+- OpenCV.js 构建**恰好带了 KNN**（`createBackgroundSubtractorKNN`）但**没带 MOG2**，所以真机实验室里你能跑的是 KNN。
+
+## 参数口诀
+
+> **history 决定记性，dist2Threshold 决定挑剔；detectShadows 开了多个灰层，后处理开闭运算别忘。**

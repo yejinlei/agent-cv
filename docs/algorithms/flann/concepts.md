@@ -58,3 +58,30 @@ checks 参数控制搜索多少个节点。设小则快但漏，设大则准但�
 ::: tip 记忆锚点
 记住「浮点描述子用 KD-Tree（trees/checks），二进制描述子用 LSH」。
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🧓 大白话：FLANN = "高维向量快速查找的图书馆"
+
+暴力匹配（BFMatcher）要把查询点和数据库里**每个描述子**都算一次距离，10 万个描述子就是 10 万次计算——这在图像检索（几千张图）里根本不能用。
+
+**FLANN（Fast Library for Approximate Nearest Neighbors）** 不是一种算法，是**一整套近似最近邻查找方法的库**：
+- **随机 kd 树**：低维（<100）浮点描述子（SIFT/SURF）最快；
+- **层次 k-means 树**：高维浮点描述子；
+- **LSH（Locality Sensitive Hashing）**：二值描述子（ORB/BRISK/AKAZE）专用；
+- **自动选择**：FLANN 会根据你的数据自动选最快的索引方式。
+
+"近似" 是指——不保证找到绝对最近邻，但**速度快 10~1000 倍，且 95%+ 情况下找到的就是真最近邻**。
+
+## 关键参数
+
+| 参数 | 含义 | 调大 | 调小 |
+| --- | --- | --- | --- |
+| `checks` | 搜索时检查多少叶子 | 更准但慢 | 更快但可能漏 |
+| `trees` | kd 树数量 | 更准，内存多 | 快但粗糙 |
+| `table_number`/`key_size`（LSH）| 哈希表数量/键长 | 更准 | 更快 |
+
+**实战口诀**：
+> **SIFT/SURF 用 KDTree，ORB/AKAZE 用 LSH；checks 从 100 起步，不够准往上加。**
+
+> ⚠️ 注意：OpenCV.js 构建不包含 FlannBasedMatcher，网页端匹配请用 BFMatcher + crossCheck。

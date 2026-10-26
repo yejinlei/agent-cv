@@ -25,3 +25,25 @@
 - [ ] 核心参数已按场景粗调到合理区间
 - [ ] 输出结果做了必要的后处理（按面积/宽高比过滤）
 - [ ] 速度/精度做了 benchmark
+
+<!-- AUTO-EXTENSION -->
+
+## 🎯 典型 5 行用法
+
+```python
+n, labels, stats, centroids = cv2.connectedComponentsWithStats(bw, connectivity=8)
+for i in range(1, n):  # 0 是背景
+    x, y, w, h, area = stats[i]
+    if area < 100 or area > 10000:
+        continue  # 过滤太小太大
+    cx, cy = centroids[i]
+    cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+```
+
+### 实战 5 条
+
+1. **二值化要先做干净**：连通域对"粘连"非常敏感——两个米粒有一个像素桥连在一起就会被标成一个；必要时先做开运算；
+2. **lType 用 CV_32S 而不是 CV_16U**：后者最大只能标 65535 个连通域，大图容易溢出；
+3. **面积过滤是必做的后处理**：二值化后总有噪声小点点；
+4. **重心比外接矩形中心更准**：外接矩形中心在矩形几何中点，重心（centroids）才是物体真实中心；
+5. **圆形度 = 4π·area / perimeter²**：完美圆 = 1，越扁越小，用于区分"圆形缺陷"和"长条形划痕"。

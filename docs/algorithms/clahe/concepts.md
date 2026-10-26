@@ -37,3 +37,42 @@ CLAHE 通常**不直接对 RGB 三通道各做一遍**（会造成色偏）。�
 </ClientOnly>
 
 > 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。
+
+<!-- AUTO-EXTENSION -->
+
+## 🧓 大白话解释 CLAHE：局部聪明的对比度增强
+
+普通直方图均衡（HE）是"整张图一把抓"——有一个地方太亮或太暗，整张图都被它带歪。自适应直方图均衡（AHE）把图切成小块，每块自己均衡，但**小块里出现一个特别亮的噪声点，这一块就被放大得特别夸张**（噪声爆炸）。
+
+**CLAHE** = AHE + **对比度裁剪（Contrast Limited）**：
+- 每个小块里，超过阈值的像素"溢出量"**重新均匀分给所有 bin**，不让某几个 bin 独占对比度；
+- 最后双线性插值拼接块与块，消除块边界。
+
+打比方：HE 像把全国贫富差距一次性拉平（结果一线城市房价暴涨）；AHE 像每个城市自己调（结果某村出了个亿万富翁把全村人均拉高）；**CLAHE 像每个城市都设个"首富上限"，多出来的钱平分给全村**。
+
+## 🔍 效果对比
+
+<div style="text-align:center">
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="160" style="background:#fafbfc;border-radius:12px;border:1px solid #eaecef">
+  <g transform="translate(20,10)">
+    <text x="100" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">原图（逆光）</text>
+    <rect x="20" y="30" width="160" height="120"/>
+    <defs><linearGradient id="dark" x1="0" x2="1"><stop offset="0" stop-color="#000"/><stop offset="0.6" stop-color="#333"/><stop offset="1" stop-color="#fff"/></linearGradient></defs>
+    <rect x="20" y="30" width="160" height="120" fill="url(#dark)"/>
+    <text x="100" y="100" text-anchor="middle" font-size="11" fill="#fff">脸全黑，背景过曝</text>
+  </g>
+  <g transform="translate(260,10)">
+    <text x="100" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">普通 HE</text>
+    <rect x="20" y="30" width="160" height="120"/>
+    <rect x="20" y="30" width="160" height="120" fill="#888"/>
+    <text x="100" y="100" text-anchor="middle" font-size="11" fill="#fff">噪声放大，背景发灰</text>
+  </g>
+  <g transform="translate(500,10)">
+    <text x="100" y="18" text-anchor="middle" font-size="13" font-weight="bold" fill="#27ae60">CLAHE</text>
+    <rect x="20" y="30" width="160" height="120"/>
+    <rect x="20" y="30" width="160" height="120" fill="#b4a090"/>
+    <circle cx="70" cy="80" r="15" fill="#d4a373"/>
+    <text x="100" y="140" text-anchor="middle" font-size="11" fill="#333">脸清晰了，背景自然</text>
+  </g>
+</svg>
+</div>

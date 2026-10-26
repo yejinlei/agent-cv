@@ -29,3 +29,27 @@
 - **要结构导向** → 双边网格 / Domain Transform
 - **要完全保边** → 非局部均值 NLM（`cv2.fastNlMeansDenoisingColored`）
 - **要磨皮到卡通** → 双边 + 边缘检测叠加描线
+
+<!-- AUTO-EXTENSION -->
+
+## 🎯 参数速查卡
+
+| 场景 | d | σColor | σSpace | 备注 |
+| --- | --- | --- | --- | --- |
+| 人脸磨皮（轻） | -1 | 30 | 30 | 几乎看不出来 |
+| 人脸磨皮（中） | -1 | 50 | 50 | 美颜 App 典型值 |
+| 人脸磨皮（强） | -1 | 75 | 75 | 卡通化效果 |
+| 去 JPEG 块效应 | -1 | 20 | 20 | 弱保边平滑 |
+| HDR 色调映射 | -1 | 20 | 100 | 大半径小色差 |
+| 卡通化（Cartoon） | -1 | 100 | 100 | 迭代 3~5 次后再 edge |
+
+### 美颜典型管线（3 行代码效果拉满）
+
+```python
+# 1. 磨皮（双边）
+smooth = cv2.bilateralFilter(img, -1, 50, 50)
+# 2. 细节增强（原图 - 磨皮 = 细节，加回去）
+detail = cv2.addWeighted(img, 1.5, smooth, -0.5, 0)
+# 3. 美白（简单 gamma）
+result = np.clip(np.power(detail/255., 0.85)*255, 0, 255).astype('uint8')
+```

@@ -49,3 +49,19 @@ minAreaRect 的 size 直接给出长宽（像素），配合标定比例尺即�
 ::: tip 一句话
 把一坨几百个点的轮廓，压成几条线、一个圆或一个椭圆
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 实战四件套（检测形状）
+
+```python
+for cnt in contours:
+    approx = cv2.approxPolyDP(cnt, 0.04*cv2.arcLength(cnt, True), True)
+    if len(approx) == 3: shape = "三角形"
+    elif len(approx) == 4:
+        x,y,w,h = cv2.boundingRect(approx)
+        ar = w/float(h)
+        shape = "正方形" if 0.95<ar<1.05 else "矩形"
+    elif len(approx) == 5: shape = "五边形"
+    elif len(approx) > 8: shape = "圆形"
+```

@@ -71,3 +71,20 @@ faces = face_cascade.detectMultiScale(gray)
 
 **不适用场景**：需初始化ROI、同色背景易漂移、光照敏感
 
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 代码骨架
+
+```python
+roi = hsv[y:y+h, x:x+w]
+mask = cv2.inRange(roi, (0,60,32), (180,255,255))
+roi_hist = cv2.calcHist([roi], [0], mask, [180], [0,180])
+cv2.normalize(roi_hist, roi_hist, 0, 255, cv2.NORM_MINMAX)
+
+# 跟踪
+dst = cv2.calcBackProject([hsv], [0], roi_hist, [0,180], 1)
+track_window = (x,y,w,h)
+rot_rect, track_window = cv2.CamShift(dst, track_window, term_crit)
+box = cv2.boxPoints(rot_rect).astype(int)
+cv2.polylines(img, [box], True, (0,255,0), 2)
+```

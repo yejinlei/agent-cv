@@ -49,3 +49,16 @@ K 的精度直接决定 E 的质量，务必先做好相机标定。
 ::: tip 一句话
 从两张照片的对应点，直接解出相机「转了多大、往哪挪了」
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 求 E 的标准流程（5 点法 / 8 点法）
+
+```python
+E, mask = cv2.findEssentialMat(pts1, pts2, K, method=cv2.RANSAC, prob=0.999, threshold=1.0)
+_, R, t, mask_pose = cv2.recoverPose(E, pts1, pts2, K, mask=mask)
+```
+
+### 4 个解选 1
+
+recoverPose 会自动从 E 的 SVD 分解给出的 4 个可能 (R,t) 组合中，用**"所有点在两相机前方"** 的 cheirality check 选出唯一正确解——这是必须的，否则你会得到镜像或反向的相机位置。

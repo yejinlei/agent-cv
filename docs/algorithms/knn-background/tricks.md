@@ -49,3 +49,22 @@ KNN 比 MOG2 稳但更慢；history 管记忆长度、dist2Threshold 管宽容�
 ::: tip 一句话
 记住每个像素最近的 N 个历史颜色，新颜色离它们太远就判为前景
 :::
+
+<!-- AUTO-EXTENSION-2 -->
+
+## 🎯 参数建议
+
+| 参数 | 起点 | 备注 |
+| --- | --- | --- |
+| history | 500 | 室外场景大一点（500~1000）|
+| dist2Threshold | 400 | 值越大越宽容（树叶场景 600+）|
+| detectShadows | true | 阴影标 127，后处理好过滤 |
+
+### 三行上手
+
+```python
+bs = cv2.createBackgroundSubtractorKNN(history=500, dist2Threshold=400.0, detectShadows=True)
+while True:
+    fg = bs.apply(frame, learningRate=-1)  # -1 = 自动学习率
+    # fg: 0=背景, 127=阴影, 255=前景
+```

@@ -25,3 +25,13 @@
 - [ ] 核心参数已按场景粗调到合理区间
 - [ ] 输出结果做了必要的后处理（ratio test + RANSAC）
 - [ ] 速度/精度做了 benchmark
+
+<!-- AUTO-EXTENSION -->
+
+## 🎯 调参口诀
+
+> **descriptor_type 用 M-LDB（默认），threshold 调 0.001 灵敏 / 0.01 稀疏；octaves 4~8 足够，NOCTAVES 和 SIFT 对齐。**
+
+### OpenCV.js 真机可用！
+
+本项目真机实验室的 AKAZE 真机页面直接调 OpenCV.js 即可：`new cv.AKAZE()`，配合 BFMatcher with HAMMING 距离就能跑。**这是开源无专利、真机可调的最稳特征点算法**。
