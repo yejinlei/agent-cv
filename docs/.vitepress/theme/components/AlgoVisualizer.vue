@@ -3,13 +3,14 @@
     <div class="vis-card">
       <div class="vis-title">🧪 {{ titleMap[type] }}</div>
       <p class="vis-desc">{{ descMap[type] }}</p>
-      <canvas :ref="el => setRef(type, el)" :width="640" :height="320"></canvas>
+      <canvas v-if="mounted" ref="canvasRef" :width="640" :height="320"></canvas>
+      <div v-else class="viz-placeholder">互动演示加载中…</div>
       <div class="ctrl-row">
         <template v-for="c in ctrls[type]" :key="c.k">
           <label>{{ c.label }} = <b>{{ typeof c.v.value === "number" ? (c.step < 1 ? c.v.value.toFixed(2) : c.v.value) : c.v.value }}</b></label>
           <input type="range" :min="c.min" :max="c.max" :step="c.step || 1" v-model.number="c.v.value" @input="redraw()"/>
         </template>
-        <template v-for="b in btns[type]" :key="b.k">
+        <template v-for="b in btns[type]" :key="b.label">
           <button @click="b.k()">{{ b.label }}</button>
         </template>
       </div>
@@ -19,10 +20,15 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, watch, nextTick, computed} from 'vue'
+import {ref, reactive, onMounted, watch, nextTick} from 'vue'
 const props = defineProps({type:{type:String,required:true}})
-const cv = reactive({})
-function setRef(k, el){ cv[k]=el }
+const mounted = ref(false)
+const canvasRef = ref(null)
+function ctx2(){
+  const c = canvasRef.value
+  if(!c) return null
+  return c.getContext('2d')
+}
 const titleMap = {
   'sift': 'SIFT 尺度不变特征变换',
   'surf': 'SURF 加速稳健特征',
@@ -149,16 +155,25 @@ const btns = reactive({
   'zhang-calibration': [],
   'epipolar': [],
 })
-function redraw(){ draw(props.type) }
-watch(()=>props.type, ()=>nextTick(redraw))
+function redraw(){
+  if(!mounted.value) return
+  requestAnimationFrame(()=>draw(props.type))
+}
+watch(()=>props.type, redraw)
 watch(()=>{ try{ return JSON.stringify(Object.fromEntries(Object.entries(ctrls).map(([k,cs])=>[k,cs.map(c=>c.v.value)]))) }catch(e){return ''}}, redraw)
-onMounted(()=>nextTick(redraw))
+onMounted(()=>{
+  mounted.value = true
+  nextTick(()=>{
+    requestAnimationFrame(()=>draw(props.type))
+    // 保险：100ms 后再画一次，应对某些水合时序问题
+    setTimeout(()=>draw(props.type), 100)
+  })
+})
 
-function ctx2(id){ const c=cv[id]; if(!c) return null; return c.getContext('2d') }
 function dot(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
 function line(ctx,x1,y1,x2,y2,color,w){ctx.strokeStyle=color;ctx.lineWidth=w||1;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
 function fillText(ctx,text,x,y,color,size){ctx.fillStyle=color||'#333';ctx.font=(size||13)+'px sans-serif';ctx.fillText(text,x,y)}
-function clear(ctx,w,h){ctx.clearRect(0,0,w||640,h||320);ctx.fillStyle='#fafafa';ctx.fillRect(0,0,w||640,h||320)}
+function clear(ctx,w,h){ctx.clearRect(0,0,w||640,h||320);ctx.fillStyle='#fff';ctx.fillRect(0,0,w||640,h||320)}
 function p(id,k){ const c=ctrls[id]; if(!c) return null; const f=c.find(x=>x.k===k); return f?f.v.value:null }
 
 // 23个算法的draw函数 + 按钮回调
@@ -1137,7 +1152,7 @@ if (typeof window !== 'undefined') { window.__avis_drawers__ = drawers; }
 
 
 function draw(t){
-  const ctx=ctx2(t); if(!ctx) return;
+  const ctx=ctx2(); if(!ctx) return;
   const fn=drawers[t]; if(fn) fn(ctx);
 }
 
@@ -1158,4 +1173,5 @@ function draw(t){
 .explain :deep(li){margin:4px 0}
 .explain :deep(b){color:#4477dd}
 canvas{display:block;margin:8px auto;background:#fff;border:1px solid #e0e0e0;border-radius:6px;max-width:100%}
+.viz-placeholder{display:flex;align-items:center;justify-content:center;height:320px;background:#f5f8fd;border:1px dashed #c0d0e8;border-radius:6px;color:#6a80a0;font-size:14px;margin:8px auto}
 </style>

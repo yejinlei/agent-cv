@@ -19,7 +19,11 @@ export default defineConfig({
 
   transformPageData(pageData) {
     const base = '/agent-cv/'
-    if (pageData.filePath && (pageData.filePath.includes('playgrounds') || pageData.filePath.includes('algorithms/'))) {
+    // 只在「真正需要 OpenCV.js 的页面」才预加载：Playground 入口 + 各算法的 source 源码页（含嵌入式真机实验）
+    // 原理/论文/流程/踩坑/调参等纯讲解页面一律不加载，避免 3.5MB(gzip) 脚本拖慢全站
+    const fp = pageData.filePath || ''
+    const needCv = fp.includes('playgrounds') || (fp.includes('algorithms/') && fp.endsWith('/source.md'))
+    if (needCv) {
       pageData.frontmatter.head = pageData.frontmatter.head || []
       pageData.frontmatter.head.push([
         'link', { rel: 'prefetch', href: base + 'lib/opencv.js', as: 'script', crossorigin: '' }
