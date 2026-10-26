@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 // 传统 CV 技术谱系数据（内置，可扩展为读取 YAML）
 const data = {
@@ -74,6 +74,7 @@ const data = {
 const svgRef = ref(null)
 const selected = ref('')
 let d3mod = null
+let ro = null
 
 async function ensureD3() {
   if (d3mod) return d3mod
@@ -89,8 +90,23 @@ async function draw() {
   el.innerHTML = ''
 
   const width = el.clientWidth || 960
-  const height = 560
-  const margin = { top: 24, right: 150, bottom: 24, left: 40 }
+  const margin = { top: 24, right: 200, bottom: 24, left: 40 }
+
+  // 先做树布局，再根据节点实际范围决定画布高度（关键修复：不再写死 560）
+  const root = d3.hierarchy(data)
+  const dx = 54
+  const dy = (width - margin.left - margin.right) / 3
+  const tree = d3.tree().nodeSize([dx, dy])
+  tree(root)
+
+  let x0 = Infinity, x1 = -Infinity
+  root.each((d) => {
+    if (d.x > x1) x1 = d.x
+    if (d.x < x0) x0 = d.x
+  })
+
+  const contentH = x1 - x0 + dx * 2
+  const height = margin.top + margin.bottom + contentH
 
   const svg = d3
     .select(el)
@@ -100,24 +116,12 @@ async function draw() {
     .attr('viewBox', [0, 0, width, height])
     .style('max-width', '100%')
     .style('height', 'auto')
+    .style('display', 'block')
     .style('font', '13px sans-serif')
-
-  const root = d3.hierarchy(data)
-  const dx = 40
-  const dy = width / 5
-  const tree = d3.tree().nodeSize([dx, dy])
-  tree(root)
-
-  let x0 = Infinity
-  let x1 = -Infinity
-  root.each((d) => {
-    if (d.x > x1) x1 = d.x
-    if (d.x < x0) x0 = d.x
-  })
 
   const g = svg
     .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top - x0 + dx})`)
+    .attr('transform', `translate(${margin.left},${margin.top - x0 + dx / 2})`)
 
   const linkGen = d3
     .linkHorizontal()
@@ -162,7 +166,7 @@ async function draw() {
     .attr('dy', '1.5em')
     .attr('x', (d) => (d.children ? -10 : 10))
     .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-    .attr('font-size', '10px')
+    .attr('font-size', '11px')
     .attr('fill', '#98a4b8')
     .text((d) => (d.data.leaf || d.depth === 1 ? d.data.year : ''))
 
@@ -171,20 +175,21 @@ async function draw() {
   })
 }
 
-let ro = null
 onMounted(async () => {
   await draw()
   ro = new ResizeObserver(() => draw())
   if (svgRef.value) ro.observe(svgRef.value)
 })
-watch(svgRef, () => draw())
+onUnmounted(() => {
+  if (ro && svgRef.value) ro.unobserve(svgRef.value)
+})
 </script>
 
 <template>
   <div class="family-tree">
     <div ref="svgRef" class="family-tree__canvas" />
     <div class="family-tree__hint">
-      点击任意节点查看名称 · 六条技术分支共 {{ 26 }} 个代表算法
+      点击任意节点查看名称 · 六条技术分支共 26 个代表算法
       <span v-if="selected" class="family-tree__sel">已选：{{ selected }}</span>
     </div>
   </div>
@@ -197,10 +202,12 @@ watch(svgRef, () => draw())
   background: var(--vp-c-bg-soft);
   padding: 8px;
   margin: 16px 0;
+  overflow: visible;
 }
 .family-tree__canvas {
   width: 100%;
   overflow-x: auto;
+  overflow-y: visible;
 }
 .family-tree__hint {
   font-size: 12px;
