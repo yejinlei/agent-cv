@@ -81,3 +81,13 @@ print("重构是否还原:", np.allclose(recon, img))
 - 嵌入式平台可用 `cv2.setNumThreads(1)` 控制线程数，避免抢占
 - 大图先降采样处理再上采样结果，速度提升常肉眼可见
 - 关键参数做成配置项，不同场景（白天/夜晚、室内/室外）单独调
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **haar wavelet** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="haarwavelet" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

@@ -189,3 +189,13 @@ def bf_match(des1: np.ndarray, des2: np.ndarray):
   - `computeDescriptors`：rBRIEF 旋转 + 比较
   - `pattern` 常量：预训练的 512 个点坐标（256 对）
 - `modules/features2d/src/fast.cpp`：FAST 角点检测（决策树版）
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **orb** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="orb" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

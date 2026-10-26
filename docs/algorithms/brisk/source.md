@@ -80,3 +80,13 @@ OpenCV 的 BRISK 源码在 `modules/features2d/src/brisk.cpp`，关键结构：
 - `BriskDescriptors::computeDescriptors()`：这是**核心**——它预先生成了所有 1770 对点对的采样 offset 列表（`shortPairs`/`longPairs`），方向估计和描述子生成都用同一个积分循环，非常快。
 
 一个工程细节：OpenCV 的 BRISK 对采样点做了**整数坐标预计算**（因为旋转角度离散化为 1024 个方向，每个方向预存 60 个采样点的整数偏移），这样运行时只需要查表 + 加法就能定位像素，没有浮点插值开销。
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **brisk** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="brisk" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

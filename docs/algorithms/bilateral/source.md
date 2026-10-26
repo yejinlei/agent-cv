@@ -56,3 +56,13 @@ def bilateral_filter_naive(img, d=5, sigma_s=10, sigma_r=30):
 ```
 
 **注意**：这个手写版比 OpenCV 慢 1000 倍，仅供理解；生产一定要用 `cv2.bilateralFilter`。
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **bilateral** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="bilateral" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

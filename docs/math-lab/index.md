@@ -31,3 +31,18 @@ editLink: false
 12. **傅里叶频域** → 低频和高频到底是什么
 13. **RANSAC** → 为什么它不怕错点/噪声
 14. **Lucas-Kanade光流** → 怎么追踪物体移动
+
+---
+
+## 🎯 看懂原理了？去真机实验室跑真实照片
+
+下面每个互动 tab 讲的都是「数学直觉」——用的是合成小图。想在真实照片上看到效果、想调参数、想复制代码去用，点这里：
+
+<div style="display:flex; gap:16px; flex-wrap:wrap; margin: 16px 0">
+  <a href="/playgrounds/" style="flex:1; min-width:240px; padding:18px; border-radius:12px; background:linear-gradient(135deg,var(--vp-c-brand-soft),var(--vp-c-brand-1)); color:#fff; text-decoration:none; font-weight:600">
+    🎮 真机实验室（OpenCV.js 39 种算法在线跑）<br/>
+    <small style="opacity:.85">真实照片 · 可调参数 · 自动生成 Python/C++/JS 代码</small>
+  </a>
+</div>
+
+每个算法档案页（如 <a href="/algorithms/sobel/source">Sobel 源码页</a>）底部也会自动嵌入一个"选中该算法"的同款实验室，看完原理直接动手，不用切页面。

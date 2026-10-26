@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><title>probe</title>
+<script>
+window.LOG=[];
+function log(m){LOG.push((Date.now()-T0)+'ms '+m);}
+var T0=Date.now();
+log('before script: cv='+typeof window.cv);
+// 挂一个onerror看异常
+window.addEventListener('error',e=>log('ERR '+e.message));
+var s=document.createElement('script');
+s.src='/lib/opencv.js';
+s.onload=()=>log('script.onload: cv='+typeof window.cv+', isPromise='+(window.cv&&typeof window.cv.then==='function')+', Mat='+!!(window.cv&&window.cv.Mat));
+s.onerror=e=>log('script.onerror');
+document.head.appendChild(s);
+setTimeout(()=>{log('t=1s cv='+typeof window.cv+', Mat='+!!(window.cv&&window.cv.Mat)+', isP='+!!(window.cv&&window.cv.then));console.log('---LOG---');LOG.forEach(x=>console.log(x));},1000);
+setTimeout(()=>{log('t=3s cv='+typeof window.cv+', Mat='+!!(window.cv&&window.cv.Mat)+', isP='+!!(window.cv&&window.cv.then));console.log('---LOG@3s---');LOG.forEach(x=>console.log(x));},3000);
+setTimeout(()=>{log('t=10s cv='+typeof window.cv+', Mat='+!!(window.cv&&window.cv.Mat)+', isP='+!!(window.cv&&window.cv.then));console.log('---LOG@10s---');LOG.forEach(x=>console.log(x));window._READY=true;},10000);
+</script></head><body>probe</body></html>

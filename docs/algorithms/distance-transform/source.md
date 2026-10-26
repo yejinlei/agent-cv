@@ -57,3 +57,13 @@ OpenCV `distanceTransform` 在 `modules/imgproc/src/distransform.cpp`：
   - `DistTransform::operator()`：Danielsson 8SED 精确欧氏距离，维护 (dx,dy) 向量而不是标量
 - 全部用 `parallel_for_` 分块并行
 - 一个有意思的细节：Danielsson 算法不是简单的"两次扫描就完事"，它对边角误差有 4 次扫描的修正版本（OpenCV 用了 8 扫描的更稳定实现）
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **distance transform** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="distance" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

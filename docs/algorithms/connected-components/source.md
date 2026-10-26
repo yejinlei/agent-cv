@@ -77,3 +77,13 @@ OpenCV 连通域源码在 `modules/imgproc/src/connectedcomponents.cpp`：
 - `CCL_SAUF<>`、`CCL_BBDT<>`、`CCL_GRANA<>` 等模板特化
 - SAUF（Scan Array Union Find）：Grana 2010 算法，每个像素用一棵 16 叶决策树决定如何处理邻居（0=全 0、1=只有左、…、15=四个邻居全前景点），是当前最快算法
 - stats 累加用了向量化：`LabelStatistics::addBlock()` 一次性加一块，减少逐像素判断
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **connected components** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="connected" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

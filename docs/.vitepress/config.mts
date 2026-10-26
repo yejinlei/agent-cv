@@ -17,6 +17,16 @@ export default defineConfig({
     }
   },
 
+  transformPageData(pageData) {
+    const base = '/agent-cv/'
+    if (pageData.filePath && (pageData.filePath.includes('playgrounds') || pageData.filePath.includes('algorithms/'))) {
+      pageData.frontmatter.head = pageData.frontmatter.head || []
+      pageData.frontmatter.head.push([
+        'link', { rel: 'prefetch', href: base + 'lib/opencv.js', as: 'script', crossorigin: '' }
+      ])
+    }
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     siteTitle: 'agent-cv',
@@ -24,9 +34,14 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '🌱 小白入门', link: '/for-beginners' },
-      { text: '🧭 学习路径', link: '/learning-path' },
-      { text: '🧪 数学实验室', link: '/math-lab/' },
-      { text: '🎮 算法Playground', link: '/playgrounds/' },
+      {
+        text: '🧭 学习路径',
+        items: [
+          { text: '学习路径地图（双轴）', link: '/learning-path' },
+          { text: '🧪 原理实验室（看不懂公式点这）', link: '/math-lab/' },
+        ]
+      },
+      { text: '🎮 真机实验室（跑真实算法）', link: '/playgrounds/' },
       {
         text: '📚 章节体系（纵轴）',
         items: [

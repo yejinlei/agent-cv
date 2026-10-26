@@ -167,3 +167,13 @@ Otsu 的耗时几乎等于「算一次直方图」。如果你的管线慢，瓶
 :::
 
 [← 上一篇：算法流程](./architecture) · [下一篇：实战与踩坑 →](./painpoints)
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **otsu** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="threshold" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

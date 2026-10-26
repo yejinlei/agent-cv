@@ -2,6 +2,9 @@
 
 理解 ORB，要搞懂五样东西：**FAST 角点**、**灰度质心法**、**图像金字塔**、**BRIEF 二进制描述子**、**rBRIEF 学习点对**。
 
+<div class="tip custom-block"><p>🧪 公式看不懂？去 <a href="/math-lab/">原理实验室</a> 拖动滑块直观体验卷积/梯度/高斯/霍夫/角点/RANSAC/光流等核心概念；看完原理再去本页底部 <a href="./source">源码/真机实验室</a> 亲手调参数。</p></div>
+
+
 ## ① FAST 角点（Features from Accelerated Segment Test）
 
 ### 一句话

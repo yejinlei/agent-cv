@@ -2,6 +2,9 @@
 
 光流算法看上去代码只有一行 `calcOpticalFlowPyrLK`，但背后站着四个必须搞懂的概念，少一个都会调参调到崩溃。
 
+<div class="tip custom-block"><p>🧪 公式看不懂？去 <a href="/math-lab/">原理实验室</a> 拖动滑块直观体验卷积/梯度/高斯/霍夫/角点/RANSAC/光流等核心概念；看完原理再去本页底部 <a href="./source">源码/真机实验室</a> 亲手调参数。</p></div>
+
+
 ## 1. 亮度恒常性假设（Brightness Constancy）
 
 ### 白话

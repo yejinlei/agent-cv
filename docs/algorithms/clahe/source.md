@@ -62,3 +62,13 @@ OpenCV CLAHE 在 `modules/imgproc/src/clahe.cpp`，核心类 `CLAHE_Impl`：
 - `CLAHE_Impl::calcLUT()`：对每个 tile 算 clip + CDF，用 `cv::parallel_for_` 并行
 - `CLAHE_Impl::interpolate`：双线性插值的四种情况（tile 内部/边界/四角），SSE/AVX 优化过
 - Clip 循环用了个小技巧：不是「一次裁剪+均摊」，而是循环「裁剪→均摊→再裁剪」到没有 bin 超限（通常 2–3 次收敛）
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **clahe** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="clahe" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

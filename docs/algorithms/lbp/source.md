@@ -75,3 +75,13 @@ def naive_lbp(img):
             out[i-1, j-1] = code
     return out
 ```
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **lbp** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="lbp" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

@@ -60,3 +60,13 @@ OpenCV AKAZE 源码在 `modules/features2d/src/akaze.cpp`：
 - `AKAZE::Compute_Descriptors_MLDB()`：M-LDB 描述子，按 grid 比 V/dx/dy
 
 一个重要细节：OpenCV 默认把 diffusivity 设为 `DIFF_PM_G2`（g_2 = 1/(1 + |∇L|²/k²)），这是保边最强的选项，**不要随便改成 DIFF_PM_G1**，后者对噪声更敏感。
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **akaze** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="akaze" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。

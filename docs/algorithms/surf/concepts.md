@@ -2,6 +2,9 @@
 
 理解 SURF，只要搞懂四样东西：**积分图**、**Hessian 行列式**、**箱式滤波近似**、**Haar 小波响应**。
 
+<div class="tip custom-block"><p>🧪 公式看不懂？去 <a href="/math-lab/">原理实验室</a> 拖动滑块直观体验卷积/梯度/高斯/霍夫/角点/RANSAC/光流等核心概念；看完原理再去本页底部 <a href="./source">源码/真机实验室</a> 亲手调参数。</p></div>
+
+
 ## ① 积分图（Integral Image）
 
 ### 一句话

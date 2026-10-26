@@ -171,3 +171,13 @@ def stabilize(old_gray, frame_gray, p0):
 | Open3D | `RegistrationICP`（3D）、`compute_flow`（需自己接 LK） | 点云为主 |
 
 **生产选型一句话**：Python/C++ 直接 OpenCV；嵌入式看 OpenMV/K210 是否满足精度；GPU 场景上 DeepFlow 或 RAFT。
+
+## 🎮 动手试一试
+
+原理看完了，现在就在你浏览器里跑一遍 **lucas kanade** 吧——拖动滑块调参数，下面的 Python/C++/JS 代码会自动跟着变，复制即可用。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="lkflow" compact />
+</ClientOnly>
+
+👉 想要更丰富的示例图、上传自己的照片、切换其他算法？去 [🎮 真机实验室](/playgrounds/)。
