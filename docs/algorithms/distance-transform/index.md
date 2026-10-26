@@ -21,3 +21,28 @@
 对二值图做两次反向扫描，用 3×3 邻域最小距离递推，得到每个前景点到最近背景的距离图——形态学、分割、匹配的底层积木。
 
 <ChildPages />
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🧪 先懂原理：邻域与距离到底在算什么
+
+拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="neighbor" compact />
+</ClientOnly>
+
+### 🎮 再跑真机：在浏览器里真跑 距离变换
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="distance" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

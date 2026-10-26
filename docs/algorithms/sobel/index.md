@@ -99,3 +99,28 @@ flowchart LR
 **一句话定位**：Sobel 不是「最好的边缘检测器」，它是**所有需要梯度的算法的公共零件**。Canny 的非极大值抑制要它、HOG 的方向直方图要它、Harris 的结构张量要它、Lucas-Kanade 的空间梯度要它。理解 Sobel，等于拿到理解这一整族的钥匙。
 
 [算子词典](/operators/) · [场景反查](/scenarios/) · [版本总览](/versions/) · [图像处理分支](/branches/image-processing/)
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🧪 先懂原理：梯度与边缘到底在算什么
+
+拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="grad" compact />
+</ClientOnly>
+
+### 🎮 再跑真机：在浏览器里真跑 Sobel 边缘算子
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="sobel" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

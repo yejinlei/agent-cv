@@ -59,3 +59,15 @@ OpenCV 的 `goodFeaturesToTrack` 不直接让你设阈值，而是让你给一�
 
 LK 光流可解的条件是 $A^TA$ 可逆（即两个特征值都足够大），这**正好**就是 Shi-Tomasi 的判据！所以 Shi-Tomasi 角点就是天生为光流准备的——能被稳定跟踪的点。
 
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「Harris 角点」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="harris" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

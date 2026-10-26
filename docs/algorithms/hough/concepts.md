@@ -177,4 +177,15 @@ flowchart TB
 
 下一章：[🏗️ 算法流程](/algorithms/hough/architecture)
 
-> 🧪 **看不懂公式？去[数学实验室](/math-lab/)拖动滑块直观体验**——卷积、梯度、高斯、霍夫、角点、RANSAC、光流都有实时互动demo，看完再回来。
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「霍夫变换」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="hough" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

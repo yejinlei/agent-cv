@@ -24,3 +24,16 @@
 ## 5. 彩色图处理
 
 CLAHE 通常**不直接对 RGB 三通道各做一遍**（会造成色偏）。正确做法：转到 LAB / YCrCb 空间，只对 L（亮度）/Y 通道做 CLAHE，再转回 RGB。
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「直方图」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="hist" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

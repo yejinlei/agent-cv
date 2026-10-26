@@ -48,3 +48,16 @@ flowchart LR
 | 中值 | 半保边 | ✅ | ⚡⚡ | 无 |
 | **双边** | ✅ | ❌ | ⚡ | 轻微 |
 | 引导滤波 | ✅ | ❌ | ⚡⚡⚡ | 无（O(N)） |
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「卷积」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="conv" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

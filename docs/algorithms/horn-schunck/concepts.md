@@ -64,3 +64,15 @@ flowchart TB
 
 LK 是局部方法（窗口内常数流），HS 是全局方法（全图平滑）；LK 产稀疏流（只在角点），HS 产稠密流（每像素）；LK 线性方程直接解，HS 迭代求解。
 
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「Lucas-Kanade 光流」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="lk" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

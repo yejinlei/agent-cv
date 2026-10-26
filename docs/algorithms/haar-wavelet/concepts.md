@@ -61,3 +61,16 @@ Viola-Jones 的 Haar 特征就是「白矩形区灰度均值 − 黑矩形区灰
 ::: tip 记忆锚点
 记住「Haar 只有平均与差——低通看趋势，高通看边缘」。
 :::
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「傅里叶频域」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="fourier" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

@@ -33,5 +33,8 @@ title: 🎮 真机实验室（OpenCV.js 39 种算法在线跑）
 | **对应关系** | 14 个原理 tab ↔ 本页 39 个算法 | 每个算法页底部也有同款实验室 |
 
 <div class="warning custom-block">
-  <p><b>提示</b>：每个算法的档案页（例如 <a href="/agent-cv/algorithms/sobel/">Sobel</a>、<a href="/agent-cv/algorithms/canny/">Canny</a>、<a href="/agent-cv/algorithms/harris/">Harris</a>、<a href="/agent-cv/algorithms/hough/">霍夫直线</a>、<a href="/agent-cv/algorithms/ransac/">RANSAC</a>、<a href="/agent-cv/algorithms/lucas-kanade/">Lucas-Kanade</a>）底部都会嵌入一个<b>自动选中该算法</b>的紧凑版实验室——看完原理直接动手，不用再切回本页。</p>
+  <p><b>本页和算法页是什么关系？</b><br/>
+  现在 <b>32 个算法档案页</b>里都已经内嵌了「自动选中该算法」的实验组件——想看某个算法，直接在它自己的页面里动手就行，不用回本页。<br/>
+  <b>那本页还有什么用？</b>本页是<b>总台/工作台</b>：① 13 张内置示例图可以随手换，还支持<b>上传你自己的照片</b>；② 不用来回切页就能<b>横向对比不同算法</b>；③ 带完整的 Python / C++ / JavaScript 代码面板。<br/>
+  <b>简单说</b>：只想看某个算法 → 去它的档案页；想自由挑图、对比算法、拷代码 → 留在本页。</p>
 </div>

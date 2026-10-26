@@ -89,3 +89,20 @@ for (x, y, w, h) in faces:
 | 作为多阶段检测的粗筛第一关 | 高精度人脸（用 MTCNN/RetinaFace） |
 | 笑脸快门、人脸定位、人眼/嘴检测 | 人脸姿态估计、表情识别（需要后续 CNN） |
 | 教学演示（最直观的"检测 = 特征+级联"） | 复杂场景多姿态人脸 |
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🎮 再跑真机：在浏览器里真跑 Viola-Jones
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="facedetect" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

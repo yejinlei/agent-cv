@@ -92,3 +92,28 @@ p1, st, err = cv2.calcOpticalFlowPyrLK(old_gray, new_gray, p0, None,
 3. **鲁棒**：角点天生抗光照（梯度方向），比整块匹配稳
 4. **生态成熟**：OpenCV/Matlab/VXL/OpenMV 都内置，SLAM（ORB-SLAM、VINS）前端标配
 5. **教学价值高**：讲清了光流约束方程、孔径问题、最小二乘——是学稠密光流/深度学习光流的前置
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🧪 先懂原理：Lucas-Kanade 光流到底在算什么
+
+拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="lk" compact />
+</ClientOnly>
+
+### 🎮 再跑真机：在浏览器里真跑 Lucas-Kanade 光流
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="lkflow" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

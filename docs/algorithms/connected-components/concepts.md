@@ -38,3 +38,16 @@ centroids 矩阵每行是 (cx, cy) 质心坐标。
 - **connectedComponents**：数个数、取 bbox、筛面积最快，但不给轮廓点
 - **findContours**：给轮廓坐标链、能做形状匹配、可提取层级（外轮廓/孔洞）
 - 经验：**先 connectedComponents 过滤大小，再对保留的域用 findContours 取轮廓**
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「邻域与距离」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="neighbor" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

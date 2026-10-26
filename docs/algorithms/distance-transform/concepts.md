@@ -30,3 +30,16 @@
 ## 4. 标签距离变换（带索引）
 
 DIST_LABEL_PIXEL / DIST_LABEL_CCOMP 选项不仅给距离，还告诉你最近的 0 像素是哪个标签/哪个连通域——这就是**分水岭算法找种子**的核心。
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「邻域与距离」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="neighbor" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

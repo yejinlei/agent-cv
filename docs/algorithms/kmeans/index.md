@@ -68,3 +68,20 @@ flowchart LR
 - 返回 [六大分支总览](/branches/)
 - [K-Means 颜色聚类所在分支](/branches/segmentation/)
 - [算法档案总览](/algorithms/)
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🎮 再跑真机：在浏览器里真跑 K-Means 颜色聚类
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="kmeans" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

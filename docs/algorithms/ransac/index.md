@@ -126,3 +126,20 @@ flowchart LR
 - [💻 源码走读](/algorithms/ransac/source)：OpenCV 三大 API + 手写单应 RANSAC
 - [⚠️ 踩坑指南](/algorithms/ransac/painpoints)：10 个典型坑
 - [🎛️ 调参技巧](/algorithms/ransac/tricks)：t 怎么定 + 7 个场景抄作业
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🧪 先懂原理：RANSAC到底在算什么
+
+拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="ransac" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

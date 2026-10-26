@@ -40,3 +40,16 @@ Gabor 核是复数，滤波后得到复响应：
 ## 6. Gabor 与生物视觉
 
 哺乳动物 V1 区简单细胞（simple cell）的感受野形状和 Gabor 函数高度吻合——也就是说，Gabor 不是人工设计的，而是**进化出来的最优解**，这一点让它在神经科学/视觉模型中有特殊地位。
+
+
+---
+
+## 🧪 原理可视化
+
+看不懂上面的公式？下面这个互动组件把「傅里叶频域」画出来了——拖动滑块，看每一步怎么算。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="fourier" compact />
+</ClientOnly>
+
+> 想看它在真实照片上的实际效果？回到 [本算法首页](./index) 或去 [🎮 真机实验室](/playgrounds/)。

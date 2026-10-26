@@ -96,3 +96,28 @@ flowchart LR
 **一句话定位**：Otsu 是**「全局自动阈值」这条线的代表**。只要你的图「前景背景灰度分明、光照基本均匀」，Otsu 几乎是免费的最优解。一旦光照不均，就该往右走，用**局部/自适应阈值**。
 
 [算子词典](/operators/) · [场景反查](/scenarios/) · [版本总览](/versions/) · [图像处理分支](/branches/image-processing/)
+
+
+---
+
+## 🚀 动手体验（浏览器里直接玩，不用装环境）
+
+> 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
+
+### 🧪 先懂原理：阈值分割到底在算什么
+
+拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
+
+<ClientOnly>
+  <MathVisualizer initial-tab="thresh" compact />
+</ClientOnly>
+
+### 🎮 再跑真机：在浏览器里真跑 Otsu 大津阈值法
+
+换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
+
+<ClientOnly>
+  <OpencvPlayground initial-algo="threshold" compact />
+</ClientOnly>
+
+> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

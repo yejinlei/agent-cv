@@ -16,3 +16,8 @@ gen_*.py
 generate_*.py
 fix_*.py
 rebuild_*.py
+inject_*.py
+add_*.py
+check_*.py
+verify_*.py
+scan_*.py
