@@ -6,8 +6,8 @@
       <canvas :ref="el => setRef(type, el)" :width="640" :height="320"></canvas>
       <div class="ctrl-row">
         <template v-for="c in ctrls[type]" :key="c.k">
-          <label>{{ c.label }} = <b>{{ typeof c.v === "number" ? (c.step<1 ? c.v.toFixed(2) : c.v) : c.v }}</b></label>
-          <input type="range" :min="c.min" :max="c.max" :step="c.step||1" v-model.number="c.v" @input="redraw()"/>
+          <label>{{ c.label }} = <b>{{ typeof c.v.value === "number" ? (c.step < 1 ? c.v.value.toFixed(2) : c.v.value) : c.v.value }}</b></label>
+          <input type="range" :min="c.min" :max="c.max" :step="c.step || 1" v-model.number="c.v.value" @input="redraw()"/>
         </template>
         <template v-for="b in btns[type]" :key="b.k">
           <button @click="b.k()">{{ b.label }}</button>
@@ -284,7 +284,7 @@ drawers.flann = function(ctx){
   st.pts.forEach(p=>dot(ctx,p.x,p.y,2,'#8ab'));
   // 画分割线（仅绘制当前走过路径涉及的节点及其祖先）
   function drawSplits(node,rect){
-    if(!node||node.pts) return;
+    if(!node||node.left===undefined) return;
     const visited = st.path.includes(node);
     ctx.strokeStyle=visited?'#e55':'rgba(180,200,220,0.5)';
     ctx.lineWidth=visited?2:1;
@@ -323,7 +323,7 @@ function btn_flannStep(){
       return tree;
     }
     _state.flann.path.push(tree);
-    if(tree.pts) return tree;
+    if(tree.left===undefined) return tree;
     const v=tree.split===0?qx:qy;
     if(v<tree.val) return collect(tree.left,depth+1) || tree;
     else return collect(tree.right,depth+1) || tree;
@@ -385,7 +385,7 @@ function _gcInit(){
       // 背景随机+前景一个圆
       const inFg=(x-42)*(x-42)/100+(y-15)*(y-15)/36 < 1;
       const v=inFg? 180+Math.random()*30: 80+Math.random()*40;
-      row.push({v:v|0,fg:inFg?1:0});
+      row.push({v:v|0,fg:0});
     }
     pix.push(row);
   }
@@ -458,15 +458,13 @@ drawers.kcf = function(ctx){
 }
 function btn_kcfRun(){
   _kcfInit();
-  let p=p('kcf','pos');
+  let pos=p('kcf','pos');
   const step=()=>{
-    p+=8+Math.random()*4;
-    if(p>580)p=60;
-    // 直接改slider值通过ctrl是不行的，用_state存偏移
-    _state.kcf.pos=p;
-    // 找到ctrl
+    pos+=8+Math.random()*4;
+    if(pos>580)pos=60;
+    _state.kcf.pos=pos;
     const c=ctrls['kcf'].find(x=>x.k==='pos');
-    if(c) c.v.value=p;
+    if(c) c.v.value=pos;
     draw('kcf');
     if(_state.kcf.running) requestAnimationFrame(step);
   };
@@ -482,7 +480,7 @@ function _msInit(){
   for(let i=0;i<80;i++){pts.push({x:180+(Math.random()-0.5)*60,y:100+(Math.random()-0.5)*60})}
   for(let i=0;i<60;i++){pts.push({x:450+(Math.random()-0.5)*80,y:200+(Math.random()-0.5)*60})}
   for(let i=0;i<70;i++){pts.push({x:300+(Math.random()-0.5)*60,y:230+(Math.random()-0.5)*60})}
-  _state.ms={pts,path:[{x:80,y:60}],h:60};
+  _state.ms={pts,path:[{x:130,y:85}],h:60};
 }
 drawers.meanshift = function(ctx){
   _msInit();
@@ -518,7 +516,7 @@ function btn_msStep(){
   }
   draw('meanshift');
 }
-function btn_msReset(){_state.ms&&(_state.ms.path=[{x:80,y:60}]);draw('meanshift')}
+function btn_msReset(){_state.ms&&(_state.ms.path=[{x:130,y:85}]);draw('meanshift')}
 
 // =============== MOG2 ===============
 function _mogInit(){
@@ -807,7 +805,7 @@ function _csInit(){
   const pts=[];
   for(let i=0;i<150;i++){pts.push({x:250+(Math.random()-0.5)*200,y:150+(Math.random()-0.5)*120})}
   for(let i=0;i<80;i++){const a=Math.random()*Math.PI*2;pts.push({x:350+Math.cos(a)*40,y:170+Math.sin(a)*30*0.7})}
-  _state.cs={pts,win:{x:100,y:80,w:50,h:50},step:0};
+  _state.cs={pts,win:{x:130,y:90,w:70,h:70},step:0};
 }
 drawers.camshift = function(ctx){
   _csInit();
@@ -836,7 +834,7 @@ function btn_csStep(){
   }
   draw('camshift');
 }
-function btn_csReset(){_csInit();_state.cs.win={x:100,y:80,w:50,h:50};_state.cs.step=0;draw('camshift')}
+function btn_csReset(){_csInit();_state.cs.win={x:130,y:90,w:70,h:70};_state.cs.step=0;draw('camshift')}
 
 // =============== MOSSE ===============
 drawers.mosse = function(ctx){
