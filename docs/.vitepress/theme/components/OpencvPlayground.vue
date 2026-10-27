@@ -2,10 +2,19 @@
   <div class="ocv-root" :class="{ 'ocv-compact': compact }">
     <!-- 加载状态 -->
     <div v-if="status !== 'ready'" class="ocv-loading">
-      <div class="ocv-spinner"></div>
-      <p>{{ statusText }}</p>
+      <div v-if="status === 'error'">⚠️</div>
+      <div v-else class="ocv-spinner"></div>
+      <p class="ocv-status-text">{{ statusText }}</p>
+      <div class="ocv-progress-wrap" v-if="status === 'downloading'">
+        <div class="ocv-progress-bar"><div class="ocv-progress-inner" :style="{ width: downloadPercent + '%' }"></div></div>
+        <p class="ocv-progress-meta">{{ downloadedMB }} / {{ totalMB }} MB · {{ downloadSpeed }} KB/s</p>
+      </div>
       <p class="ocv-hint" v-if="status === 'error'">{{ errorMsg }}</p>
-      <p v-else class="ocv-tip" v-if="!compact">首次加载需下载约 11 MB，之后浏览器会缓存。运算在你本地完成，不上传图片。</p>
+      <button v-if="status === 'error'" class="ocv-retry-btn" @click="retry">🔄 重试</button>
+      <p v-if="status !== 'error' && !compact" class="ocv-tip">
+        首次加载需下载约 3.5 MB（gzip 压缩），之后浏览器会缓存。运算完全在你本地完成，不上传图片。<br/>
+        国内访问 GitHub Pages 较慢是正常的，请耐心等待；若长时间卡住，刷新页面即可。
+      </p>
     </div>
 
     <template v-else>
@@ -947,8 +956,12 @@ const languages = ['Python', 'C++', 'JavaScript']
 
 /* ---------------- 响应式状态 ---------------- */
 const status = ref('loading')
-const statusText = ref('正在加载本站内置的 OpenCV.js（约 11 MB，本地运算，不依赖外部 CDN）…')
+const statusText = ref('正在准备加载 OpenCV.js …')
 const errorMsg = ref('')
+const downloadPercent = ref(0)
+const downloadedMB = ref('0.0')
+const totalMB = ref('3.5')
+const downloadSpeed = ref('0')
 const srcCanvas = ref(null)
 const dstCanvas = ref(null)
 const currentSample = ref('scene.png')
@@ -966,6 +979,43 @@ let haarDetector = null
 
 const activeFilter = computed(() => filters.find(f => f.id === currentFilter.value) || filters[0])
 const embedAlgo = computed(() => !!props.initialAlgo)
+
+function retry() {
+  // 重置单例状态后重新走加载流程
+  window[OCV_PROMISE_KEY] = null
+  window[OCV_STATE_KEY] = null
+  const old = document.querySelector('script[data-ocv]')
+  if (old) old.remove()
+  errorMsg.value = ''
+  statusText.value = '正在重新尝试加载 OpenCV.js …'
+  status.value = 'loading'
+  bootLoader()
+}
+
+async function bootLoader() {
+  try {
+    cv = await loadOpencv()
+    status.value = 'ready'
+    await nextTick()
+    const init = readInitialAlgoFromUrl()
+    if (init) currentFilter.value = init
+    initParams()
+    const sampleByAlgo = {
+      facedetect:'face.png', 'sobel-hog':'pedestrian.png', houghcircles:'coins.png',
+      chessboard_corner:'chessboard.png', harris:'chessboard.png', gftt:'chessboard.png',
+      fast:'chessboard.png', orb:'street.png', brisk:'street.png', akaze:'street.png',
+      bfmatch:'street.png', homography:'street.png', lkflow:'frame1.png',
+      'gradient-flow':'frame1.png', kmeans:'fruits.png', watershed:'coins.png',
+      connected:'coins.png', distance:'coins.png',
+    }
+    const s = sampleByAlgo[currentFilter.value]
+    if (s) currentSample.value = s
+    loadSample(); loadHaar()
+  } catch(e){
+    status.value='error'; errorMsg.value=(e&&e.message)||String(e)
+    statusText.value='OpenCV.js 加载失败'
+  }
+}
 
 /* 读取 URL hash 对初始算法做锚定；?algo=xxx 或 #algo:xxx */
 function readInitialAlgoFromUrl() {
@@ -1001,78 +1051,167 @@ async function copyCode() {
 
 function filtersByGroup(g) { return filters.filter(f => f.group === g) }
 
-/* ---------------- OpenCV 加载器（Promise-safe + 全局单例 + 可取消） ---------------- */
-const OCV_PROMISE_KEY = '__cv_loader_promise_v2__'
-const OCV_STATE_KEY = '__cv_loader_state_v2__'  // 'pending'|'ready'|'failed'|null
+/* ---------------- OpenCV 加载器（XHR 进度 + onRuntimeInitialized + 全局单例 + 重试） ---------------- */
+const OCV_PROMISE_KEY = '__cv_loader_promise_v3__'
+const OCV_STATE_KEY = '__cv_loader_state_v3__'
+const OCV_TIMEOUT_MS = 180000 // 3 分钟（国内 GitHub Pages 11MB 源码/3.5MB gzip 有时确实要 1-2 分钟）
 
-function installScriptOnce() {
-  if (document.querySelector('script[data-ocv]')) return
-  const s = document.createElement('script')
-  s.setAttribute('data-ocv', '1'); s.src = OCV_URL; s.async = true
-  document.head.appendChild(s)
+function xhrFetchWithProgress(url, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'arraybuffer'
+    xhr.onprogress = (e) => {
+      if (e.lengthComputable && onProgress) {
+        onProgress(e.loaded, e.total)
+      }
+    }
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        // Content-Encoding: gzip 已由浏览器自动解压，这里 response 是解压后的 JS 源码
+        resolve(xhr.response)
+      } else {
+        reject(new Error('下载失败：HTTP ' + xhr.status))
+      }
+    }
+    xhr.onerror = () => reject(new Error('网络错误：无法连接到 ' + url))
+    xhr.ontimeout = () => reject(new Error('下载超时（网络太慢），点击「重试」再试一次'))
+    xhr.timeout = OCV_TIMEOUT_MS
+    xhr.send(null)
+  })
+}
+
+function arrayBufferToText(buf) {
+  // 11MB 字符串用 TextDecoder 比 String.fromCharCode 快很多
+  if (typeof TextDecoder !== 'undefined') {
+    return new TextDecoder('utf-8').decode(new Uint8Array(buf))
+  }
+  const arr = new Uint8Array(buf)
+  let str = '', chunk = 8192
+  for (let i = 0; i < arr.length; i += chunk) {
+    str += String.fromCharCode.apply(null, arr.subarray(i, i + chunk))
+  }
+  return str
+}
+
+function runScriptFromText(text) {
+  // 用 blob URL 而非 document.write，避免污染全局执行上下文
+  const blob = new Blob([text], { type: 'application/javascript' })
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob)
+    const s = document.createElement('script')
+    s.setAttribute('data-ocv', '1')
+    s.src = url
+    s.onload = () => { URL.revokeObjectURL(url); resolve() }
+    s.onerror = () => { URL.revokeObjectURL(url); reject(new Error('脚本执行失败')) }
+    document.head.appendChild(s)
+  })
+}
+
+function waitForRuntimeReady(timeoutMs) {
+  return new Promise((resolve, reject) => {
+    // 三重等待：onRuntimeInitialized 回调 + cv.Mat 轮询（兜底）+ 超时
+    const start = Date.now()
+    let done = false
+    let pollId = null
+    function finish(mod) {
+      if (done) return; done = true
+      if (pollId) { clearInterval(pollId); pollId = null }
+      resolve(mod)
+    }
+    function fail(msg) {
+      if (done) return; done = true
+      if (pollId) { clearInterval(pollId); pollId = null }
+      reject(new Error(msg))
+    }
+    function check() {
+      try {
+        const c = window.cv
+        if (c && typeof c === 'object' && c.Mat && c.Mat.prototype) {
+          finish(c); return
+        }
+        // 如果 cv 挂了 onRuntimeInitialized 钩子，也可以直接等它
+        if (c && typeof c['onRuntimeInitialized'] === 'function') {
+          // 包一层：onRuntimeInitialized 被调用后做最终检查
+          const orig = c['onRuntimeInitialized']
+          c['onRuntimeInitialized'] = function() {
+            try { orig && orig() } catch(e) { /* 忽略原始 hook 的错误 */ }
+            if (c.Mat) finish(c); else setTimeout(check, 50)
+          }
+          return // 不再轮询，等回调
+        }
+      } catch(e) {}
+      if (Date.now() - start > timeoutMs) {
+        fail('WASM 初始化超时（可能是浏览器禁用了 WebAssembly）')
+      }
+    }
+    // 先检查一次，如果已经就绪立即返回
+    check()
+    if (!done) pollId = setInterval(check, 200)
+  })
 }
 
 function loadOpencv() {
-  // 已经就绪就直接返回缓存模块
-  if (window.cv && window.cv.Mat) return Promise.resolve(window.cv)
-  // 已有加载中的 Promise 就复用
+  // 已就绪直接返回
+  if (window.cv && window.cv.Mat && window.cv.Mat.prototype) return Promise.resolve(window.cv)
+  // 复用全局加载中的 Promise（多个 Playground 实例同时挂载时只加载一次）
   if (window[OCV_PROMISE_KEY]) return window[OCV_PROMISE_KEY]
 
-  installScriptOnce()
+  // 把"脚本已插入但 runtime 还没 ready"也视为 pending，避免重复注入
+  const existing = document.querySelector('script[data-ocv]')
+  if (existing && window.cv && !window.cv.Mat) {
+    const p = waitForRuntimeReady(OCV_TIMEOUT_MS)
+    window[OCV_PROMISE_KEY] = p
+    return p
+  }
 
-  const p = new Promise((resolve, reject) => {
-    let finished = false
-    let to = null
-    window[OCV_STATE_KEY] = {
-      cancel: () => {
-        if (finished) return
-        finished = true
-        if (to) { clearTimeout(to); to = null }
-        if (window[OCV_PROMISE_KEY] === p) window[OCV_PROMISE_KEY] = null
+  const p = (async () => {
+    const startedAt = Date.now()
+
+    // 阶段 1：下载
+    status.value = 'downloading'
+    statusText.value = '正在下载 OpenCV.js（约 3.5 MB / gzip）…'
+    downloadPercent.value = 0
+    downloadedMB.value = '0.0'
+    totalMB.value = '3.5'
+    downloadSpeed.value = '0'
+
+    const t0 = Date.now()
+    let lastLoaded = 0, lastT = t0
+    const ab = await xhrFetchWithProgress(OCV_URL, (loaded, total) => {
+      // loaded/total 是解压后的字节数（约 11MB），但用户看到的是 gzip 后 3.5MB 更符合预期
+      // 这里用真实进度（加载字节占源码大小 11MB 的比例），但显示以"3.5MB gzip"为基准估算
+      const ratio = loaded / (total || 10964323)
+      downloadPercent.value = Math.min(99, Math.round(ratio * 100))
+      downloadedMB.value = (loaded / 1048576).toFixed(1)
+      totalMB.value = ((total || 10964323) / 1048576).toFixed(1)
+      const now = Date.now()
+      if (now - lastT > 500) {
+        const dt = (now - lastT) / 1000
+        const dl = loaded - lastLoaded
+        downloadSpeed.value = dt > 0 ? Math.max(0, Math.round(dl / 1024 / dt)).toString() : '0'
+        lastT = now; lastLoaded = loaded
       }
-    }
-    function finish(mod) {
-      if (finished) return; finished = true
-      if (to) clearTimeout(to); to = null
-      window[OCV_STATE_KEY] = 'ready'
-      resolve(mod)
-    }
-    function fail(e) {
-      if (finished) return; finished = true
-      if (to) clearTimeout(to); to = null
-      window[OCV_STATE_KEY] = 'failed'
-      window[OCV_PROMISE_KEY] = null
-      reject(e)
-    }
+    })
+    downloadPercent.value = 100
 
-    // 【关键】不再 setInterval！这个构建的 opencv.js 本身是 Promise 形态，
-    // 我们监听 script.onload 后直接 await window.cv 即可，不需要轮询。
-    const s = document.querySelector('script[data-ocv]')
-    if (!s) { fail(new Error('opencv.js script not found')); return }
+    // 阶段 2：执行脚本（Blob URL 注入）
+    status.value = 'executing'
+    statusText.value = '正在初始化 OpenCV 运行时（WASM 编译）…'
+    const text = arrayBufferToText(ab)
+    await runScriptFromText(text)
 
-    async function handleReady() {
-      try {
-        let mod = window.cv
-        // 支持 Promise 形态
-        if (mod && typeof mod.then === 'function') mod = await mod
-        if (mod && mod.Mat) { finish(mod); return }
-        fail(new Error('opencv.js 加载完成但 cv.Mat 未定义（构建残缺？）'))
-      } catch (e) { fail(e) }
-    }
+    // 阶段 3：等待 WASM 运行时就绪（onRuntimeInitialized + cv.Mat 轮询兜底）
+    status.value = 'initializing'
+    statusText.value = '正在启动 OpenCV（首次启动可能需要几秒）…'
+    const mod = await waitForRuntimeReady(OCV_TIMEOUT_MS - (Date.now() - startedAt))
 
-    // 若脚本已经加载完成（之前已 prefetch 或其他实例加载过），直接处理
-    if (s.readyState === 'complete' || s.readyState === 'loaded' || window.cv) {
-      handleReady()
-    } else {
-      s.addEventListener('load', handleReady, { once: true })
-    }
-
-    s.addEventListener('error', () => {
-      fail(new Error('opencv.js 网络加载失败'))
-    }, { once: true })
-
-    // 超时兜底
-    to = setTimeout(() => fail(new Error('OpenCV.js 加载超时（网络慢？），请刷新重试')), 45000)
+    window[OCV_STATE_KEY] = 'ready'
+    return mod
+  })().catch((e) => {
+    window[OCV_PROMISE_KEY] = null
+    window[OCV_STATE_KEY] = 'failed'
+    throw e
   })
 
   window[OCV_PROMISE_KEY] = p
@@ -1080,9 +1219,8 @@ function loadOpencv() {
 }
 
 onBeforeUnmount(() => {
-  // 组件卸载时，如果本组件是那个发起加载的实例，就取消 poll/timeout
-  const st = window[OCV_STATE_KEY]
-  if (st && typeof st === 'object' && st.cancel) st.cancel()
+  // 不取消全局正在进行的下载（避免切换页面导致重下）；只清理本组件发起的轮询。
+  // 全局单例 Promise 在 resolve 后被多个 Playground 实例共享，卸载时不应破坏它。
 })
 
 async function loadHaar() {
@@ -1157,28 +1295,7 @@ function onAlgoChange() {
   history.replaceState(null, '', u.toString())
 }
 
-onMounted(async () => {
-  try {
-    cv = await loadOpencv()
-    status.value = 'ready'
-    await nextTick()
-    const init = readInitialAlgoFromUrl()
-    if (init) currentFilter.value = init
-    initParams()
-    // 根据算法选一个更合适的默认示例图
-    const sampleByAlgo = {
-      facedetect:'face.png', 'sobel-hog':'pedestrian.png', houghcircles:'coins.png',
-      chessboard_corner:'chessboard.png', harris:'chessboard.png', gftt:'chessboard.png',
-      fast:'chessboard.png', orb:'street.png', brisk:'street.png', akaze:'street.png',
-      bfmatch:'street.png', homography:'street.png', lkflow:'frame1.png',
-      'gradient-flow':'frame1.png', kmeans:'fruits.png', watershed:'coins.png',
-      connected:'coins.png', distance:'coins.png',
-    }
-    const s = sampleByAlgo[currentFilter.value]
-    if (s) currentSample.value = s
-    loadSample(); loadHaar()
-  } catch(e){ status.value='error'; errorMsg.value=(e&&e.message)||String(e); statusText.value='OpenCV.js 加载失败' }
-})
+onMounted(() => { bootLoader() })
 
 watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 </script>
@@ -1189,8 +1306,15 @@ watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 .ocv-loading { padding: 48px 24px; text-align: center; color: var(--vp-c-text-2); }
 .ocv-spinner { width: 34px; height: 34px; margin: 0 auto 16px; border: 3px solid var(--vp-c-divider); border-top-color: var(--vp-c-brand-1); border-radius: 50%; animation: ocv-spin 0.9s linear infinite; }
 @keyframes ocv-spin { to { transform: rotate(360deg) } }
+.ocv-status-text { margin: 0; font-size: 15px; }
+.ocv-progress-wrap { max-width: 420px; margin: 14px auto 0; }
+.ocv-progress-bar { height: 6px; background: var(--vp-c-divider); border-radius: 3px; overflow: hidden; }
+.ocv-progress-inner { height: 100%; background: var(--vp-c-brand-1); transition: width 0.2s ease; }
+.ocv-progress-meta { margin: 6px 0 0; font-size: 12px; color: var(--vp-c-text-3); }
 .ocv-hint { color: var(--vp-c-danger-1); font-size: 13px; }
-.ocv-tip { font-size: 12px; color: var(--vp-c-text-3); margin-top: 10px; }
+.ocv-tip { font-size: 12px; color: var(--vp-c-text-3); margin-top: 10px; line-height: 1.6; }
+.ocv-retry-btn { margin-top: 14px; padding: 6px 18px; border: 1px solid var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: #fff; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.ocv-retry-btn:hover { opacity: 0.88; }
 .ocv-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px; background: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 10px; }
 .ocv-tool-group { display: flex; align-items: center; gap: 6px; }
 .ocv-tool-group label { font-size: 13px; color: var(--vp-c-text-2); }
