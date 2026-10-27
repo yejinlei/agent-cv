@@ -1,34 +1,73 @@
 <template>
-  <div class="algo-vis">
-    <div class="vis-card">
-      <div class="vis-title">🧪 {{ titleMap[type] }}</div>
-      <p class="vis-desc">{{ descMap[type] }}</p>
-      <canvas v-if="mounted" ref="canvasRef" :width="640" :height="320"></canvas>
-      <div v-else class="viz-placeholder">互动演示加载中…</div>
-      <div class="ctrl-row">
-        <template v-for="c in ctrls[type]" :key="c.k">
-          <label>{{ c.label }} = <b>{{ typeof c.v.value === "number" ? (c.step < 1 ? c.v.value.toFixed(2) : c.v.value) : c.v.value }}</b></label>
-          <input type="range" :min="c.min" :max="c.max" :step="c.step || 1" v-model.number="c.v.value" @input="redraw()"/>
-        </template>
-        <template v-for="b in btns[type]" :key="b.label">
-          <button @click="b.k()">{{ b.label }}</button>
-        </template>
+  <ClientOnly>
+    <div class="algo-vis">
+      <div class="vis-card">
+        <div class="vis-title">🧪 {{ titleMap[type] || type }}</div>
+        <p class="vis-desc">{{ descMap[type] || '' }}</p>
+        <canvas ref="canvasRef" :width="W" :height="H" class="algo-canvas"></canvas>
+        <div class="ctrl-row">
+          <template v-for="c in (ctrls[type] || [])" :key="c.k">
+            <label>{{ c.label }} = <b>{{ typeof c.v.value === "number" ? (c.step < 1 ? c.v.value.toFixed(2) : c.v.value) : c.v.value }}</b></label>
+            <input type="range" :min="c.min" :max="c.max" :step="c.step || 1" v-model.number="c.v.value" @input="schedule()"/>
+          </template>
+          <template v-for="b in (btns[type] || [])" :key="b.label">
+            <button @click="b.k()">{{ b.label }}</button>
+          </template>
+        </div>
+        <div class="explain" v-html="explainMap[type] || ''"></div>
       </div>
-      <div class="explain" v-html="explainMap[type]"></div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, onBeforeUnmount, watch, nextTick} from 'vue'
-const props = defineProps({type:{type:String,required:true}})
-const mounted = ref(false)
+import {ref, reactive, onMounted, onBeforeUnmount, nextTick} from 'vue'
+
+const W = 640, H = 320
+const props = defineProps({ type: { type: String, required: true } })
 const canvasRef = ref(null)
-function ctx2(){
+let rafPending = false
+let unmounted = false
+
+function ctx() {
   const c = canvasRef.value
-  if(!c) return null
-  return c.getContext('2d')
+  return c ? c.getContext('2d') : null
 }
+function schedule() {
+  if (rafPending || unmounted) return
+  rafPending = true
+  requestAnimationFrame(() => {
+    rafPending = false
+    if (unmounted) return
+    const c = ctx()
+    const fn = drawers[props.type]
+    if (c && fn) {
+      try { fn(c) } catch (e) {
+        // 动画函数报错不要白屏，画一个错误提示
+        c.clearRect(0,0,W,H); c.fillStyle='#fff'; c.fillRect(0,0,W,H)
+        c.fillStyle='#c0392b'; c.font='14px sans-serif'
+        c.fillText('动画渲染出错：' + (e && e.message ? e.message : e), 20, 40)
+      }
+    }
+  })
+}
+
+onMounted(() => {
+  // 多重保险：挂载后下一帧画一次，再 50ms/200ms 补画两次（应对水合时序）
+  nextTick(()=>{ schedule(); setTimeout(schedule, 50); setTimeout(schedule, 200) })
+  // 滑块/参数变化时自动重画：用一个全局 watcher 跟踪所有 ctrl
+  const timer = setInterval(schedule, 200)
+  onBeforeUnmount(() => { clearInterval(timer) })
+})
+
+onBeforeUnmount(() => {
+  unmounted = true
+  for (const k of Object.keys(_state)) {
+    if (_state[k] && typeof _state[k] === 'object' && 'running' in _state[k]) {
+      _state[k].running = false
+    }
+  }
+})
 const titleMap = {
   'sift': 'SIFT 尺度不变特征变换',
   'surf': 'SURF 加速稳健特征',
@@ -154,29 +193,6 @@ const btns = reactive({
   'region-growing': [{k:()=>btn_rgStep(),label:'生长一步 ▶'},{k:()=>btn_rgReset(),label:'重置种子'}],
   'zhang-calibration': [],
   'epipolar': [],
-})
-function redraw(){
-  if(!mounted.value) return
-  requestAnimationFrame(()=>draw(props.type))
-}
-watch(()=>props.type, redraw)
-watch(()=>{ try{ return JSON.stringify(Object.fromEntries(Object.entries(ctrls).map(([k,cs])=>[k,cs.map(c=>c.v.value)]))) }catch(e){return ''}}, redraw)
-onMounted(()=>{
-  mounted.value = true
-  nextTick(()=>{
-    requestAnimationFrame(()=>draw(props.type))
-    // 保险：100ms 后再画一次，应对某些水合时序问题
-    setTimeout(()=>draw(props.type), 100)
-  })
-})
-
-onBeforeUnmount(()=>{
-  // 卸载时把所有正在跑的 rAF 动画停下，防止访问已销毁的响应式
-  for (const k of Object.keys(_state)) {
-    if (_state[k] && typeof _state[k] === 'object' && 'running' in _state[k]) {
-      _state[k].running = false
-    }
-  }
 })
 
 function dot(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
@@ -1161,8 +1177,8 @@ if (typeof window !== 'undefined') { window.__avis_drawers__ = drawers; }
 
 
 function draw(t){
-  const ctx=ctx2(); if(!ctx) return;
-  const fn=drawers[t]; if(fn) fn(ctx);
+  const c = ctx(); if(!c) return
+  const fn = drawers[t]; if(fn) fn(c)
 }
 
 </script>
