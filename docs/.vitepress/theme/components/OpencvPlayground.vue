@@ -1012,97 +1012,70 @@ function installScriptOnce() {
   document.head.appendChild(s)
 }
 
-function resolveCv(mod) {
-  if (mod && mod.Mat) return mod
-  return null
-}
-
 function loadOpencv() {
   // 已经就绪就直接返回缓存模块
   if (window.cv && window.cv.Mat) return Promise.resolve(window.cv)
-  // 已有加载中的 Promise 就复用（避免每个 Playground 实例都新建一个 setInterval）
+  // 已有加载中的 Promise 就复用
   if (window[OCV_PROMISE_KEY]) return window[OCV_PROMISE_KEY]
 
   installScriptOnce()
 
   const p = new Promise((resolve, reject) => {
     let finished = false
-    let poll = null
     let to = null
-    // 暴露一个取消句柄，组件卸载时调用，让它不再访问本组件闭包
     window[OCV_STATE_KEY] = {
       cancel: () => {
         if (finished) return
         finished = true
-        if (poll) { clearInterval(poll); poll = null }
         if (to) { clearTimeout(to); to = null }
-        // 注意：不 reject、不 resolve，因为组件已卸载不需要结果
         if (window[OCV_PROMISE_KEY] === p) window[OCV_PROMISE_KEY] = null
       }
     }
     function finish(mod) {
       if (finished) return; finished = true
-      if (poll) clearInterval(poll); poll = null
       if (to) clearTimeout(to); to = null
       window[OCV_STATE_KEY] = 'ready'
       resolve(mod)
-      // 不把 resolved Promise 清掉，方便后续组件复用
     }
     function fail(e) {
       if (finished) return; finished = true
-      if (poll) clearInterval(poll); poll = null
       if (to) clearTimeout(to); to = null
       window[OCV_STATE_KEY] = 'failed'
       window[OCV_PROMISE_KEY] = null
       reject(e)
     }
-    poll = setInterval(() => {
+
+    // 【关键】不再 setInterval！这个构建的 opencv.js 本身是 Promise 形态，
+    // 我们监听 script.onload 后直接 await window.cv 即可，不需要轮询。
+    const s = document.querySelector('script[data-ocv]')
+    if (!s) { fail(new Error('opencv.js script not found')); return }
+
+    async function handleReady() {
       try {
         let mod = window.cv
-        if (!mod) return
-        if (typeof mod.then === 'function') {
-          // Promise 形态：await 它（由 onload 或下一次间隔触发）
-          mod.then(m => { const r = resolveCv(m); if (r) finish(r) }).catch(fail)
-        } else {
-          const r = resolveCv(mod); if (r) finish(r)
-        }
-      } catch (e) {
-        // 防御：interval 里任何异常都不能让它反复抛错刷屏
-        console.warn('[opencv-loader] poll error:', e)
-      }
-    }, 150)
+        // 支持 Promise 形态
+        if (mod && typeof mod.then === 'function') mod = await mod
+        if (mod && mod.Mat) { finish(mod); return }
+        fail(new Error('opencv.js 加载完成但 cv.Mat 未定义（构建残缺？）'))
+      } catch (e) { fail(e) }
+    }
+
+    // 若脚本已经加载完成（之前已 prefetch 或其他实例加载过），直接处理
+    if (s.readyState === 'complete' || s.readyState === 'loaded' || window.cv) {
+      handleReady()
+    } else {
+      s.addEventListener('load', handleReady, { once: true })
+    }
+
+    s.addEventListener('error', () => {
+      fail(new Error('opencv.js 网络加载失败'))
+    }, { once: true })
+
+    // 超时兜底
     to = setTimeout(() => fail(new Error('OpenCV.js 加载超时（网络慢？），请刷新重试')), 45000)
   })
 
   window[OCV_PROMISE_KEY] = p
-  // onload 再兜一次（script 可能已经在我们 setInterval 之前 onload 过了）
-  const s = document.querySelector('script[data-ocv]')
-  if (s) {
-    s.addEventListener('load', async () => {
-      try {
-        let mod = window.cv
-        if (mod && typeof mod.then === 'function') mod = await mod
-        if (mod && mod.Mat && window[OCV_STATE_KEY] !== 'ready') {
-          const st = window[OCV_STATE_KEY]
-          if (st && typeof st === 'object' && st.cancel) {
-            // 如果 cancel 已经跑过就别 resolve 了
-            // finish 里会检查 finished
-          }
-          // 如果 Promise 还在 pending 就结束它
-          if (window[OCV_PROMISE_KEY]) {
-            // 由 interval 自然 finish；这里不重复 finish，让下面的 cancel 逻辑简洁
-          }
-        }
-      } catch(e){}
-    }, { once: true })
-    s.addEventListener('error', () => {
-      if (window[OCV_STATE_KEY] !== 'ready' && window[OCV_PROMISE_KEY]) {
-        const st = window[OCV_STATE_KEY]
-        if (st && typeof st === 'object' && st.cancel) st.cancel()
-        window[OCV_PROMISE_KEY] = null
-      }
-    }, { once: true })
-  }
   return p
 }
 
