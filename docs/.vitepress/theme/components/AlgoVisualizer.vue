@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, watch, nextTick} from 'vue'
+import {ref, reactive, onMounted, onBeforeUnmount, watch, nextTick} from 'vue'
 const props = defineProps({type:{type:String,required:true}})
 const mounted = ref(false)
 const canvasRef = ref(null)
@@ -168,6 +168,15 @@ onMounted(()=>{
     // 保险：100ms 后再画一次，应对某些水合时序问题
     setTimeout(()=>draw(props.type), 100)
   })
+})
+
+onBeforeUnmount(()=>{
+  // 卸载时把所有正在跑的 rAF 动画停下，防止访问已销毁的响应式
+  for (const k of Object.keys(_state)) {
+    if (_state[k] && typeof _state[k] === 'object' && 'running' in _state[k]) {
+      _state[k].running = false
+    }
+  }
 })
 
 function dot(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}

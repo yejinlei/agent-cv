@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, nextTick, watch } from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue'
 
 const props = defineProps({
   initialAlgo: { type: String, default: '' },  // 嵌入到算法页时，指定默认算法
@@ -1001,34 +1001,116 @@ async function copyCode() {
 
 function filtersByGroup(g) { return filters.filter(f => f.group === g) }
 
-/* ---------------- OpenCV 加载器（Promise-safe） ---------------- */
-function loadOpencv() {
-  return new Promise((resolve, reject) => {
-    if (window.cv && window.cv.Mat) return resolve(window.cv)
-    let finished = false
-    function finish(mod) { if (finished) return; finished = true; clearInterval(poll); resolve(mod) }
-    function fail(e) { if (finished) return; finished = true; clearInterval(poll); reject(e) }
-    const poll = setInterval(() => {
-      let mod = window.cv
-      if (!mod) return
-      if (typeof mod.then === 'function') {
-        // Promise 已经在 onload 里处理，这里再兜一次
-        mod.then(m => { if (m && m.Mat) finish(m) }).catch(fail)
-      } else if (mod.Mat) finish(mod)
-    }, 100)
-    setTimeout(() => fail(new Error('加载超时，请刷新页面重试')), 180000)
-    if (document.querySelector('script[data-ocv]')) return
-    const s = document.createElement('script')
-    s.setAttribute('data-ocv', '1'); s.src = OCV_URL; s.async = true
-    s.onload = async () => {
-      let mod = window.cv
-      if (mod && typeof mod.then === 'function') { try { mod = await mod } catch(e){ return fail(e) } }
-      if (mod && mod.Mat) finish(mod)
-    }
-    s.onerror = () => fail(new Error('无法加载 ' + OCV_URL))
-    document.head.appendChild(s)
-  })
+/* ---------------- OpenCV 加载器（Promise-safe + 全局单例 + 可取消） ---------------- */
+const OCV_PROMISE_KEY = '__cv_loader_promise_v2__'
+const OCV_STATE_KEY = '__cv_loader_state_v2__'  // 'pending'|'ready'|'failed'|null
+
+function installScriptOnce() {
+  if (document.querySelector('script[data-ocv]')) return
+  const s = document.createElement('script')
+  s.setAttribute('data-ocv', '1'); s.src = OCV_URL; s.async = true
+  document.head.appendChild(s)
 }
+
+function resolveCv(mod) {
+  if (mod && mod.Mat) return mod
+  return null
+}
+
+function loadOpencv() {
+  // 已经就绪就直接返回缓存模块
+  if (window.cv && window.cv.Mat) return Promise.resolve(window.cv)
+  // 已有加载中的 Promise 就复用（避免每个 Playground 实例都新建一个 setInterval）
+  if (window[OCV_PROMISE_KEY]) return window[OCV_PROMISE_KEY]
+
+  installScriptOnce()
+
+  const p = new Promise((resolve, reject) => {
+    let finished = false
+    let poll = null
+    let to = null
+    // 暴露一个取消句柄，组件卸载时调用，让它不再访问本组件闭包
+    window[OCV_STATE_KEY] = {
+      cancel: () => {
+        if (finished) return
+        finished = true
+        if (poll) { clearInterval(poll); poll = null }
+        if (to) { clearTimeout(to); to = null }
+        // 注意：不 reject、不 resolve，因为组件已卸载不需要结果
+        if (window[OCV_PROMISE_KEY] === p) window[OCV_PROMISE_KEY] = null
+      }
+    }
+    function finish(mod) {
+      if (finished) return; finished = true
+      if (poll) clearInterval(poll); poll = null
+      if (to) clearTimeout(to); to = null
+      window[OCV_STATE_KEY] = 'ready'
+      resolve(mod)
+      // 不把 resolved Promise 清掉，方便后续组件复用
+    }
+    function fail(e) {
+      if (finished) return; finished = true
+      if (poll) clearInterval(poll); poll = null
+      if (to) clearTimeout(to); to = null
+      window[OCV_STATE_KEY] = 'failed'
+      window[OCV_PROMISE_KEY] = null
+      reject(e)
+    }
+    poll = setInterval(() => {
+      try {
+        let mod = window.cv
+        if (!mod) return
+        if (typeof mod.then === 'function') {
+          // Promise 形态：await 它（由 onload 或下一次间隔触发）
+          mod.then(m => { const r = resolveCv(m); if (r) finish(r) }).catch(fail)
+        } else {
+          const r = resolveCv(mod); if (r) finish(r)
+        }
+      } catch (e) {
+        // 防御：interval 里任何异常都不能让它反复抛错刷屏
+        console.warn('[opencv-loader] poll error:', e)
+      }
+    }, 150)
+    to = setTimeout(() => fail(new Error('OpenCV.js 加载超时（网络慢？），请刷新重试')), 45000)
+  })
+
+  window[OCV_PROMISE_KEY] = p
+  // onload 再兜一次（script 可能已经在我们 setInterval 之前 onload 过了）
+  const s = document.querySelector('script[data-ocv]')
+  if (s) {
+    s.addEventListener('load', async () => {
+      try {
+        let mod = window.cv
+        if (mod && typeof mod.then === 'function') mod = await mod
+        if (mod && mod.Mat && window[OCV_STATE_KEY] !== 'ready') {
+          const st = window[OCV_STATE_KEY]
+          if (st && typeof st === 'object' && st.cancel) {
+            // 如果 cancel 已经跑过就别 resolve 了
+            // finish 里会检查 finished
+          }
+          // 如果 Promise 还在 pending 就结束它
+          if (window[OCV_PROMISE_KEY]) {
+            // 由 interval 自然 finish；这里不重复 finish，让下面的 cancel 逻辑简洁
+          }
+        }
+      } catch(e){}
+    }, { once: true })
+    s.addEventListener('error', () => {
+      if (window[OCV_STATE_KEY] !== 'ready' && window[OCV_PROMISE_KEY]) {
+        const st = window[OCV_STATE_KEY]
+        if (st && typeof st === 'object' && st.cancel) st.cancel()
+        window[OCV_PROMISE_KEY] = null
+      }
+    }, { once: true })
+  }
+  return p
+}
+
+onBeforeUnmount(() => {
+  // 组件卸载时，如果本组件是那个发起加载的实例，就取消 poll/timeout
+  const st = window[OCV_STATE_KEY]
+  if (st && typeof st === 'object' && st.cancel) st.cancel()
+})
 
 async function loadHaar() {
   if (haarXml) return
