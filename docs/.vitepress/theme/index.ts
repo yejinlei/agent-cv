@@ -22,43 +22,68 @@ import AlgoVisualizer from './components/AlgoVisualizer.vue'
 // 启动白屏/水合错误，因此用这种运行时方式禁用更稳。
 if (typeof window !== 'undefined') {
   try {
-    // 1) 清理已存在的 prefetch 链接
+    // 1) 清理已存在的 prefetch / preload（所有——我们完全接管 OpenCV.js 的加载时机，不允许任何自动预取）
     const removeExisting = () => {
-      document.querySelectorAll('link[rel="prefetch"], link[rel="preload"][as="script"]').forEach((el) => {
-        // 保留 opencv.js 自己的手动加载（它由 Playground 点击按钮后以普通 script 标签插入）
+      document.querySelectorAll('link[rel="prefetch"], link[rel="preload"], link[rel="modulepreload"]').forEach((el) => {
         const href = el.getAttribute('href') || ''
-        if (href.includes('/lib/opencv.js')) return
-        el.remove()
+        // 只移除会导致后台下载 opencv.js 的 prefetch/preload；
+        // Playground 里自己创建的 Blob script 不带 rel，不受影响。
+        if (href.includes('opencv.js')) {
+          el.remove()
+        }
+      })
+      // 同时清理任何已被自动注入的 opencv.js <script> 标签：
+      //   - 只有 data-cv-blob="1" 是我们自己注入的（Blob URL 形式），其余一律删除
+      document.querySelectorAll('script[src*="opencv.js"]').forEach((s) => {
+        if (s.dataset && s.dataset.cvBlob === '1') return
+        // 如果 cv 还没好（即不是用户主动点击启动的），删掉这个自动注入的 script
+        if (!(window.cv && (window.cv).Mat)) {
+          s.remove()
+        }
       })
     }
     removeExisting()
 
-    // 2) 监听后续动态插入的 prefetch，立即移除
+    // 2) 监听后续动态插入的 link/script，立即移除任何想自动加载 opencv.js 的企图
     const mo = new MutationObserver((muts) => {
       for (const m of muts) {
         m.addedNodes.forEach((n) => {
-          if (n.nodeType === 1 && (n as HTMLElement).tagName === 'LINK') {
-            const link = n as HTMLLinkElement
+          if (n.nodeType !== 1) return
+          const el = n as HTMLElement
+          if (el.tagName === 'LINK') {
+            const link = el as HTMLLinkElement
             const rel = (link.getAttribute('rel') || '').toLowerCase()
             const href = link.getAttribute('href') || ''
-            if (rel === 'prefetch' && !href.includes('/lib/opencv.js')) {
+            // 拦截任何想 prefetch/preload opencv.js 的链接
+            if ((rel === 'prefetch' || rel === 'preload' || rel === 'modulepreload') && href.includes('opencv.js')) {
               link.remove()
+            }
+            // 同时拦截 VitePress 对其他页面的 prefetch（解决首屏并发堵塞）
+            if (rel === 'prefetch' && !href.includes('opencv.js')) {
+              link.remove()
+            }
+          } else if (el.tagName === 'SCRIPT') {
+            const src = (el as HTMLScriptElement).getAttribute('src') || ''
+            if (src.includes('opencv.js') && !(el as HTMLElement).dataset?.cvBlob) {
+              // 非我们注入的 opencv.js script——可能是某处默认自动注入的，移除
+              el.remove()
             }
           }
         })
       }
     })
     mo.observe(document.head, { childList: true, subtree: true })
+    mo.observe(document.body, { childList: true, subtree: true })
 
-    // 3) 把 VitePress 自己的 link 预取逻辑直接 stub 掉（1.6+ 的路由内部会用这个）
+    // 3) 把 VitePress 自己的 link 预取逻辑 stub 掉
     setTimeout(() => {
       const vp = (window as any).__VITEPRESS__ ?? (window as any).__vitepress__
       if (vp && vp.router) {
         vp.router.preload = async () => {}
+        if (vp.router.go) { /* 不动导航 */ }
       }
     }, 0)
   } catch (e) {
-    // 禁用预取失败不影响功能
     console.warn('[prefetch-block] disable failed:', e)
   }
 }

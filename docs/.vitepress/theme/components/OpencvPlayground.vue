@@ -5,21 +5,32 @@
       <div style="font-size:40px;margin-bottom:8px;">🎮</div>
       <p class="ocv-status-text" style="font-weight:600;">真机实验 — 点击下方按钮启动</p>
       <p class="ocv-tip" style="margin:12px 0 20px;line-height:1.7;">
-        OpenCV.js 体积约 11 MB（源码）/ 3.5 MB（gzip 压缩后），会在你点击按钮后才下载并在本地浏览器运行（WebAssembly）。<br/>
+        OpenCV.js 源码约 11 MB（HTTP 传输自动 gzip 后约 3.5 MB），点击按钮后开始下载，在你本地浏览器用 WebAssembly 运行。<br/>
         首次启动需要几秒到几十秒（取决于到 GitHub Pages 的链路），之后浏览器会缓存，再次打开秒开。<br/>
         所有运算完全在你本地完成，<b>图片不会上传到任何服务器</b>。
       </p>
       <button class="ocv-retry-btn ocv-start-btn" @click="start">▶ 启动真机实验（加载 OpenCV.js）</button>
     </div>
 
-    <!-- 加载中 -->
+    <!-- 加载中：真实进度条 -->
     <div v-else-if="status === 'loading'" class="ocv-loading">
       <div class="ocv-spinner"></div>
       <p class="ocv-status-text">{{ statusText }}</p>
+      <div class="ocv-progress-wrap">
+        <div class="ocv-progress-bar">
+          <div class="ocv-progress-inner" :style="{ width: downloadPercent + '%' }"></div>
+        </div>
+        <p class="ocv-progress-meta">
+          {{ downloadedMB }} / {{ totalMB }} MB
+          <span v-if="progressStage === 'initializing'">· 正在编译 WASM…</span>
+          <span v-else-if="downloadPercent < 100">· {{ downloadPercent }}%</span>
+          <span v-else>· 即将完成…</span>
+        </p>
+      </div>
       <p v-if="!compact" class="ocv-tip">
-        正在从本站下载 OpenCV.js（约 3.5 MB / gzip），无需访问外部 CDN。<br/>
-        所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器。<br/>
-        如果等待超过 3 分钟，多半是 GitHub Pages 链路慢，点下方"重试"或者换个网络再试试。
+        通过 fetch 下载 OpenCV.js（约 11 MB 源码，首次下载时间取决于到 GitHub Pages 的链路），<br/>
+        下载后所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器。<br/>
+        下载过一次后浏览器会缓存，再次打开秒开。如果等待超过 3 分钟，点下方"重试"或换个网络。
       </p>
     </div>
 
@@ -976,11 +987,12 @@ const languages = ['Python', 'C++', 'JavaScript']
 const status = ref('idle')
 const statusText = ref('')
 const errorMsg = ref('')
-// 保留进度相关变量但设为不显示（普通 script 标签加载走浏览器原生缓存/解码，不做伪进度，更可靠）
+// 进度相关（fetch 方式能拿到真实下载进度）
 const downloadPercent = ref(0)
 const downloadedMB = ref('0.0')
-const totalMB = ref('3.5')
-const downloadSpeed = ref('0')
+const totalMB = ref('11.0')
+const downloadSpeed = ref('')
+const progressStage = ref('idle') // 'idle' | 'downloading' | 'initializing'
 const srcCanvas = ref(null)
 const dstCanvas = ref(null)
 const currentSample = ref('scene.png')
@@ -1002,26 +1014,44 @@ const embedAlgo = computed(() => !!props.initialAlgo)
 
 function start() {
   status.value = 'loading'
-  statusText.value = '正在加载 OpenCV.js（约 3.5 MB / gzip，首次可能需要几十秒）…'
+  statusText.value = '开始下载 OpenCV.js…'
   errorMsg.value = ''
+  downloadPercent.value = 0
+  downloadedMB.value = '0.0'
+  totalMB.value = '11.0'
+  downloadSpeed.value = ''
+  progressStage.value = 'downloading'
   bootLoader()
 }
 
 function retry() {
   resetOpenCVForRetry()
   errorMsg.value = ''
-  statusText.value = '正在重新加载 OpenCV.js …'
+  statusText.value = '正在重新下载 OpenCV.js…'
   status.value = 'loading'
+  downloadPercent.value = 0
+  progressStage.value = 'downloading'
   bootLoader()
 }
 
 async function bootLoader() {
   // 订阅加载器状态
   if (cvUnsub) cvUnsub()
-  cvUnsub = subscribeCv((state, cvMod, err) => {
-    if (state === 'loading') {
+  cvUnsub = subscribeCv((state, cvMod, err, prog) => {
+    if (state === 'downloading') {
       status.value = 'loading'
-      statusText.value = '正在加载 OpenCV.js（约 3.5 MB / gzip，首次可能需要几十秒）…'
+      progressStage.value = 'downloading'
+      statusText.value = '正在下载 OpenCV.js…'
+      if (prog && prog.loaded != null) {
+        const mb = prog.loaded / (1024*1024)
+        downloadedMB.value = mb.toFixed(1)
+        totalMB.value = (prog.total / (1024*1024)).toFixed(1)
+        if (prog.percent >= 0) downloadPercent.value = prog.percent
+      }
+    } else if (state === 'initializing') {
+      progressStage.value = 'initializing'
+      statusText.value = '下载完成，正在初始化 WebAssembly…'
+      downloadPercent.value = 100
     } else if (state === 'ready') {
       cv = cvMod
       status.value = 'ready'
