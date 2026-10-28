@@ -10,6 +10,27 @@ outline: deep
 「把粗线削成细线」：Sobel 找出来的边缘往往有好几像素宽（像粗马克笔画的线）， 而真正的边缘应该只有一条线（像铅笔）。NMS 的做法是： 沿着边缘的垂直方向看，只保留最亮的那个点，其他「旁边稍微暗一点」的点全部抹掉。 结果就是粗管变成细线，而且位置最准。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">非极大值抑制：粗边 → 单线</text>
+  <rect x="25" y="40" width="150" height="30" fill="url(#nms-g)"/>
+  <defs><linearGradient id="nms-g"><stop offset="0" stop-color="#eee"/><stop offset=".5" stop-color="#333"/><stop offset="1" stop-color="#eee"/></linearGradient></defs>
+  <text x="70" y="90" font-size="13" fill="#666">抑制前：一条粗带</text>
+  <line x1="220" y1="55" x2="360" y2="55" stroke="#000" stroke-width="2"/>
+  <text x="250" y="90" font-size="13" fill="#666">抑制后：精准的单像素线</text>
+  <text x="15" y="120" font-size="12" fill="#666">梯度方向上只保留最大值，其余置零</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=grad" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

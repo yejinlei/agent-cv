@@ -10,6 +10,40 @@ outline: deep
 「找明暗突变处」：比较每个像素跟它左右邻居谁亮谁暗， 亮度差得多的地方就是「竖着的边」，上下差得多的地方就是「横着的边」。 它像个左右（或上下）比较的秤，能让边缘的地方数值变大、 平坦的地方数值接近零。 因为它带了一点点模糊（中心权重更大），所以比「硬相减」对噪点更宽容。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="150" viewBox="0 0 380 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="150" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">Sobel Gx (水平方向边缘检测)</text>
+  <g font-family="monospace" font-size="14" text-anchor="middle">
+    <rect x="20" y="40" width="36" height="30" fill="#fde2e2" stroke="#d44"/><text x="38" y="60">-1</text>
+    <rect x="56" y="40" width="36" height="30" fill="#fff" stroke="#ccc"/><text x="74" y="60">0</text>
+    <rect x="92" y="40" width="36" height="30" fill="#e2f4e2" stroke="#4a4"/><text x="110" y="60">+1</text>
+    <rect x="20" y="70" width="36" height="30" fill="#f8b3b3" stroke="#d44"/><text x="38" y="90">-2</text>
+    <rect x="56" y="70" width="36" height="30" fill="#fff" stroke="#ccc"/><text x="74" y="90">0</text>
+    <rect x="92" y="70" width="36" height="30" fill="#b7e9b7" stroke="#4a4"/><text x="110" y="90">+2</text>
+    <rect x="20" y="100" width="36" height="30" fill="#fde2e2" stroke="#d44"/><text x="38" y="120">-1</text>
+    <rect x="56" y="100" width="36" height="30" fill="#fff" stroke="#ccc"/><text x="74" y="120">0</text>
+    <rect x="92" y="100" width="36" height="30" fill="#e2f4e2" stroke="#4a4"/><text x="110" y="120">+1</text>
+  </g>
+  <g>
+    <line x1="150" y1="85" x2="200" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
+    <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#333"/></marker></defs>
+  </g>
+  <rect x="210" y="45" width="150" height="85" fill="#fff" stroke="#ddd"/>
+  <line x1="260" y1="50" x2="260" y2="125" stroke="#333" stroke-width="3"/>
+  <text x="285" y="85" font-size="13" fill="#444">竖直边→亮</text>
+  <text x="285" y="105" font-size="13" fill="#444">左右差大=边</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=grad" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

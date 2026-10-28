@@ -3,7 +3,16 @@
 > **白话一句话**：量一量物体的**「外形」**——是圆的还是方的，边上有几个角，胖瘦比例是多少。
 > **所属层次**：🟩 中层视觉（基元 → 目标）
 > **横轴分支**：[图像分割](/branches/segmentation/)（**跨分支**）
-> **上一篇**：[第7章 纹理分析](/chapters/ch07-texture) ｜ **下一篇**：[第9章 立体视觉](/chapters/ch09-stereo)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 拖动核大小：膨胀 / 腐蚀 / 开 / 闭运算怎么改变形状
+
+<ClientOnly>
+<MathVisualizer initialTab="morph" compact />
+</ClientOnly>
+
+**上一篇**：[第7章 纹理分析](/chapters/ch07-texture) ｜ **下一篇**：[第9章 立体视觉](/chapters/ch09-stereo)
 
 ---
 

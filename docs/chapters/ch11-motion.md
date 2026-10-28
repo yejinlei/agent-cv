@@ -3,7 +3,16 @@
 > **白话一句话**：看画面里的东西**「动没动、往哪动、动多快」**。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：[几何视觉](/branches/geometry/) + [目标检测](/branches/detection/)
-> **上一篇**：[第10章 三维景物恢复](/chapters/ch10-3d-recovery) ｜ **下一篇**：[第12章 景物识别](/chapters/ch12-recognition)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 看 Lucas-Kanade 光流：相邻两帧之间像素怎么"跑"起来的
+
+<ClientOnly>
+<MathVisualizer initialTab="lk" compact />
+</ClientOnly>
+
+**上一篇**：[第10章 三维景物恢复](/chapters/ch10-3d-recovery) ｜ **下一篇**：[第12章 景物识别](/chapters/ch12-recognition)
 
 ---
 

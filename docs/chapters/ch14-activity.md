@@ -3,7 +3,16 @@
 > **白话一句话**：看懂一段视频里**「在演什么」**——是在走路、奔跑、挥手，还是摔倒了。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：应用层（依赖 [几何视觉](/branches/geometry/) + [目标检测](/branches/detection/) + [特征匹配](/branches/feature-matching/)）
-> **上一篇**：[第13章 广义匹配](/chapters/ch13-matching) ｜ **下一篇**：[第15章 场景解释](/chapters/ch15-scene)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 看光流轨迹：帧间像素运动向量是所有视频行为分析的底层信号
+
+<ClientOnly>
+<MathVisualizer initialTab="lk" compact />
+</ClientOnly>
+
+**上一篇**：[第13章 广义匹配](/chapters/ch13-matching) ｜ **下一篇**：[第15章 场景解释](/chapters/ch15-scene)
 
 ---
 

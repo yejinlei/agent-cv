@@ -3,7 +3,16 @@
 > **白话一句话**：把画面里的目标**「抠出来」**——哪些像素属于物体，哪些属于背景，一刀切清楚。
 > **所属层次**：🟩 中层视觉（基元 → 目标）
 > **横轴分支**：[图像分割](/branches/segmentation/)
-> **上一篇**：[第4章 基元检测](/chapters/ch04-primitives) ｜ **下一篇**：[第6章 目标表达和描述](/chapters/ch06-representation)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 拖动阈值滑块，亲眼看到"一刀把图切成前景背景"的过程
+
+<ClientOnly>
+<MathVisualizer initialTab="thresh" compact />
+</ClientOnly>
+
+**上一篇**：[第4章 基元检测](/chapters/ch04-primitives) ｜ **下一篇**：[第6章 目标表达和描述](/chapters/ch06-representation)
 
 ---
 

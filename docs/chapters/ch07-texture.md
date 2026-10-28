@@ -3,7 +3,16 @@
 > **白话一句话**：量一量表面的**「花纹和手感」**——是光滑的、粗糙的、还是织纹的。
 > **所属层次**：🟩 中层视觉（基元 → 目标）
 > **横轴分支**：[特征匹配](/branches/feature-matching/)（**跨分支**）
-> **上一篇**：[第6章 目标表达和描述](/chapters/ch06-representation) ｜ **下一篇**：[第8章 形状分析](/chapters/ch08-shape)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 切换直方图 / 均衡化：看纹理为什么就是"局部直方图的分布规律"
+
+<ClientOnly>
+<MathVisualizer initialTab="hist" compact />
+</ClientOnly>
+
+**上一篇**：[第6章 目标表达和描述](/chapters/ch06-representation) ｜ **下一篇**：[第8章 形状分析](/chapters/ch08-shape)
 
 ---
 

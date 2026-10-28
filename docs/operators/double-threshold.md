@@ -10,6 +10,30 @@ outline: deep
 「两道门槛筛选」：设一个高门槛和一个低门槛。 比高门槛还强的（很明显的边缘），直接确定是边缘； 比低门槛还弱的（很淡的痕迹），直接扔掉； 介于两者之间的（不太确定的），先放着，等后面看它旁边有没有确定边缘再决定。 就像筛米：大石头直接扔，好米直接留，中间大小的要看它周围是什么。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">双阈值：强/弱/无关 三档分类</text>
+  <line x1="60" y1="40" x2="60" y2="100" stroke="#333"/>
+  <line x1="60" y1="100" x2="350" y2="100" stroke="#333"/>
+  <line x1="180" y1="40" x2="180" y2="100" stroke="#d44" stroke-dasharray="3"/>
+  <line x1="270" y1="40" x2="270" y2="100" stroke="#2a9d4a" stroke-dasharray="3"/>
+  <text x="170" y="118" font-size="12" fill="#d44">低阈值</text>
+  <text x="260" y="118" font-size="12" fill="#2a9d4a">高阈值</text>
+  <rect x="60" y="40" width="120" height="60" fill="#eee" opacity=".7"/><text x="100" y="75" font-size="13" fill="#888">置零</text>
+  <rect x="180" y="40" width="90" height="60" fill="#ffe08a" opacity=".7"/><text x="205" y="75" font-size="13" fill="#a07820">弱边</text>
+  <rect x="270" y="40" width="80" height="60" fill="#f5b3b3" opacity=".7"/><text x="295" y="75" font-size="13" fill="#d44">强边</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=thresh" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

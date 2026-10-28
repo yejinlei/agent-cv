@@ -3,7 +3,16 @@
 > **白话一句话**：只有单张（或几张随手拍的）照片，怎么**还原出物体的立体形状和相机的运动轨迹**。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：[几何视觉](/branches/geometry/)
-> **上一篇**：[第9章 立体视觉](/chapters/ch09-stereo) ｜ **下一篇**：[第11章 运动分析](/chapters/ch11-motion)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 拖动截止频率滑块：频域滤波的本质就是切掉某些频率成分
+
+<ClientOnly>
+<MathVisualizer initialTab="fourier" compact />
+</ClientOnly>
+
+**上一篇**：[第9章 立体视觉](/chapters/ch09-stereo) ｜ **下一篇**：[第11章 运动分析](/chapters/ch11-motion)
 
 ---
 

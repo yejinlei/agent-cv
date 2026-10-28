@@ -3,7 +3,16 @@
 > **白话一句话**：认出画面里的东西**「这是啥」**——它是人、是车、还是缺陷。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：[目标检测](/branches/detection/)
-> **上一篇**：[第11章 运动分析](/chapters/ch11-motion) ｜ **下一篇**：[第13章 广义匹配](/chapters/ch13-matching)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 区分平坦区 / 边缘 / 角点：这是特征识别的基础判定
+
+<ClientOnly>
+<MathVisualizer initialTab="harris" compact />
+</ClientOnly>
+
+**上一篇**：[第11章 运动分析](/chapters/ch11-motion) ｜ **下一篇**：[第13章 广义匹配](/chapters/ch13-matching)
 
 ---
 

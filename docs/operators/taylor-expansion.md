@@ -10,6 +10,30 @@ outline: deep
 「用抛物线找谷底」：你在一格一格的地图上找到了「附近最矮的地方」， 但真正的最低点可能在格子中间。怎么办？ 用多项式把那几个格子的高度拟合成一条平滑曲线，再求它的最低点在哪。 这样就能得到比「一个格子」精确得多的位置——精确到零点几个格子。 在图像里，这意味着特征点位置可以精确到亚像素。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">泰勒展开：用抛物线逼近谷底</text>
+  <path d="M40,100 Q120,30 200,90 Q280,110 340,80" fill="none" stroke="#ccc" stroke-width="2"/>
+  <circle cx="200" cy="90" r="4" fill="#666"/>
+  <path d="M160,60 Q200,90 240,60" fill="none" stroke="#4a90e2" stroke-width="2.5"/>
+  <circle cx="200" cy="90" r="4" fill="#d44"/>
+  <circle cx="215" cy="78" r="4" fill="#2a9d4a"/>
+  <text x="50" y="120" font-size="12" fill="#666">真实曲线(灰色)</text>
+  <text x="160" y="120" font-size="12" fill="#4a90e2">泰勒二次近似</text>
+  <text x="250" y="55" font-size="12" fill="#d44">像素级</text>
+  <text x="225" y="75" font-size="12" fill="#2a9d4a">亚像素精度</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=gauss" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

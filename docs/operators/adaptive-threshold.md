@@ -10,6 +10,26 @@ outline: deep
 全局阈值像「全班统一划一条及格线」，可如果卷子一半亮一半暗就不公平了。 自适应阈值的做法是「给每个同学单独划一条线」： 对图上每一个像素，都去看它周围一小圈邻居的平均亮度，再决定它是黑还是白。 于是光照不均匀的图像也能被正确二值化。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">自适应阈值：每个点看邻居及格线</text>
+  <defs><linearGradient id="adg" x1="0" x2="1"><stop offset="0" stop-color="#444"/><stop offset=".5" stop-color="#ccc"/><stop offset="1" stop-color="#888"/></linearGradient></defs>
+  <rect x="20" y="45" width="150" height="60" fill="url(#adg)"/>
+  <text x="60" y="80" font-size="12" fill="#fff">光照不均匀</text>
+  <path d="M200,45 Q230,60 270,75 Q310,85 350,105" stroke="#d44" stroke-dasharray="3" fill="none"/><text x="230" y="40" font-size="11" fill="#d44">局部阈值(动态)</text>
+  <text x="200" y="120" font-size="12" fill="#666">每个像素按邻域均值单独决定阈值</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=thresh" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

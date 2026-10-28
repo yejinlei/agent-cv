@@ -10,6 +10,30 @@ outline: deep
 「顺藤摸瓜」：双阈值筛完，还剩一些「不太确定的弱边缘」。 现在从每个「确定边缘」出发，沿着它往外走， 只要碰到「弱边缘」，就把它也确认为边缘，并继续从它往外走。 这样一条断断续续的线，会从某个确定点开始一路被连起来。 好处是：孤立的弱边缘（多半是噪声）不会凭空被留下， 而属于同一条真实边缘的弱部分都被接上了。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">滞后连接：强边拉着弱边上岸</text>
+  <g stroke-width="3" fill="none">
+    <path d="M40,80 L80,80 L120,70" stroke="#d44"/>
+    <path d="M120,70 L160,65" stroke="#d4b840" stroke-dasharray="3"/>
+    <path d="M160,65 L200,55 L240,50" stroke="#d44"/>
+    <path d="M240,50 L280,55" stroke="#d4b840" stroke-dasharray="3"/>
+    <path d="M280,55 L320,70" stroke="#d44"/>
+  </g>
+  <text x="50" y="110" font-size="12" fill="#d44">强边(保留)</text>
+  <text x="130" y="110" font-size="12" fill="#d4b840">弱边(连接上强边才留)</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=grad" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

@@ -10,6 +10,28 @@ outline: deep
 「用两个不同模糊程度的照片相减」：把同一张图模糊一次得到 A，模糊得更厉害一次得到 B， 然后 A 减 B。结果里留下的，正好是「那种大小的细节」—— 比这个尺寸小的细节被 A 的模糊抹掉了，比这个尺寸大的细节在相减时抵消了。 所以 DoG 就像一个「只认某个尺寸」的筛子，专门筛出特定大小的斑点。 它便宜得惊人：只是两次模糊再加一次减法，却近似了很贵的拉普拉斯算子。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="130" viewBox="0 0 380 130" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="130" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">DoG = Gaussian(σ₁) − Gaussian(σ₂)</text>
+  <path d="M30,100 Q80,40 130,100" fill="none" stroke="#4a90e2" stroke-width="2"/>
+  <path d="M140,100 Q190,60 240,100" fill="none" stroke="#e87a4a" stroke-width="2"/>
+  <path d="M250,100 Q280,80 310,90 Q330,70 350,100" fill="none" stroke="#9b59b6" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="60" y="35" font-size="12" fill="#4a90e2">小σ(细节)</text>
+  <text x="170" y="55" font-size="12" fill="#e87a4a">大σ(轮廓)</text>
+  <text x="270" y="75" font-size="12" fill="#9b59b6">相减→斑点</text>
+  <text x="15" y="120" font-size="12" fill="#666">两次模糊相减，只保留"特定大小"的特征 → 尺度空间</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=gauss" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

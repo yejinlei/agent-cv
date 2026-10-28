@@ -3,7 +3,16 @@
 > **白话一句话**：把**两幅图或两组数据「对上号」**——不只是特征点匹配，还包括模板、点集、图结构、跨模态。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：[特征匹配](/branches/feature-matching/)
-> **上一篇**：[第12章 景物识别](/chapters/ch12-recognition) ｜ **下一篇**：[第14章 时空行为理解](/chapters/ch14-activity)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 点一下"试一次"：RANSAC 怎么从一堆外点里筛出真正的匹配模型
+
+<ClientOnly>
+<MathVisualizer initialTab="ransac" compact />
+</ClientOnly>
+
+**上一篇**：[第12章 景物识别](/chapters/ch12-recognition) ｜ **下一篇**：[第14章 时空行为理解](/chapters/ch14-activity)
 
 ---
 

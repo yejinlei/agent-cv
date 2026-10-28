@@ -10,6 +10,33 @@ outline: deep
 「画一条最宽的分界线」：给你一堆「是行人」和「不是行人」的特征向量， 要画一条线把它们分开。但能分开的线有无数条，选哪条？ 选那条「离两边最近的点都尽量远」的—— 就像在两队人中间画线，要画在最宽敞的地方，不要贴着谁。 特别的是，决定这条线的只有「最靠近它的那几个点」（支持向量）， 其他点离多远都无所谓。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="150" viewBox="0 0 380 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="150" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">SVM：离两边最远的分界线</text>
+  <g>
+    <circle cx="70" cy="120" r="6" fill="#4a90e2"/>
+    <circle cx="100" cy="90" r="6" fill="#4a90e2"/>
+    <circle cx="130" cy="110" r="6" fill="#4a90e2"/>
+    <circle cx="250" cy="50" r="6" fill="#d44"/>
+    <circle cx="290" cy="80" r="6" fill="#d44"/>
+    <circle cx="320" cy="60" r="6" fill="#d44"/>
+    <line x1="50" y1="100" x2="350" y2="50" stroke="#333" stroke-width="2"/>
+    <line x1="60" y1="115" x2="340" y2="70" stroke="#999" stroke-dasharray="4"/>
+    <line x1="55" y1="85" x2="345" y2="35" stroke="#999" stroke-dasharray="4"/>
+    <text x="200" y="140" font-size="12" fill="#666">间隔最大化→最稳的分法</text>
+  </g>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=ransac" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

@@ -3,7 +3,16 @@
 > **白话一句话**：像人的双眼一样，**靠「两只眼睛看到的位置差」算出物体有多远**。
 > **所属层次**：🟥 高层视觉（目标 → 语义）
 > **横轴分支**：[几何视觉](/branches/geometry/)
-> **上一篇**：[第8章 形状分析](/chapters/ch08-shape) ｜ **下一篇**：[第10章 三维景物恢复](/chapters/ch10-3d-recovery)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 理解邻域与距离：立体匹配里为什么 4 邻域 / 8 邻域 / 欧氏距离结果不同
+
+<ClientOnly>
+<MathVisualizer initialTab="neighbor" compact />
+</ClientOnly>
+
+**上一篇**：[第8章 形状分析](/chapters/ch08-shape) ｜ **下一篇**：[第10章 三维景物恢复](/chapters/ch10-3d-recovery)
 
 ---
 

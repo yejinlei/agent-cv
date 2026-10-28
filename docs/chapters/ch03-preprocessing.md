@@ -3,7 +3,16 @@
 > **白话一句话**：把拍到的照片「打扫干净」——擦掉噪点、调匀亮度、掰正畸变，好让后面的算法干活。
 > **所属层次**：🟦 低层视觉（像素 → 基元）
 > **横轴分支**：[图像处理](/branches/image-processing/)
-> **上一篇**：[第 1–2 章 视觉与图像基础](/chapters/ch01-foundation)（预备篇） ｜ **下一篇**：[第4章 基元检测](/chapters/ch04-primitives)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 拖动滑块体验：卷积核在原图上滑动做加权求和，这是所有滤波 / 模糊 / 锐化的底层机制
+
+<ClientOnly>
+<MathVisualizer initialTab="conv" compact />
+</ClientOnly>
+
+**上一篇**：[第 1–2 章 视觉与图像基础](/chapters/ch01-foundation)（预备篇） ｜ **下一篇**：[第4章 基元检测](/chapters/ch04-primitives)
 
 ---
 

@@ -10,6 +10,40 @@ outline: deep
 「数一数每种亮度有多少个像素」：把 0–255 的亮度做成 256 个格子， 遍历每个像素，看它落在哪个格子，格子里的计数器加一。 最后得到一张柱状图：横轴是亮度，纵轴是这个亮度的像素个数。 它能一眼看出「这张照片是偏暗还是偏亮、对比度够不够」。
 
 
+
+<div style="border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fafbfc;margin:12px 0;">
+
+<svg width="380" height="150" viewBox="0 0 380 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="150" fill="#f7f9fb"/>
+  <text x="15" y="22" font-size="13" fill="#333">直方图：每种亮度有多少像素</text>
+  <line x1="30" y1="130" x2="370" y2="130" stroke="#333"/>
+  <line x1="30" y1="130" x2="30" y2="40" stroke="#333"/>
+  <g fill="#4a90e2">
+    <rect x="40" y="120" width="5" height="10"/>
+    <rect x="50" y="110" width="5" height="20"/>
+    <rect x="60" y="95" width="5" height="35"/>
+    <rect x="70" y="75" width="5" height="55"/>
+    <rect x="80" y="60" width="5" height="70"/>
+    <rect x="90" y="55" width="5" height="75"/>
+    <rect x="100" y="50" width="5" height="80"/>
+    <rect x="110" y="55" width="5" height="75"/>
+    <rect x="120" y="70" width="5" height="60"/>
+    <rect x="130" y="90" width="5" height="40"/>
+    <rect x="140" y="110" width="5" height="20"/>
+    <rect x="150" y="120" width="5" height="10"/>
+  </g>
+  <text x="60" y="148" font-size="11" fill="#666">暗</text><text x="140" y="148" font-size="11" fill="#666">亮</text>
+  <text x="200" y="80" font-size="13" fill="#666">横轴=亮度值 0~255</text>
+  <text x="200" y="100" font-size="13" fill="#666">纵轴=该亮度的像素个数</text>
+</svg>
+
+<p style="margin:8px 0 0;font-size:13px;color:#555;">
+👉 <a href="/agent-cv/math-lab/?tab=hist" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+</p>
+</div>
+
+
+
 ## 数学形式
 
 $$

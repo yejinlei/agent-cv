@@ -3,7 +3,16 @@
 > **白话一句话**：给抠出来的目标**「建档立卡」**——用一串数字说清楚它长什么样、在哪、多大、什么形状。
 > **所属层次**：🟩 中层视觉（基元 → 目标）
 > **横轴分支**：[特征检测](/branches/feature-detection/) + [特征匹配](/branches/feature-matching/)（**跨分支**）
-> **上一篇**：[第5章 目标分割](/chapters/ch05-segmentation) ｜ **下一篇**：[第7章 纹理分析](/chapters/ch07-texture)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 动手体验：霍夫变换怎么从散点里找出直线 / 圆
+
+<ClientOnly>
+<MathVisualizer initialTab="hough" compact />
+</ClientOnly>
+
+**上一篇**：[第5章 目标分割](/chapters/ch05-segmentation) ｜ **下一篇**：[第7章 纹理分析](/chapters/ch07-texture)
 
 ---
 

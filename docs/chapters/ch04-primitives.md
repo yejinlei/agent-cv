@@ -3,7 +3,16 @@
 > **白话一句话**：在清理干净的图里，**找出最基础的「零件」**——边缘、角点、直线、圆、斑点。
 > **所属层次**：🟦 低层视觉（像素 → 基元）
 > **横轴分支**：[特征检测](/branches/feature-detection/)
-> **上一篇**：[第3章 图像预处理](/chapters/ch03-preprocessing) ｜ **下一篇**：[第5章 目标分割](/chapters/ch05-segmentation)
+> 
+## 🎮 动手玩一玩本章核心概念
+
+🖱 动手体验：Sobel 梯度算子怎么找到边缘、Harris 怎么找到角点
+
+<ClientOnly>
+<MathVisualizer initialTab="grad" compact />
+</ClientOnly>
+
+**上一篇**：[第3章 图像预处理](/chapters/ch03-preprocessing) ｜ **下一篇**：[第5章 目标分割](/chapters/ch05-segmentation)
 
 ---
 
