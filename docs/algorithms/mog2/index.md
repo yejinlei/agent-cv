@@ -5,6 +5,11 @@ outline: deep
 
 # MOG2 混合高斯背景建模 (2004)
 
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="mog2" />
+
+
 ## 🚀 动手体验
 
 > 🧪 **先懂原理**：翻到下一节「核心概念」，页面里直接嵌入了可拖动滑块的原理动画（SIFT高斯金字塔、FLANN KD树、GrabCut迭代、KCF响应峰、ICP配准等），拖一拖就懂。

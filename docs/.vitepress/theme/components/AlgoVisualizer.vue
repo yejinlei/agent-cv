@@ -1,6 +1,5 @@
 <template>
-  <ClientOnly>
-    <div class="algo-vis">
+  <div v-if="isMounted" class="algo-vis">
       <div class="vis-card">
         <div class="vis-title">🧪 {{ titleMap[type] || type }}</div>
         <p class="vis-desc">{{ descMap[type] || '' }}</p>
@@ -17,7 +16,6 @@
         <div class="explain" v-html="explainMap[type] || ''"></div>
       </div>
     </div>
-  </ClientOnly>
 </template>
 
 <script setup>
@@ -26,6 +24,7 @@ import {ref, reactive, onMounted, onBeforeUnmount, nextTick} from 'vue'
 const W = 640, H = 320
 const props = defineProps({ type: { type: String, required: true } })
 const canvasRef = ref(null)
+const isMounted = ref(false)
 let rafPending = false
 let unmounted = false
 
@@ -53,6 +52,7 @@ function schedule() {
 }
 
 onMounted(() => {
+  isMounted.value = true
   // 多重保险：挂载后下一帧画一次，再 50ms/200ms 补画两次（应对水合时序）
   nextTick(()=>{ schedule(); setTimeout(schedule, 50); setTimeout(schedule, 200) })
   // 滑块/参数变化时自动重画：用一个全局 watcher 跟踪所有 ctrl

@@ -1,3 +1,7 @@
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="bundle-adjustment" />
+
 ---
 layout: doc
 ---

@@ -1,5 +1,10 @@
 # Viola-Jones 人脸检测器
 
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="viola-jones" />
+
+
 <AlgorithmCard
   name="Viola-Jones"
   enName="Viola-Jones Object Detection Framework"

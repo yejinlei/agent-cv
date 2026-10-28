@@ -1,3 +1,7 @@
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="flann" />
+
 ---
 layout: doc
 ---
