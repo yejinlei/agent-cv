@@ -1,197 +1,228 @@
-/**
- * OpenCV.js 加载器 —— 最终可靠版
- *
- * 方案：fetch + 进度事件 + Blob URL + 全局单例
- *
- * 为什么不再用 <script src=...>：
- *   - script async 标签在浏览器里的请求优先级/调度受同页其他 defer 脚本影响，
- *     GitHub Pages 海外链路下容易在队列里 pending 很久。
- *   - fetch 可以直接拿到 progress 事件，显示真实下载进度；同时命中 HTTP 缓存
- *     时会直接 resolve（几毫秒），不会阻塞别的资源。
- *
- * onRuntimeInitialized 时序：
- *   - 拿到代码后通过 Blob URL 执行，在 appendChild(script) 之前就把 window.cv = {}
- *     和 onRuntimeInitialized 钩子挂好，factory() 里 var Module = ... 合并到钩子，
- *     不管 wasm 在 onload 之前还是之后就绪都不会丢信号。
- */
+// OpenCV.js 加载器：fetch + Blob URL 方案
+// - 能拿到真实下载进度（字节数）；
+// - 在注入 Blob script 之前就在 window.cv 上预置 onRuntimeInitialized 钩子，
+//   避免 data-URI WASM 编译极快导致回调被错过；
+// - 全局单例，多实例共享下载；
+// - 失败会清理资源，支持重试。
 
 const CV_URL = '/agent-cv/lib/opencv.js'
 
+// 全局单例状态
 let cvPromise = null
-let cvState = 'idle' // 'idle' | 'downloading' | 'initializing' | 'ready' | 'error'
-let cvError = null
-let cvModule = null
-const listeners = new Set()
+let cvInstance = null
 
-function notify(progress) {
-  listeners.forEach((fn) => {
-    try { fn(cvState, cvModule, cvError, progress) } catch (_) {}
-  })
-}
-
-function setCvState(next, err, progress) {
-  cvState = next
-  if (err) cvError = err
-  notify(progress)
-}
-
-export function getCvState() {
-  return { state: cvState, error: cvError, module: cvModule }
-}
-
-export function subscribeCv(fn) {
-  listeners.add(fn)
-  // 立即推一次当前状态
-  fn(cvState, cvModule, cvError, null)
-  return () => listeners.delete(fn)
-}
-
-export function resetOpenCVForRetry() {
-  cvPromise = null
-  cvState = 'idle'
-  cvError = null
-  cvModule = null
-  // 清理可能注入的 blob script
-  document.querySelectorAll('script[data-cv-blob]').forEach((s) => {
-    if (s.src && s.src.startsWith('blob:')) URL.revokeObjectURL(s.src)
-    s.remove()
-  })
-  try { delete window.cv } catch (_) { window.cv = undefined }
-  notify(null)
-}
-
-export function loadOpenCV() {
-  if (cvPromise) return cvPromise
-  if (typeof window === 'undefined') {
-    return Promise.reject(new Error('not in browser'))
-  }
-  // 已经就绪
-  if (cvModule && cvModule.Mat) {
-    setCvState('ready')
-    return Promise.resolve(cvModule)
-  }
-  if (window.cv && window.cv.Mat && !cvModule) {
-    cvModule = window.cv
-    setCvState('ready')
-    return Promise.resolve(cvModule)
-  }
-
-  cvPromise = (async () => {
-    setCvState('downloading')
-
-    // —— 1. fetch 下载（带真实进度）——
-    let resp
-    try {
-      resp = await fetch(CV_URL, { cache: 'force-cache' })
-    } catch (e) {
-      // 网络错误（DNS/断网/CORS）
-      throw new Error('网络请求失败：' + (e.message || String(e)))
-    }
-    if (!resp.ok) {
-      throw new Error(`HTTP ${resp.status}：下载 OpenCV.js 失败，请检查网络或稍后重试`)
+function createLoadPromise ({ onProgress, onStage, onError, signal } = {}) {
+  return new Promise((resolve, reject) => {
+    // 情况 1：已经加载成功过
+    if (cvInstance && typeof cvInstance.Mat === 'function') {
+      onStage && onStage('ready')
+      resolve(cvInstance)
+      return
     }
 
-    const totalLen = Number(resp.headers.get('content-length')) || 11534336 // 兜底 11MB
-    const reader = resp.body && resp.body.getReader ? resp.body.getReader() : null
-    let received = 0
-    let chunks = []
+    // 情况 2：正在加载中（另一个实例发起的），复用它的 Promise
+    if (cvPromise) {
+      cvPromise.then(resolve, reject)
+      return
+    }
 
-    if (reader) {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        chunks.push(value)
-        received += value.length
-        setCvState('downloading', null, {
-          loaded: received,
-          total: totalLen,
-          percent: totalLen > 0 ? Math.min(99, Math.round((received / totalLen) * 100)) : -1,
-          stage: 'downloading',
+    // 清理之前可能存在的脚本标签
+    document.querySelectorAll('script[data-cv-script]').forEach(s => s.remove())
+
+    let settled = false
+    let blobUrl = null
+    let timeoutId = null
+    let pollId = null
+
+    function done (cv) {
+      if (settled) return
+      settled = true
+      clearTimeout(timeoutId)
+      if (pollId) clearInterval(pollId)
+      cvInstance = cv
+      resolve(cv)
+      // 释放 Blob URL 占的内存（cv 已执行完，可以 revoke）
+      if (blobUrl) {
+        // 延迟 revoke，避免脚本还在异步初始化时被回收
+        setTimeout(() => {
+          try { URL.revokeObjectURL(blobUrl) } catch (_) {}
+          blobUrl = null
+        }, 5000)
+      }
+    }
+
+    function fail (err) {
+      if (settled) return
+      settled = true
+      clearTimeout(timeoutId)
+      if (pollId) clearInterval(pollId)
+      if (blobUrl) {
+        try { URL.revokeObjectURL(blobUrl) } catch (_) {}
+        blobUrl = null
+      }
+      cvPromise = null
+      document.querySelectorAll('script[data-cv-script]').forEach(s => s.remove())
+      // 保留 window.cv 对象但重置 Promise
+      onError && onError(err)
+      reject(err)
+    }
+
+    // 超时：5 分钟（GitHub Pages 海外下载慢）
+    timeoutId = setTimeout(() => {
+      fail(new Error('OpenCV.js 加载超时（5 分钟）。请检查网络或切换网络后重试。'))
+    }, 5 * 60 * 1000)
+
+    // AbortSignal 支持（组件卸载时可中断）
+    if (signal) {
+      if (signal.aborted) {
+        fail(new DOMException('aborted', 'AbortError'))
+        return
+      }
+      signal.addEventListener('abort', () => {
+        fail(new DOMException('aborted', 'AbortError'))
+      }, { once: true })
+    }
+
+    // 阶段 1：下载
+    onStage && onStage('downloading')
+
+    // 先在 window.cv 上预置钩子，等下 Blob script 执行时 factory 会合并它
+    // （这一步必须在 createObjectURL+appendChild 之前做）
+    if (!window.cv || typeof window.cv !== 'object') {
+      window.cv = {}
+    }
+    let runtimeCb = null
+    window.cv.onRuntimeInitialized = function () {
+      runtimeCb && runtimeCb()
+    }
+
+    fetch(CV_URL, {
+      cache: 'force-cache', // 优先用 HTTP 缓存
+      credentials: 'same-origin',
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error(`下载 OpenCV.js 失败：HTTP ${res.status}`)
+      }
+      if (!res.body) {
+        throw new Error('浏览器不支持流式读取（ReadableStream）')
+      }
+
+      // 真实总字节数（Content-Length）；如果服务器未返回，给 null 让 UI 显示不确定进度
+      const totalBytes = res.headers.get('content-length')
+        ? parseInt(res.headers.get('content-length'), 10)
+        : null
+      let loadedBytes = 0
+
+      const reader = res.body.getReader()
+      const chunks = []
+
+      function pump () {
+        if (settled) return
+        return reader.read().then(({ done, value }) => {
+          if (settled) return
+          if (done) {
+            // 下载完成
+            const blob = new Blob(chunks, { type: 'application/javascript' })
+            blobUrl = URL.createObjectURL(blob)
+            onProgress && onProgress({ loaded: loadedBytes, total: totalBytes, done: true })
+            onStage && onStage('initializing')
+            injectScript(blobUrl)
+            return
+          }
+          chunks.push(value)
+          loadedBytes += value.length
+          onProgress && onProgress({ loaded: loadedBytes, total: totalBytes, done: false })
+          return pump()
+        }).catch(err => {
+          fail(new Error(`下载中断：${err.message || err}`))
         })
       }
-    } else {
-      // 浏览器不支持 stream（极少数情况），直接 arrayBuffer
-      const buf = await resp.arrayBuffer()
-      chunks = [new Uint8Array(buf)]
-      received = buf.byteLength
-    }
-
-    // —— 2. 拼源码 → Blob URL ——
-    const allBytes = new Uint8Array(received)
-    let off = 0
-    for (const c of chunks) { allBytes.set(c, off); off += c.length }
-    const blob = new Blob([allBytes], { type: 'application/javascript' })
-    const blobUrl = URL.createObjectURL(blob)
-
-    setCvState('initializing')
-    setCvState('initializing', null, { loaded: received, total: received, percent: 100, stage: 'initializing' })
-
-    // —— 3. 挂好钩子再注入 script ——
-    // 预置占位 cv，保证 factory() 里 var Module = typeof cv !== 'undefined' ? cv : {} 拿到我们的钩子
-    if (!window.cv || window.cv.Mat === undefined) {
-      window.cv = window.cv || {}
-    }
-    let settled = false
-    let hookFired = false
-    const prevHook = window.cv.onRuntimeInitialized
-    const ready = new Promise((resolve, reject) => {
-      window.cv.onRuntimeInitialized = () => {
-        hookFired = true
-        if (typeof prevHook === 'function') {
-          try { prevHook() } catch (_) {}
-        }
-        if (settled) return
-        settled = true
-        resolve(window.cv)
-      }
-      // 60 秒初始化超时（WASM 编译一般 <10s）
-      setTimeout(() => {
-        if (!settled) {
-          settled = true
-          reject(new Error('WASM 初始化超时（60 秒），可能是浏览器不支持 WebAssembly 或资源不足'))
-        }
-      }, 60000)
+      return pump()
+    }).catch(err => {
+      if (settled) return
+      fail(err)
     })
 
-    await new Promise((resolve, reject) => {
-      const s = document.createElement('script')
-      s.src = blobUrl
-      s.dataset.cvBlob = '1'
-      s.async = true
-      s.onload = () => {
-        // onload 触发时脚本同步执行完，但 wasm 可能还在异步编译
-        // 路径 1：钩子已经在 onload 前触发（data: wasm 内嵌，极快编译）
-        if (hookFired) { resolve(); return }
-        // 路径 2：cv.Mat 已经存在但钩子没触发（异常）
-        if (window.cv && window.cv.Mat) {
-          if (!settled) { settled = true; resolve(window.cv) }
-          resolve(); return
-        }
-        // 路径 3：钩子被覆盖了，重新挂
-        const prev2 = window.cv.onRuntimeInitialized
-        window.cv.onRuntimeInitialized = () => {
-          if (typeof prev2 === 'function' && prev2 !== window.cv.onRuntimeInitialized) {
-            try { prev2() } catch (_) {}
+    // 阶段 2：注入 Blob script，等待 WASM 就绪
+    function injectScript (url) {
+      // window.cv 上已经预置了 onRuntimeInitialized，Blob 脚本执行时 factory 会用它
+      const prevCb = window.cv.onRuntimeInitialized
+      window.cv.onRuntimeInitialized = function () {
+        // 再等几帧让所有类（Mat, MatVector, Size, Rect 等）都挂到 cv 上
+        setTimeout(() => {
+          if (settled) return
+          if (window.cv && typeof window.cv.Mat === 'function') {
+            onStage && onStage('ready')
+            done(window.cv)
+          } else {
+            // 兜底轮询
+            let tries = 0
+            pollId = setInterval(() => {
+              tries++
+              if (settled) { clearInterval(pollId); return }
+              if (window.cv && typeof window.cv.Mat === 'function') {
+                clearInterval(pollId)
+                onStage && onStage('ready')
+                done(window.cv)
+              } else if (tries > 200) { // 20 秒轮询上限
+                clearInterval(pollId)
+                fail(new Error('WebAssembly 初始化完成但 Mat 未定义，请刷新重试'))
+              }
+            }, 100)
           }
-          if (!settled) { settled = true; resolve(window.cv) }
+        }, 100)
+        prevCb && prevCb.call(this)
+      }
+
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.dataset.cvScript = '1'
+
+      script.onload = function () {
+        // onload 只表示脚本同步执行完，不代表 WASM 已初始化
+        // （WASM 是异步的，初始化完成会走 onRuntimeInitialized）
+        // 如果 onload 时 Mat 已经就绪（极小文件/缓存命中场景），直接 done
+        if (window.cv && typeof window.cv.Mat === 'function' && !settled) {
+          onStage && onStage('ready')
+          done(window.cv)
         }
-        resolve()
       }
-      s.onerror = (e) => {
-        reject(new Error('脚本执行失败：' + (e.message || e.error || String(e))))
-      }
-      document.head.appendChild(s)
-    })
 
-    const cv = await ready
-    cvModule = cv
-    setCvState('ready')
-    return cv
-  })().catch((e) => {
-    cvPromise = null // 允许重试
-    setCvState('error', e)
-    throw e
+      script.onerror = function () {
+        fail(new Error('OpenCV.js 脚本执行失败，请刷新重试'))
+      }
+
+      document.head.appendChild(script)
+    }
   })
+}
 
+export function loadOpenCV (opts = {}) {
+  if (!cvPromise || (opts.force === true)) {
+    if (opts.force === true) {
+      cvPromise = null
+      cvInstance = null
+    }
+    cvPromise = createLoadPromise(opts).catch(err => {
+      cvPromise = null
+      throw err
+    })
+  }
   return cvPromise
+}
+
+export function isCVReady () {
+  return !!(cvInstance && typeof cvInstance.Mat === 'function')
+}
+
+export function getCVIfReady () {
+  return isCVReady() ? cvInstance : null
+}
+
+// 手动重置（调试/切换页面用）
+export function resetCV () {
+  cvPromise = null
+  cvInstance = null
+  document.querySelectorAll('script[data-cv-script]').forEach(s => s.remove())
 }

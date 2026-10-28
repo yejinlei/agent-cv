@@ -12,26 +12,42 @@
       <button class="ocv-retry-btn ocv-start-btn" @click="start">▶ 启动真机实验（加载 OpenCV.js）</button>
     </div>
 
-    <!-- 加载中：真实进度条 -->
-    <div v-else-if="status === 'loading'" class="ocv-loading">
+    <!-- 加载中：fetch 下载带真实进度；WASM 初始化阶段用不确定动画 -->
+    <div v-else-if="status === 'loading' || status === 'initializing'" class="ocv-loading">
       <div class="ocv-spinner"></div>
       <p class="ocv-status-text">{{ statusText }}</p>
       <div class="ocv-progress-wrap">
         <div class="ocv-progress-bar">
-          <div class="ocv-progress-inner" :style="{ width: downloadPercent + '%' }"></div>
+          <div
+            v-if="progressStage === 'downloading' && downloadTotal > 0"
+            class="ocv-progress-inner"
+            :style="{ width: progressPercent + '%' }"
+          ></div>
+          <div
+            v-else
+            class="ocv-progress-inner ocv-progress-indeterminate"
+          ></div>
         </div>
         <p class="ocv-progress-meta">
-          {{ downloadedMB }} / {{ totalMB }} MB
-          <span v-if="progressStage === 'initializing'">· 正在编译 WASM…</span>
-          <span v-else-if="downloadPercent < 100">· {{ downloadPercent }}%</span>
-          <span v-else>· 即将完成…</span>
+          <span v-if="progressStage === 'downloading' && downloadTotal > 0">
+            已下载 {{ formatBytes(downloadLoaded) }} / {{ formatBytes(downloadTotal) }} · {{ progressPercent }}%
+          </span>
+          <span v-else-if="progressStage === 'downloading'">
+            正在从 GitHub Pages 下载 OpenCV.js（浏览器会自动缓存，下次秒开）…
+          </span>
+          <span v-else-if="progressStage === 'initializing'">
+            正在你的浏览器里编译并启动 WebAssembly（首次约 5-10 秒）…
+          </span>
         </p>
       </div>
       <p v-if="!compact" class="ocv-tip">
-        通过 fetch 下载 OpenCV.js（约 11 MB 源码，首次下载时间取决于到 GitHub Pages 的链路），<br/>
+        通过 fetch 下载 OpenCV.js（约 11 MB 源码，GitHub Pages 通常会自动 gzip 到 3.5 MB 传输）。<br/>
         下载后所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器。<br/>
-        下载过一次后浏览器会缓存，再次打开秒开。如果等待超过 3 分钟，点下方"重试"或换个网络。
+        下载过一次后浏览器会缓存，再次打开秒开。如果等待超过 5 分钟，点下方"重试"或换个网络。
       </p>
+      <div style="margin-top:12px;">
+        <button class="ocv-retry-btn" @click="cancelAndRetry" style="background:var(--vp-c-bg-soft);color:var(--vp-c-text-2);border:1px solid var(--vp-c-divider);">🔄 重试</button>
+      </div>
     </div>
 
     <!-- 加载失败 -->
@@ -977,22 +993,24 @@ filters.forEach(f => {
 
 const groups = [...new Set(filters.map((f) => f.group))]
 
-import { loadOpenCV, subscribeCv, resetOpenCVForRetry, getCvState } from '../lib/opencv-loader'
+import { loadOpenCV, isCVReady, getCVIfReady } from '../lib/opencv-loader'
 
 const languages = ['Python', 'C++', 'JavaScript']
 
 /* ---------------- 响应式状态 ---------------- */
 // 初始状态是 idle（未启动）：必须用户点击「启动真机实验」按钮才会开始下载 opencv.js，
-// 避免首屏就自动下载 3.5MB，也避免后台预取堵并发连接。
-const status = ref('idle')
+// 避免首屏就自动下载 11MB，也避免后台预取堵并发连接。
+// 加载方案：fetch + 真实字节进度 + Blob URL 注入；在注入前预置 onRuntimeInitialized 钩子。
+const status = ref('idle') // 'idle' | 'loading' | 'initializing' | 'ready' | 'error'
 const statusText = ref('')
 const errorMsg = ref('')
-// 进度相关（fetch 方式能拿到真实下载进度）
-const downloadPercent = ref(0)
-const downloadedMB = ref('0.0')
-const totalMB = ref('11.0')
-const downloadSpeed = ref('')
 const progressStage = ref('idle') // 'idle' | 'downloading' | 'initializing'
+const downloadLoaded = ref(0)
+const downloadTotal = ref(0)
+const progressPercent = computed(() => {
+  if (downloadTotal.value <= 0) return 0
+  return Math.min(100, Math.round((downloadLoaded.value / downloadTotal.value) * 100))
+})
 const srcCanvas = ref(null)
 const dstCanvas = ref(null)
 const currentSample = ref('scene.png')
@@ -1002,72 +1020,89 @@ const lastMs = ref(-1)
 const runError = ref('')
 const lang = ref('Python')
 
+function formatBytes (n) {
+  if (!n && n !== 0) return ''
+  if (n < 1024) return n + ' B'
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB'
+  return (n / (1024 * 1024)).toFixed(1) + ' MB'
+}
+
 let cv = null
 let srcMat = null
 let timer = null
 let haarXml = null
 let haarDetector = null
-let cvUnsub = null
 
 const activeFilter = computed(() => filters.find(f => f.id === currentFilter.value) || filters[0])
 const embedAlgo = computed(() => !!props.initialAlgo)
 
 function start() {
-  status.value = 'loading'
-  statusText.value = '开始下载 OpenCV.js…'
   errorMsg.value = ''
-  downloadPercent.value = 0
-  downloadedMB.value = '0.0'
-  totalMB.value = '11.0'
-  downloadSpeed.value = ''
+  status.value = 'loading'
   progressStage.value = 'downloading'
+  downloadLoaded.value = 0
+  downloadTotal.value = 0
+  statusText.value = '正在从本站下载 OpenCV.js…'
   bootLoader()
+}
+
+function cancelAndRetry() {
+  // 重试：强制重置加载器单例
+  try {
+    const m = require('../lib/opencv-loader')
+    m && m.resetCV && m.resetCV()
+  } catch (_) {}
+  errorMsg.value = ''
+  status.value = 'loading'
+  progressStage.value = 'downloading'
+  downloadLoaded.value = 0
+  downloadTotal.value = 0
+  statusText.value = '正在重新下载 OpenCV.js…'
+  bootLoader(true)
 }
 
 function retry() {
-  resetOpenCVForRetry()
-  errorMsg.value = ''
-  statusText.value = '正在重新下载 OpenCV.js…'
-  status.value = 'loading'
-  downloadPercent.value = 0
-  progressStage.value = 'downloading'
-  bootLoader()
+  cancelAndRetry()
 }
 
-async function bootLoader() {
-  // 订阅加载器状态
-  if (cvUnsub) cvUnsub()
-  cvUnsub = subscribeCv((state, cvMod, err, prog) => {
-    if (state === 'downloading') {
-      status.value = 'loading'
-      progressStage.value = 'downloading'
-      statusText.value = '正在下载 OpenCV.js…'
-      if (prog && prog.loaded != null) {
-        const mb = prog.loaded / (1024*1024)
-        downloadedMB.value = mb.toFixed(1)
-        totalMB.value = (prog.total / (1024*1024)).toFixed(1)
-        if (prog.percent >= 0) downloadPercent.value = prog.percent
-      }
-    } else if (state === 'initializing') {
-      progressStage.value = 'initializing'
-      statusText.value = '下载完成，正在初始化 WebAssembly…'
-      downloadPercent.value = 100
-    } else if (state === 'ready') {
-      cv = cvMod
-      status.value = 'ready'
-      initAfterReady()
-    } else if (state === 'error') {
-      status.value = 'error'
-      errorMsg.value = (err && err.message) || String(err)
-      statusText.value = 'OpenCV.js 加载失败'
-    }
-  })
-
-  // 启动加载（幂等：已加载则直接 resolve）
+async function bootLoader(force = false) {
   try {
-    await loadOpenCV()
+    if (isCVReady()) {
+      cv = getCVIfReady()
+      status.value = 'ready'
+      progressStage.value = 'idle'
+      initAfterReady()
+      return
+    }
+    progressStage.value = 'downloading'
+    statusText.value = '正在下载 OpenCV.js…'
+
+    const cvMod = await loadOpenCV({
+      force,
+      onProgress: (p) => {
+        downloadLoaded.value = p.loaded
+        downloadTotal.value = p.total || 0
+      },
+      onStage: (stage) => {
+        if (stage === 'downloading') {
+          progressStage.value = 'downloading'
+          statusText.value = '正在下载 OpenCV.js…'
+        } else if (stage === 'initializing') {
+          progressStage.value = 'initializing'
+          status.value = 'initializing'
+          statusText.value = '下载完成，正在初始化 WebAssembly（首次启动约 5-10 秒）…'
+        }
+      },
+    })
+    cv = cvMod
+    status.value = 'ready'
+    progressStage.value = 'idle'
+    initAfterReady()
   } catch (e) {
-    // 错误已通过 subscribeCv 反馈
+    status.value = 'error'
+    progressStage.value = 'idle'
+    errorMsg.value = (e && e.message) || String(e)
+    statusText.value = 'OpenCV.js 加载失败'
   }
 }
 
@@ -1221,8 +1256,19 @@ watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 @keyframes ocv-spin { to { transform: rotate(360deg) } }
 .ocv-status-text { margin: 0; font-size: 15px; }
 .ocv-progress-wrap { max-width: 420px; margin: 14px auto 0; }
-.ocv-progress-bar { height: 6px; background: var(--vp-c-divider); border-radius: 3px; overflow: hidden; }
+.ocv-progress-bar { height: 6px; background: var(--vp-c-divider); border-radius: 3px; overflow: hidden; position: relative; }
 .ocv-progress-inner { height: 100%; background: var(--vp-c-brand-1); transition: width 0.2s ease; }
+/* 不确定进度条：一段蓝色条从左扫到右，循环 */
+.ocv-progress-indeterminate {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 35%;
+  animation: ocv-indet 1.4s ease-in-out infinite;
+}
+@keyframes ocv-indet {
+  0% { left: -35%; }
+  100% { left: 100%; }
+}
 .ocv-progress-meta { margin: 6px 0 0; font-size: 12px; color: var(--vp-c-text-3); }
 .ocv-hint { color: var(--vp-c-danger-1); font-size: 13px; }
 .ocv-tip { font-size: 12px; color: var(--vp-c-text-3); margin-top: 10px; line-height: 1.6; }
