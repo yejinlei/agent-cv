@@ -993,7 +993,7 @@ filters.forEach(f => {
 
 const groups = [...new Set(filters.map((f) => f.group))]
 
-import { loadOpenCV, isCVReady, getCVIfReady } from '../lib/opencv-loader'
+import { loadOpenCV, isCVReady, getCVIfReady, resetCV } from '../lib/opencv-loader'
 
 const languages = ['Python', 'C++', 'JavaScript']
 
@@ -1048,10 +1048,7 @@ function start() {
 
 function cancelAndRetry() {
   // 重试：强制重置加载器单例
-  try {
-    const m = require('../lib/opencv-loader')
-    m && m.resetCV && m.resetCV()
-  } catch (_) {}
+  resetCV()
   errorMsg.value = ''
   status.value = 'loading'
   progressStage.value = 'downloading'
