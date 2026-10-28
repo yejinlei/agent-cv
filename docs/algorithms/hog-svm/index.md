@@ -1,5 +1,10 @@
 # HOG+SVM 行人检测
 
+<ClientOnly>
+  <AlgoVisualizer type="dpm" />
+</ClientOnly>
+
+
 <AlgorithmCard
   name="HOG + SVM 行人检测"
   en-name="Histogram of Oriented Gradients + SVM Detector"
@@ -106,8 +111,7 @@ rects, weights = hog.detectMultiScale(img, winStride=(8,8), padding=(8,8), scale
 
 换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
 
-<ClientOnly>
-  <OpencvPlayground initial-algo="sobel-hog" compact />
-</ClientOnly>
 
 > 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。
+
+> ⚠️ **本算法在当前 OpenCV.js 浏览器构建中暂未提供**，真机实验室无法直接跑。请查看上方 🧪 原理互动演示理解算法行为，或参考「源码/真机实验室」章节的 Python / C++ 代码在本地运行。

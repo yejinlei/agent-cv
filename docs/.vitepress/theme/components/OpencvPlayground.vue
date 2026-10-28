@@ -1036,6 +1036,12 @@ let haarDetector = null
 const activeFilter = computed(() => filters.find(f => f.id === currentFilter.value) || filters[0])
 const embedAlgo = computed(() => !!props.initialAlgo)
 
+// initialAlgo 兜底：传了不存在的 id 时回退到默认 canny，避免 activeFilter 变 undefined 白屏
+const resolvedInitialAlgo = computed(() => {
+  if (!props.initialAlgo) return ''
+  return filters.some(f => f.id === props.initialAlgo) ? props.initialAlgo : ''
+})
+
 function start() {
   errorMsg.value = ''
   status.value = 'loading'
@@ -1072,7 +1078,8 @@ async function bootLoader(force = false) {
       return
     }
     progressStage.value = 'downloading'
-    statusText.value = '正在下载 OpenCV.js…'
+    statusText.value = '正在从本站下载 OpenCV.js（首次启动可能需要几十秒）…'
+    status.value = 'loading'
 
     const cvMod = await loadOpenCV({
       force,
@@ -1081,13 +1088,16 @@ async function bootLoader(force = false) {
         downloadTotal.value = p.total || 0
       },
       onStage: (stage) => {
-        if (stage === 'downloading') {
+        if (stage === 'loading') {
           progressStage.value = 'downloading'
-          statusText.value = '正在下载 OpenCV.js…'
-        } else if (stage === 'initializing') {
+          status.value = 'loading'
+          statusText.value = '正在从本站下载 OpenCV.js（约 3.5 MB / gzip）…'
+        } else if (stage === 'script-loaded') {
           progressStage.value = 'initializing'
           status.value = 'initializing'
-          statusText.value = '下载完成，正在初始化 WebAssembly（首次启动约 5-10 秒）…'
+          statusText.value = '脚本已下载完成，正在你的浏览器里编译 WebAssembly（首次约 5-10 秒）…'
+        } else if (stage === 'ready') {
+          progressStage.value = 'idle'
         }
       },
     })
@@ -1124,9 +1134,7 @@ function initAfterReady() {
 
 /* 读取 URL hash 对初始算法做锚定；?algo=xxx 或 #algo:xxx */
 function readInitialAlgoFromUrl() {
-  if (props.initialAlgo) {
-    if (filters.some(f=>f.id===props.initialAlgo)) return props.initialAlgo
-  }
+  if (resolvedInitialAlgo.value) return resolvedInitialAlgo.value
   if (typeof window === 'undefined') return null
   const u = new URL(window.location.href)
   const fromQ = u.searchParams.get('algo')
@@ -1238,7 +1246,7 @@ function onAlgoChange() {
 onMounted(() => {
   // 如果 URL 带了 ?algo=xxx 或者组件传入 initialAlgo，只做算法预选，不触发加载
   const urlAlgo = new URLSearchParams(window.location.search).get('algo')
-  if (props.initialAlgo) currentFilter.value = props.initialAlgo
+  if (resolvedInitialAlgo.value) currentFilter.value = resolvedInitialAlgo.value
   else if (urlAlgo && filters.some(f => f.id === urlAlgo)) currentFilter.value = urlAlgo
 })
 

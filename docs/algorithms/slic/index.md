@@ -1,8 +1,12 @@
 # SLIC 超像素
 
+<ClientOnly>
+  <AlgoVisualizer type="slic" />
+</ClientOnly>
+
+
 ## 🎮 真机互动
 
-<ClientOnly><OpencvPlayground initial-algo="slic" compact /></ClientOnly>
 
 
 <AlgorithmCard
@@ -72,3 +76,5 @@ flowchart LR
 - 返回 [六大分支总览](/branches/)
 - [SLIC 超像素所在分支](/branches/segmentation/)
 - [算法档案总览](/algorithms/)
+
+> ⚠️ **本算法在当前 OpenCV.js 浏览器构建中暂未提供**，真机实验室无法直接跑。请查看上方 🧪 原理互动演示理解算法行为，或参考「源码/真机实验室」章节的 Python / C++ 代码在本地运行。

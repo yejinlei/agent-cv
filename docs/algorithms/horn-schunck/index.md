@@ -1,8 +1,12 @@
 # Horn-Schunck 稠密光流
 
+<ClientOnly>
+  <AlgoVisualizer type="lkflow" />
+</ClientOnly>
+
+
 ## 🎮 真机互动
 
-<ClientOnly><OpencvPlayground initial-algo="horn-schunck" compact /></ClientOnly>
 
 
 <AlgorithmCard
@@ -90,3 +94,5 @@ LK 光流像一个独立办案的刑警，每个小窗口自己算自己的；Ho
 </ClientOnly>
 
 > 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。
+
+> ⚠️ **本算法在当前 OpenCV.js 浏览器构建中暂未提供**，真机实验室无法直接跑。请查看上方 🧪 原理互动演示理解算法行为，或参考「源码/真机实验室」章节的 Python / C++ 代码在本地运行。

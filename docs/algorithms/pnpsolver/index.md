@@ -1,8 +1,12 @@
 # PnP 位姿估计
 
+<ClientOnly>
+  <AlgoVisualizer type="pnp" />
+</ClientOnly>
+
+
 ## 🎮 真机互动
 
-<ClientOnly><OpencvPlayground initial-algo="pnpsolver" compact /></ClientOnly>
 
 
 <AlgorithmCard
@@ -73,3 +77,5 @@ AR 标记跟踪、机械臂抓取、视觉伺服、无人机着陆、增强现�
 - 返回 [六大分支总览](/branches/)
 - [PnP 位姿估计所在分支](/branches/geometry/)
 - [算法档案总览](/algorithms/)
+
+> ⚠️ **本算法在当前 OpenCV.js 浏览器构建中暂未提供**，真机实验室无法直接跑。请查看上方 🧪 原理互动演示理解算法行为，或参考「源码/真机实验室」章节的 Python / C++ 代码在本地运行。

@@ -1,6 +1,10 @@
+
+<ClientOnly>
+  <AlgoVisualizer type="epipolar" />
+</ClientOnly>
+
 ## 🎮 真机互动
 
-<ClientOnly><OpencvPlayground initial-algo="essential-matrix" compact /></ClientOnly>
 
 ---
 layout: doc
@@ -50,3 +54,5 @@ layout: doc
 ::: tip 阅读建议
 第一次接触请按 1 → 3 → 4 顺序读，先建立直觉再看流程；要动手就直接跳到第 5 页抄代码。
 :::
+
+> ⚠️ **本算法在当前 OpenCV.js 浏览器构建中暂未提供**，真机实验室无法直接跑。请查看上方 🧪 原理互动演示理解算法行为，或参考「源码/真机实验室」章节的 Python / C++ 代码在本地运行。

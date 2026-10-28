@@ -142,6 +142,9 @@ const explainMap = {
   'region-growing': '<ul>\n  <li><b>选种子</b>：用户点一个点/自动按均匀性选。</li>\n  <li><b>扩散规则</b>：检查4邻域像素；与已生长区域均值差&lt;T则加入队列。</li>\n  <li><b>停止</b>：队列为空。</li>\n  <li>优点：简单、连通性好；缺点：阈值T敏感、没全局优化。</li>\n</ul>',
   'zhang-calibration': '<ul>\n  <li><b>拍棋盘</b>：≥3张不同姿态(不能共面)。</li>\n  <li><b>单应H</b>：每幅图由棋盘角点世界坐标→像素坐标求H。</li>\n  <li><b>解内参</b>：利用H₁H₁·H₂=0约束列方程，SVD分解出K(fx,fy,cx,cy,s)。</li>\n  <li><b>Levenberg-Marquardt</b>：最小化重投影误差精调。</li>\n  <li>张正友1999年提出，现在OpenCV calibrateCamera用的就是它。</li>\n</ul>',
   'epipolar': "<ul>\n  <li><b>对极几何</b>：OₗpₗOᵣ三点共面(对极面)，交右像面于极线l'。</li>\n  <li><b>基本矩阵F</b>：满足 pᵣᵀFpₗ=0，8点法即可估计。</li>\n  <li><b>极线约束</b>：pₗ已知→l'=Fpₗ，pᵣ必在l'上，搜索从2D降到1D。</li>\n</ul>",
+  'slic': "<ul>\n  <li><b>SLIC</b>（Simple Linear Iterative Clustering）：超像素算法。</li>\n  <li>在 Labxy 五维空间做 K-Means，搜索范围限制在 2S×2S 邻域。</li>\n  <li>边界附着性好、速度快（线性复杂度），是做语义分割/显著性检测的常用预处理。</li>\n</ul>",
+  'pnp': "<ul>\n  <li><b>PnP</b>（Perspective-n-Point）：已知 3D 点及其 2D 投影，求相机位姿 (R,t)。</li>\n  <li>经典解法：P3P（需 3 对点+1 对验证）、EPnP（O(n)）、迭代法 DLS。</li>\n  <li>是 AR / 机器人 / 位姿估计的核心：图像→2D-3D 匹配→PnP→相机→叠加虚拟物体。</li>\n</ul>",
+  'lkflow': "<ul>\n  <li><b>光流</b>：像素在连续帧间的运动向量 (u,v)。</li>\n  <li>两个假设：亮度恒定（同一点在前后帧灰度一样）、小运动。</li>\n  <li>LK 在 3×3/5×5 窗口内联立方程求 (u,v)；Horn-Schunck 加全局光滑约束得到稠密光流。</li>\n</ul>",
 }
 const ctrls = {
   'sift': [{k:'octave',label:'金字塔层数',min:1,max:4,v:3,step:1,t:'range'},{k:'sigma',label:'DoG尺度σ',min:0.5,max:3.0,v:1.6,step:0.1,t:'range'}],
@@ -167,6 +170,9 @@ const ctrls = {
   'region-growing': [{k:'T',label:'阈值T',min:5,max:60,v:20,step:1,t:'range'}],
   'zhang-calibration': [{k:'n',label:'姿态数',min:2,max:15,v:5,step:1,t:'range'}],
   'epipolar': [{k:'x',label:'左图像素x',min:50,max:280,v:150,step:1,t:'range'}],
+  'slic': [{k:'k',label:'超像素密度',min:2,max:6,v:4,step:1,t:'range'}],
+  'pnp': [{k:'ang',label:'物体旋转角',min:0,max:360,v:30,step:5,t:'range'}],
+  'lkflow': [{k:'t',label:'位移幅度',min:0,max:100,v:50,step:5,t:'range'}],
 }
 Object.keys(ctrls).forEach(k=>ctrls[k].forEach(c=>{c.v=ref(c.v)}))
 const btns = reactive({
@@ -193,6 +199,9 @@ const btns = reactive({
   'region-growing': [{k:()=>btn_rgStep(),label:'生长一步 ▶'},{k:()=>btn_rgReset(),label:'重置种子'}],
   'zhang-calibration': [],
   'epipolar': [],
+  'slic': [],
+  'pnp': [],
+  'lkflow': [],
 })
 
 function dot(ctx,x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()}
@@ -1171,6 +1180,134 @@ drawers.epipolar = function(ctx){
   ctx.setLineDash([]);
   fillText(ctx,'绿线=极线(匹配点必在此线)',360,255,'#0f0',12);
 }
+
+// =============== SLIC 超像素 / Felzenszwalb 分割示意 ===============
+drawers.slic = function(ctx){
+  clear(ctx);
+  const grid=p('slic','k')|0 || 4;  // 每边超像素数（2~6 → 4~36 个超像素）
+  const K=grid*grid;
+  fillText(ctx,'SLIC 超像素：在 Lab 颜色+xy 空间做 K-Means 聚类，边界贴附物体轮廓',20,25,'#333',14);
+  // 背景：一个"图像"——渐变色块 + 模拟前景目标
+  const imgX=50,imgY=50,imgW=540,imgH=230;
+  // 先画背景"像素纹理"
+  const cells=36;
+  for(let i=0;i<cells;i++)for(let j=0;j<Math.floor(cells*imgH/imgW);j++){
+    const cx=imgX+i*imgW/cells, cy=imgY+j*imgH/(Math.floor(cells*imgH/imgW));
+    const dx=(i-12),dy=(j-6);
+    let r=100+dx*5, g=120+Math.sin(i*0.3)*30, b=150+dy*6;
+    // 中央一个"圆"目标
+    if((dx-6)*(dx-6)+(dy-3)*(dy-3)<10){r=220;g=180;b=80;}
+    // 右下角矩形
+    if(i>24 && j>9){r=70;g=140;b=200;}
+    ctx.fillStyle=`rgb(${r|0},${g|0},${b|0})`;
+    ctx.fillRect(cx,cy,imgW/cells+1,imgH/(Math.floor(cells*imgH/imgW))+1);
+  }
+  // 画超像素中心
+  const cols=grid, rows=Math.ceil(K/cols);
+  const stepX=imgW/cols, stepY=imgH/rows;
+  ctx.strokeStyle='rgba(255,255,255,0.85)';ctx.lineWidth=1.5;
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+    const cx=imgX+stepX*(i+0.5), cy=imgY+stepY*(j+0.5);
+    // 超像素：围绕中心画一个近似多边形（正方形加一点扰动）
+    ctx.beginPath();
+    const S=Math.min(stepX,stepY)*0.48;
+    const pts=[[-S,-S],[S,-S],[S,S],[-S,S]];
+    pts.forEach(([dx,dy],k)=>{
+      const nx=cx+dx+(Math.sin(i*1.7+j*2.3)*S*0.15);
+      const ny=cy+dy+(Math.cos(i*0.9+j*1.1)*S*0.15);
+      if(k===0)ctx.moveTo(nx,ny);else ctx.lineTo(nx,ny);
+    });
+    ctx.closePath();ctx.stroke();
+    dot(ctx,cx,cy,2,'#ff3');
+  }
+  fillText(ctx,`K ≈ ${cols*rows} 个超像素（每边 ${cols} 个）；同超像素内颜色一致，边界自动贴合图像边缘`,20,305,'#666',12);
+}
+
+// =============== PnP 位姿求解 ===============
+drawers.pnp = function(ctx){
+  clear(ctx);
+  const ang=p('pnp','ang')|0;  // 旋转角
+  fillText(ctx,'PnP（Perspective-n-Point）：通过 2D-3D 对应点反推相机位姿 R,t',20,25,'#333',14);
+  // 左：3D 世界物体（立方体）
+  fillText(ctx,'3D 世界坐标系',60,55,'#666',11);
+  ctx.strokeStyle='#999';ctx.strokeRect(50,60,230,170);
+  // 画立方体（等轴测）
+  const cx=165,cy=150;
+  const a=ang*Math.PI/180;
+  const proj=(x,y,z)=>{
+    const rx=x*Math.cos(a)-z*Math.sin(a);
+    const rz=x*Math.sin(a)+z*Math.cos(a);
+    const persp=200/(200+rz+50);
+    return [cx+rx*persp*40, cy+y*persp*40-30];
+  };
+  const pts3d=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+  const p2d=pts3d.map(p=>proj(p[0],p[1],p[2]));
+  const edges=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+  ctx.strokeStyle='#48d';ctx.lineWidth=1.5;
+  edges.forEach(([a,b])=>line(ctx,p2d[a][0],p2d[a][1],p2d[b][0],p2d[b][1],'#48d',1.5));
+  p2d.forEach(p=>dot(ctx,p[0],p[1],3,'#48d'));
+
+  // 右：2D 图像平面
+  fillText(ctx,'2D 图像平面（投影点）',390,55,'#666',11);
+  ctx.strokeStyle='#999';ctx.strokeRect(350,60,280,210);
+  // 相机
+  fillText(ctx,'相机',470,290,'#e55',12);dot(ctx,490,275,5,'#e55');
+  // 投影：把 3D 点用透视投影到 2D（用一个固定内参）
+  const fx=400, cx2=490, cy2=165;
+  const proj2=(x,y,z)=>{
+    const rx=x*Math.cos(a)-z*Math.sin(a);
+    const rz=x*Math.sin(a)+z*Math.cos(a)+4; // 相机前方
+    return [cx2+fx*rx/rz, cy2+fx*y/rz];
+  };
+  const p2d2=pts3d.map(p=>proj2(p[0],p[1],p[2]));
+  edges.forEach(([a,b])=>line(ctx,p2d2[a][0],p2d2[a][1],p2d2[b][0],p2d2[b][1],'#fa0',1.5));
+  p2d2.forEach(p=>dot(ctx,p[0],p[1],3,'#fa0'));
+  // 相机到点的射线（虚线）
+  ctx.setLineDash([2,3]);
+  p2d2.forEach(p=>line(ctx,490,275,p[0],p[1],'#e555',0.8));
+  ctx.setLineDash([]);
+
+  fillText(ctx,'输入：已知 3D 点（蓝）+ 对应 2D 点（橙）；输出：相机旋转 R 和平移 t',20,305,'#666',12);
+}
+
+// =============== Lucas-Kanade 光流（给 Horn-Schunck 复用） ===============
+drawers.lkflow = drawers['lucas-kanade'] = function(ctx){
+  clear(ctx);
+  const t=p('lkflow','t')|0;
+  fillText(ctx,'光流：同一像素在前后两帧的运动向量（箭头方向=运动方向）',20,25,'#333',14);
+  // 两帧并排
+  ctx.strokeStyle='#999';
+  ctx.strokeRect(40,50,260,210);ctx.strokeRect(340,50,260,210);
+  fillText(ctx,'第 t 帧',150,45,'#666',11);fillText(ctx,'第 t+1 帧',450,45,'#666',11);
+  // 生成网格点
+  const pts=[];
+  for(let y=80;y<250;y+=30)for(let x=60;x<280;x+=30){
+    pts.push([x,y]);
+  }
+  // 画第 t 帧的特征点
+  pts.forEach(([x,y])=>dot(ctx,x,y,2,'#48d'));
+  // 第 t+1 帧：做整体"向右下漂移"模拟运动 + 少量噪点
+  const dx=20*(t/100), dy=8*(t/100);
+  pts.forEach(([x,y])=>{
+    const nx=x+dx+300, ny=y+dy;
+    dot(ctx,nx,ny,2,'#fa0');
+  });
+  // 在第 t 帧画箭头
+  ctx.strokeStyle='#0f0';ctx.lineWidth=1.5;
+  pts.forEach(([x,y])=>{
+    const ex=x+dx, ey=y+dy;
+    line(ctx,x,y,ex,ey,'#0f0',1.2);
+    // 箭头
+    ctx.beginPath();
+    ctx.moveTo(ex,ey);
+    ctx.lineTo(ex-4,ey-2);
+    ctx.lineTo(ex-4,ey+2);
+    ctx.closePath();ctx.fillStyle='#0f0';ctx.fill();
+  });
+  fillText(ctx,'绿箭头=光流向量，LK 假设"小运动 + 邻域亮度一致"，求解每个点的 (u,v)',20,285,'#666',12);
+}
+
+
 
 // 导出 —— 注册到全局
 if (typeof window !== 'undefined') { window.__avis_drawers__ = drawers; }
