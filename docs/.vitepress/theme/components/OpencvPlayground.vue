@@ -1,17 +1,34 @@
 <template>
   <div class="ocv-root" :class="{ 'ocv-compact': compact }">
-    <!-- 加载状态 -->
-    <div v-if="status !== 'ready'" class="ocv-loading">
-      <div v-if="status === 'error'" class="ocv-err-icon">⚠️</div>
-      <div v-else class="ocv-spinner"></div>
+    <!-- 未启动：首屏点击按钮才开始加载，避免自动下载 3.5MB 的 opencv.js 拖慢首屏 / 堵并发队列 -->
+    <div v-if="status === 'idle'" class="ocv-loading">
+      <div style="font-size:40px;margin-bottom:8px;">🎮</div>
+      <p class="ocv-status-text" style="font-weight:600;">真机实验 — 点击下方按钮启动</p>
+      <p class="ocv-tip" style="margin:12px 0 20px;line-height:1.7;">
+        OpenCV.js 体积约 11 MB（源码）/ 3.5 MB（gzip 压缩后），会在你点击按钮后才下载并在本地浏览器运行（WebAssembly）。<br/>
+        首次启动需要几秒到几十秒（取决于到 GitHub Pages 的链路），之后浏览器会缓存，再次打开秒开。<br/>
+        所有运算完全在你本地完成，<b>图片不会上传到任何服务器</b>。
+      </p>
+      <button class="ocv-retry-btn ocv-start-btn" @click="start">▶ 启动真机实验（加载 OpenCV.js）</button>
+    </div>
+
+    <!-- 加载中 -->
+    <div v-else-if="status === 'loading'" class="ocv-loading">
+      <div class="ocv-spinner"></div>
       <p class="ocv-status-text">{{ statusText }}</p>
-      <p v-if="status !== 'error' && !compact" class="ocv-tip">
-        OpenCV.js 体积约 11 MB（源码）/ 3.5 MB（gzip 压缩后），第一次加载需要几秒到几十秒，之后浏览器会缓存直接秒开。<br/>
-        所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器——本站就是一个纯静态站点。<br/>
+      <p v-if="!compact" class="ocv-tip">
+        正在从本站下载 OpenCV.js（约 3.5 MB / gzip），无需访问外部 CDN。<br/>
+        所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器。<br/>
         如果等待超过 3 分钟，多半是 GitHub Pages 链路慢，点下方"重试"或者换个网络再试试。
       </p>
-      <p v-if="status === 'error'" class="ocv-hint">{{ errorMsg }}</p>
-      <button v-if="status === 'error'" class="ocv-retry-btn" @click="retry">🔄 重新加载</button>
+    </div>
+
+    <!-- 加载失败 -->
+    <div v-else-if="status === 'error'" class="ocv-loading">
+      <div class="ocv-err-icon">⚠️</div>
+      <p class="ocv-status-text">OpenCV.js 加载失败</p>
+      <p class="ocv-hint">{{ errorMsg }}</p>
+      <button class="ocv-retry-btn" @click="retry">🔄 重新加载</button>
     </div>
 
     <template v-else>
@@ -954,8 +971,10 @@ import { loadOpenCV, subscribeCv, resetOpenCVForRetry, getCvState } from '../lib
 const languages = ['Python', 'C++', 'JavaScript']
 
 /* ---------------- 响应式状态 ---------------- */
-const status = ref('loading')
-const statusText = ref('正在加载 OpenCV.js（首次约 3.5 MB / gzip，浏览器缓存后秒开）…')
+// 初始状态是 idle（未启动）：必须用户点击「启动真机实验」按钮才会开始下载 opencv.js，
+// 避免首屏就自动下载 3.5MB，也避免后台预取堵并发连接。
+const status = ref('idle')
+const statusText = ref('')
 const errorMsg = ref('')
 // 保留进度相关变量但设为不显示（普通 script 标签加载走浏览器原生缓存/解码，不做伪进度，更可靠）
 const downloadPercent = ref(0)
@@ -980,6 +999,13 @@ let cvUnsub = null
 
 const activeFilter = computed(() => filters.find(f => f.id === currentFilter.value) || filters[0])
 const embedAlgo = computed(() => !!props.initialAlgo)
+
+function start() {
+  status.value = 'loading'
+  statusText.value = '正在加载 OpenCV.js（约 3.5 MB / gzip，首次可能需要几十秒）…'
+  errorMsg.value = ''
+  bootLoader()
+}
 
 function retry() {
   resetOpenCVForRetry()
@@ -1144,7 +1170,15 @@ function onAlgoChange() {
   history.replaceState(null, '', u.toString())
 }
 
-onMounted(() => { bootLoader() })
+// 🔴 关键改动：组件挂载后**不**自动启动 OpenCV.js 加载。
+// 用户必须主动点击「启动真机实验」按钮才会下载 opencv.js，
+// 彻底避免首屏自动下载 3.5MB 脚本拖慢页面、或后台并发被预取堵住。
+onMounted(() => {
+  // 如果 URL 带了 ?algo=xxx 或者组件传入 initialAlgo，只做算法预选，不触发加载
+  const urlAlgo = new URLSearchParams(window.location.search).get('algo')
+  if (props.initialAlgo) currentFilter.value = props.initialAlgo
+  else if (urlAlgo && filters.some(f => f.id === urlAlgo)) currentFilter.value = urlAlgo
+})
 
 watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 </script>
@@ -1162,8 +1196,9 @@ watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 .ocv-progress-meta { margin: 6px 0 0; font-size: 12px; color: var(--vp-c-text-3); }
 .ocv-hint { color: var(--vp-c-danger-1); font-size: 13px; }
 .ocv-tip { font-size: 12px; color: var(--vp-c-text-3); margin-top: 10px; line-height: 1.6; }
-.ocv-retry-btn { margin-top: 14px; padding: 6px 18px; border: 1px solid var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: #fff; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.ocv-retry-btn { margin-top: 14px; padding: 8px 20px; border: 1px solid var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: #fff; border-radius: 6px; cursor: pointer; font-size: 14px; }
 .ocv-retry-btn:hover { opacity: 0.88; }
+.ocv-start-btn { padding: 12px 28px; font-size: 15px; font-weight: 600; border-radius: 8px; }
 .ocv-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px; background: var(--vp-c-bg); border: 1px solid var(--vp-c-divider); border-radius: 10px; }
 .ocv-tool-group { display: flex; align-items: center; gap: 6px; }
 .ocv-tool-group label { font-size: 13px; color: var(--vp-c-text-2); }

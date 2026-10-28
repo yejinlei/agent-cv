@@ -9,6 +9,12 @@ export default defineConfig({
   base: '/agent-cv/',
   ignoreDeadLinks: true,
 
+  // 🔴 关键：关闭 VitePress 默认的视口预取（PrefetchLinks）。
+  // 在国内访问 GitHub Pages 的链路下，后台自动预取侧栏里几十个章节分块（每个几十 KB 到几百 KB），
+  // 会立刻占满浏览器到 github.io 的 6 个并发连接，导致真正需要的资源（如 opencv.js）排队 3 分钟超时。
+  // 关闭后只在用户真正点击链接时才发起请求，首屏秒开，不会后台偷偷堵队列。
+  prefetch: false,
+
   markdown: {
     lineNumbers: true,
     math: true,
@@ -17,18 +23,10 @@ export default defineConfig({
     }
   },
 
-  transformPageData(pageData) {
-    const base = '/agent-cv/'
-    // 只在「真正需要 OpenCV.js 的页面」才预加载：Playground 入口 + 各算法的 source 源码页（含嵌入式真机实验）
-    // 原理/论文/流程/踩坑/调参等纯讲解页面一律不加载，避免 3.5MB(gzip) 脚本拖慢全站
-    const fp = pageData.filePath || ''
-    const needCv = fp.includes('playgrounds') || (fp.includes('algorithms/') && fp.endsWith('/source.md'))
-    if (needCv) {
-      pageData.frontmatter.head = pageData.frontmatter.head || []
-      pageData.frontmatter.head.push([
-        'link', { rel: 'prefetch', href: base + 'lib/opencv.js', as: 'script', crossorigin: '' }
-      ])
-    }
+  // 不再主动给 opencv.js 加 prefetch 链接——让 Playground 组件在用户点击「启动真机实验」按钮时才加载，
+  // 保证所有页面首屏不会后台下载 3.5MB(gzip) 的 OpenCV，彻底告别并发堵塞。
+  transformPageData() {
+    return
   },
 
   themeConfig: {
