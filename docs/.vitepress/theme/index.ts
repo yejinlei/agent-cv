@@ -10,6 +10,7 @@ import OpencvPlayground from './components/OpencvPlayground.vue'
 import MathVisualizer from './components/MathVisualizer.vue'
 import ConvDemo from './components/ConvDemo.vue'
 import AlgoVisualizer from './components/AlgoVisualizer.vue'
+import VideoLab from './components/VideoLab.vue'
 
 // 🔒 在客户端启动时关掉 VitePress 的视口预取（prefetch）。
 // VitePress 默认对出现在视口里的所有链接发 prefetch，会把浏览器到 github.io 的
@@ -81,5 +82,6 @@ export default {
     app.component('MathVisualizer', MathVisualizer)
     app.component('ConvDemo', ConvDemo)
     app.component('AlgoVisualizer', AlgoVisualizer)
+    app.component('VideoLab', VideoLab)
   }
 } satisfies Theme

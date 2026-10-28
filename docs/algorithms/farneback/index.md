@@ -1,5 +1,17 @@
 # Farnebäck 稠密光流
 
+<!-- VIDEOLAB-AUTO: 视频真机实验，嵌入在算法首页最顶部 -->
+## 🎬 视频真机实验（光流 / 运动跟踪）
+
+> 这个算法**天生依赖帧与帧之间**的变化，用单张静态图演示不出来。下面是真实视频输入的**逐帧处理**：
+> 左边原视频、右边算法输出，可以换算法、拖滑块、**上传自己的视频**，旁边同步给出 Python / C++ / JavaScript 代码。
+
+<VideoLab algo="farneback" />
+
+---
+
+
+
 <AlgorithmCard
   name="Farnebäck 稠密光流"
   enName="Gunnar Farnebäck Dense Optical Flow"
