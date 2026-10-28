@@ -9,11 +9,12 @@ export default defineConfig({
   base: '/agent-cv/',
   ignoreDeadLinks: true,
 
-  // 🔴 关键：关闭 VitePress 默认的视口预取（PrefetchLinks）。
-  // 在国内访问 GitHub Pages 的链路下，后台自动预取侧栏里几十个章节分块（每个几十 KB 到几百 KB），
-  // 会立刻占满浏览器到 github.io 的 6 个并发连接，导致真正需要的资源（如 opencv.js）排队 3 分钟超时。
-  // 关闭后只在用户真正点击链接时才发起请求，首屏秒开，不会后台偷偷堵队列。
-  prefetch: false,
+  // VitePress 默认会对出现在视口里的所有链接做 <link rel="prefetch"> 预取，
+  // 国内访问 GitHub Pages 链路下，这会让几十个章节分块同时下载，占满 6 个浏览器并发连接，
+  // 把真正需要的 opencv.js 堵在队列里几分钟超时。
+  // 这里不直接用 VitePress 的 prefetch: false（某些版本会引发 hydration/启动白屏问题），
+  // 而是在 enhanceApp 里注入一个 MutationObserver，从 DOM 里主动移除任何预取 link，
+  // 并把 window.checkViewport 空函数，从根上切断自动预取。
 
   markdown: {
     lineNumbers: true,
