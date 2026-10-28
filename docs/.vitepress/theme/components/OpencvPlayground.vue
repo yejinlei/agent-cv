@@ -220,6 +220,11 @@ const ALGO_LINK = {
 /* ---------------- 算法注册表 ---------------- */
 /* 每个算法：id/name/group/desc/params/run(srcRGBA,p)->Mat(RGBA) ；code: 以 {param} 形式嵌入当前参数 */
 function gray2rgba(g) { const d = new cv.Mat(); cv.cvtColor(g, d, cv.COLOR_GRAY2RGBA); g.delete(); return d }
+// 创建指定类型的空 Mat（避免 new cv.Mat() 默认 8UC1 被要求 CV_32F 的算法写入越界）
+function mat32f(rows, cols) {
+  if (rows && cols) return new cv.Mat(rows, cols, cv.CV_32FC1)
+  return new cv.Mat()  // 让 opencv 自己分配尺寸（典型：distanceTransform / cornerHarris 会 resize 到输入尺寸）
+}
 
 const filters = [
   // —— 图像预处理 ——
@@ -257,11 +262,11 @@ const filters = [
     id: 'bilateral', name: '双边滤波', group: '图像预处理',
     desc: '保边去噪：颜色近且位置近才参与平均。',
     params: [
-      { key: 'd', label: '邻域直径 d', min: 1, max: 15, step: 2, value: 9 },
+      { key: 'd', label: '邻域直径 d', min: 3, max: 15, step: 2, value: 9 },
       { key: 'sigmaColor', label: '颜色 σ', min: 10, max: 200, step: 10, value: 75 },
       { key: 'sigmaSpace', label: '空间 σ', min: 10, max: 200, step: 10, value: 75 },
     ],
-    run: (s, p) => { const d = new cv.Mat(); cv.bilateralFilter(s, d, p.d, p.sigmaColor, p.sigmaSpace); return d },
+    run: (s, p) => { const d = new cv.Mat(); cv.bilateralFilter(s, d, p.d, p.sigmaColor, p.sigmaSpace, cv.BORDER_DEFAULT); return d },
     codePy: (p) => `dst = cv.bilateralFilter(img, d=${p.d}, sigmaColor=${p.sigmaColor}, sigmaSpace=${p.sigmaSpace})`,
     codeCpp: (p) => `bilateralFilter(img, dst, ${p.d}, ${p.sigmaColor}, ${p.sigmaSpace});`,
     codeJs:  (p) => `cv.bilateralFilter(src, dst, ${p.d}, ${p.sigmaColor}, ${p.sigmaSpace});`,
@@ -499,9 +504,12 @@ HH = (img[0::2,0::2]-img[0::2,1::2]-img[1::2,0::2]+img[1::2,1::2])/4 + 128`,
       cv.Canny(g, edges, 50, 150, 3)
       const lines = new cv.Mat()
       cv.HoughLinesP(edges, lines, 1, Math.PI/180, p.threshold, p.minLineLength, p.maxLineGap)
-      for (let i=0; i<lines.rows; i++) {
-        const l = lines.data32S.subarray(i*4, i*4+4)
-        cv.line(d, new cv.Point(l[0],l[1]), new cv.Point(l[2],l[3]), [255,0,0,255], 2)
+      // HoughLinesP 返回 (N,1) CV_32SC4：每行一条线、4 个 int32（x1,y1,x2,y2）
+      const n = lines.rows
+      const ldata = lines.data32S
+      for (let i=0; i<n; i++) {
+        const x1=ldata[i*4], y1=ldata[i*4+1], x2=ldata[i*4+2], y2=ldata[i*4+3]
+        cv.line(d, new cv.Point(x1,y1), new cv.Point(x2,y2), [255,0,0,255], 2)
       }
       g.delete(); edges.delete(); lines.delete(); return d
     },
@@ -519,14 +527,22 @@ HH = (img[0::2,0::2]-img[0::2,1::2]-img[1::2,0::2]+img[1::2,1::2])/4 + 128`,
     ],
     run: (s, p) => {
       const g = new cv.Mat(); cv.cvtColor(s, g, cv.COLOR_RGBA2GRAY); const d = s.clone()
+      // 霍夫圆要求输入 8UC1，先 blur 一下减少误检
+      const gblur = new cv.Mat(); cv.GaussianBlur(g, gblur, new cv.Size(9,9), 2, 2)
       const circles = new cv.Mat()
-      cv.HoughCircles(g, circles, cv.HOUGH_GRADIENT, p.dp/10, p.minDist, 100, p.param2, 0, 0)
-      for (let i=0; i<circles.cols; i++){
-        const c = circles.data32F.subarray(i*3, i*3+3)
-        cv.circle(d, new cv.Point(c[0],c[1]), c[2], [0,255,0,255], 2)
-        cv.circle(d, new cv.Point(c[0],c[1]), 2, [0,0,255,255], 3)
+      cv.HoughCircles(gblur, circles, cv.HOUGH_GRADIENT, p.dp/10, p.minDist, 100, p.param2, 0, 0)
+      // HoughCircles 返回 shape=(1, N, 3) 即 1 行 N 列、每列 3 通道 float32，用 data32F 扁平化
+      // 注意：circles 在 opencv.js 里 col 数就是圆的数量，每个圆 3 个 float
+      const nCircles = circles.cols || 0
+      const cdata = circles.data32F
+      for (let i=0; i<nCircles; i++){
+        const x = cdata[i*3], y = cdata[i*3+1], r = cdata[i*3+2]
+        if (r>0 && r < Math.max(d.cols,d.rows)) {
+          cv.circle(d, new cv.Point(x,y), r|0, [0,255,0,255], 2)
+          cv.circle(d, new cv.Point(x,y), 2, [0,0,255,255], 3)
+        }
       }
-      g.delete(); circles.delete(); return d
+      g.delete(); gblur.delete(); circles.delete(); return d
     },
     codePy: (p) => `circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, dp=${(p.dp/10).toFixed(1)}, minDist=${p.minDist},\n    param1=100, param2=${p.param2})\nfor x,y,r in circles[0]:\n    cv.circle(img, (x,y), int(r), (0,255,0), 2)`,
     codeCpp: (p) => `vector<Vec3f> circles;\nHoughCircles(gray, circles, HOUGH_GRADIENT, ${(p.dp/10).toFixed(1)}, ${p.minDist}, 100, ${p.param2});`,
@@ -535,13 +551,23 @@ HH = (img[0::2,0::2]-img[0::2,1::2]-img[1::2,0::2]+img[1::2,1::2])/4 + 128`,
   {
     id: 'harris', name: 'Harris 角点', group: '边缘与基元',
     desc: '看窗口沿任意方向移动是否都变化剧烈——是，就是角点。',
-    params: [{ key: 'blockSize', label: '邻域大小', min: 2, max: 9, step: 1, value: 2 }, { key: 'k', label: 'Harris k (x100)', min: 1, max: 10, step: 1, value: 4 }],
+    params: [{ key: 'blockSize', label: '邻域大小(必须奇数)', min: 3, max: 11, step: 2, value: 3 }, { key: 'k', label: 'Harris k (x100)', min: 2, max: 10, step: 1, value: 4 }],
     run: (s, p) => {
-      const g = new cv.Mat(); cv.cvtColor(s, g, cv.COLOR_RGBA2GRAY); const d = s.clone(); const dst = new cv.Mat()
-      cv.cornerHarris(g, dst, p.blockSize, 3, p.k/100)
+      const g = new cv.Mat(); cv.cvtColor(s, g, cv.COLOR_RGBA2GRAY); const d = s.clone()
+      // cornerHarris 要求 dst 必须是 CV_32FC1；blockSize 必须是奇数；ksize(Sobel) 必须是奇数
+      const bs = (p.blockSize % 2 === 0) ? p.blockSize+1 : p.blockSize
+      const dst = mat32f(g.rows, g.cols)
+      cv.cornerHarris(g, dst, bs, 3, p.k/100, cv.BORDER_DEFAULT)
       const dstN = new cv.Mat(); cv.normalize(dst, dstN, 0, 255, cv.NORM_MINMAX); cv.convertScaleAbs(dstN, dstN)
-      for (let y=0;y<d.rows;y++) for (let x=0;x<d.cols;x++)
-        if (dstN.ucharAt(y,x) > 150) cv.circle(d, new cv.Point(x,y), 3, [255,0,0,255], -1)
+      // 用 data 数组访问（ucharAt 在某些 opencv.js 版本不稳定）
+      const data = dstN.data
+      const w = d.cols
+      for (let i=0; i<data.length; i++) {
+        if (data[i] > 130) {
+          const y = (i / w) | 0, x = i % w
+          cv.circle(d, new cv.Point(x,y), 2, [255,0,0,255], -1)
+        }
+      }
       g.delete(); dst.delete(); dstN.delete(); return d
     },
     codePy: (p) => `dst = cv.cornerHarris(gray, blockSize=${p.blockSize}, ksize=3, k=${p.k/100})\ndst = cv.dilate(dst, None)\nimg[dst > 0.01*dst.max()] = [0,0,255]`,
@@ -555,8 +581,11 @@ HH = (img[0::2,0::2]-img[0::2,1::2]-img[1::2,0::2]+img[1::2,1::2])/4 + 128`,
     run: (s, p) => {
       const g = new cv.Mat(); cv.cvtColor(s, g, cv.COLOR_RGBA2GRAY); const d = s.clone(); const corners = new cv.Mat()
       cv.goodFeaturesToTrack(g, corners, p.maxCorners, p.quality/100, 10)
-      for (let i=0; i<corners.rows; i++){
-        const x=corners.data32F[i*2], y=corners.data32F[i*2+1]
+      // goodFeaturesToTrack 返回 (N,1) CV_32FC2 —— 共 N 个点，每点 x,y 两个 float32
+      const nPts = corners.rows
+      const cdata = corners.data32F
+      for (let i=0; i<nPts; i++){
+        const x = cdata[i*2], y = cdata[i*2+1]
         cv.circle(d, new cv.Point(x,y), 3, [0,255,0,255], -1)
       }
       g.delete(); corners.delete(); return d
@@ -768,19 +797,28 @@ HH = (img[0::2,0::2]-img[0::2,1::2]-img[1::2,0::2]+img[1::2,1::2])/4 + 128`,
     desc: '把图像当"地形"，从已知种子向四周注水，会撞的地方就是边界。',
     params: [],
     run: (s) => {
-      // 简化版：Otsu 二值→距离变换→取前30%作种子→watershed
+      // 简化版：Otsu 二值→距离变换→取前 30% 作种子→watershed
       const g=new cv.Mat(); cv.cvtColor(s,g,cv.COLOR_RGBA2GRAY); const bi=new cv.Mat()
       cv.threshold(g, bi, 0, 255, cv.THRESH_BINARY_INV|cv.THRESH_OTSU)
-      const dist = new cv.Mat(); cv.distanceTransform(bi, dist, cv.DIST_L2, 3)
-      const dnorm=new cv.Mat(); cv.normalize(dist,dnorm,0,1,cv.NORM_MINMAX)
-      const sureFg=new cv.Mat(); cv.threshold(dnorm, sureFg, 0.3*255, 255, cv.THRESH_BINARY)
+      // distanceTransform 输出 CV_32FC1
+      const dist = mat32f(); cv.distanceTransform(bi, dist, cv.DIST_L2, 3)
+      const dnorm = new cv.Mat(); cv.normalize(dist, dnorm, 0, 1, cv.NORM_MINMAX, cv.CV_32F)
+      const sureFg = new cv.Mat(); cv.threshold(dnorm, sureFg, 0.3, 255, cv.THRESH_BINARY)  // dnorm 已归一化到 [0,1]
       const fgU8 = new cv.Mat(); sureFg.convertTo(fgU8, cv.CV_8U)
       const markers = new cv.Mat(); cv.connectedComponents(fgU8, markers)
       const markersI32 = new cv.Mat(); markers.convertTo(markersI32, cv.CV_32S)
       cv.watershed(s, markersI32)
       const d = s.clone()
-      for (let y=0; y<d.rows; y++) for (let x=0; x<d.cols; x++)
-        if (markersI32.intAt(y,x) === -1) { d.data[(y*d.cols+x)*4]=[255,0,0,255][0]; d.data[(y*d.cols+x)*4+1]=0; d.data[(y*d.cols+x)*4+2]=255; }
+      // watershed 边界标记为 -1，直接读 data32S 避免 intAt 越界
+      const w = d.cols, mdata = markersI32.data32S, ddata = d.data
+      for (let y=0; y<d.rows; y++) {
+        for (let x=0; x<d.cols; x++) {
+          if (mdata[y*w+x] === -1) {
+            const idx = (y*w+x)*4
+            ddata[idx]=255; ddata[idx+1]=0; ddata[idx+2]=255; ddata[idx+3]=255
+          }
+        }
+      }
       g.delete(); bi.delete(); dist.delete(); dnorm.delete(); sureFg.delete(); fgU8.delete(); markers.delete(); markersI32.delete(); return d
     },
     codePy: `# 1) Otsu 二值化
@@ -804,15 +842,18 @@ img[markers==-1] = [0,0,255]  # 边界染红`,
     params: [{ key: 'threshold', label: '匹配阈值(x100)', min: 30, max: 99, step: 1, value: 70 }],
     run: (s, p) => {
       // 直接取中央 60x60 做模板
-      const tw=60, th=60
+      const tw=Math.min(60, s.cols-2), th=Math.min(60, s.rows-2)
       const tplRoi = new cv.Rect(Math.max(0,(s.cols-tw)/2|0), Math.max(0,(s.rows-th)/2|0), tw, th)
       const tpl = s.roi(tplRoi); const res = new cv.Mat()
       cv.matchTemplate(s, tpl, res, cv.TM_CCOEFF_NORMED)
       const d = s.clone()
       cv.rectangle(d, new cv.Point(tplRoi.x,tplRoi.y), new cv.Point(tplRoi.x+tw,tplRoi.y+th), [0,255,255,255], 2)
+      // matchTemplate 输出 CV_32FC1，大小 (H-th+1, W-tw+1)，用 data32F 访问避免 floatAt 越界
       let M = -Infinity, mx=0, my=0
-      for (let y=0;y<res.rows;y++) for (let x=0;x<res.cols;x++){
-        const v = res.floatAt(y,x); if (v>M){M=v; mx=x; my=y}
+      const rdata = res.data32F
+      const rw = res.cols
+      for (let i=0; i<rdata.length; i++) {
+        if (rdata[i] > M) { M = rdata[i]; mx = i % rw; my = (i / rw) | 0 }
       }
       if (M >= p.threshold/100) cv.rectangle(d, new cv.Point(mx,my), new cv.Point(mx+tw,my+th), [0,0,255,255], 2)
       tpl.delete(); res.delete(); return d
@@ -899,9 +940,12 @@ img[markers==-1] = [0,0,255]  # 边界染红`,
       const next = new cv.Mat(), st = new cv.Mat(), err = new cv.Mat()
       cv.calcOpticalFlowPyrLK(g1, g2, pts, next, st, err, new cv.Size(p.winSize,p.winSize), 3)
       const d = s.clone()
-      for (let i=0; i<pts.rows; i++){
-        if (st.data[i]===0) continue
-        const x1=pts.data32F[i*2], y1=pts.data32F[i*2+1], x2=next.data32F[i*2], y2=next.data32F[i*2+1]
+      // pts/next 都是 (N,1) CV_32FC2；st 是 (N,1) CV_8UC1
+      const n = pts.rows
+      const p1 = pts.data32F, p2 = next.data32F, sdata = st.data
+      for (let i=0; i<n; i++){
+        if (sdata[i]===0) continue
+        const x1=p1[i*2], y1=p1[i*2+1], x2=p2[i*2], y2=p2[i*2+1]
         cv.line(d, new cv.Point(x1,y1), new cv.Point(x2,y2), [0,255,0,255],2)
         cv.circle(d, new cv.Point(x2,y2), 3, [0,0,255,255],-1)
       }
