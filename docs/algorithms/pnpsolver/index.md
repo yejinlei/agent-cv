@@ -1,5 +1,10 @@
 # PnP 位姿估计
 
+## 🎮 真机互动
+
+<ClientOnly><OpencvPlayground initial-algo="pnpsolver" compact /></ClientOnly>
+
+
 <AlgorithmCard
   name="PnP 位姿估计"
   enName="Perspective-n-Point"

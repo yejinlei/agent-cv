@@ -1248,6 +1248,9 @@ watch(currentFilter, async () => { initParams(); await nextTick(); run() })
 <style scoped>
 .ocv-root { margin: 24px 0; border: 1px solid var(--vp-c-divider); border-radius: 12px; background: var(--vp-c-bg-soft); padding: 14px; }
 .ocv-compact { padding: 10px; }
+.ocv-compact .ocv-loading { padding: 28px 18px; }
+.ocv-compact .ocv-tip { font-size: 11px; }
+.ocv-compact .ocv-start-btn { padding: 10px 22px; font-size: 14px; }
 .ocv-loading { padding: 48px 24px; text-align: center; color: var(--vp-c-text-2); }
 .ocv-spinner { width: 34px; height: 34px; margin: 0 auto 16px; border: 3px solid var(--vp-c-divider); border-top-color: var(--vp-c-brand-1); border-radius: 50%; animation: ocv-spin 0.9s linear infinite; }
 @keyframes ocv-spin { to { transform: rotate(360deg) } }

@@ -1,5 +1,10 @@
 # RANSAC 随机采样一致性 (1981) · 总览
 
+## 🧪 原理互动演示（RANSAC 直线拟合）
+
+<ClientOnly><MathVisualizer initial-tab="ransac" /></ClientOnly>
+
+
 > **一群外点里的「投票找真相」**：数据里混着一堆捣乱的外点，与其硬算，不如随机抽几组最小样本猜模型，谁猜出的模型能招揽到最多「同意者」（内点），谁就是真模型。
 
 <AlgorithmCard
@@ -134,12 +139,5 @@ flowchart LR
 
 > 下面这些组件都在**你的浏览器本地运行**，不上传任何图片、也不用安装 OpenCV 或写代码。
 
-### 🧪 先懂原理：RANSAC到底在算什么
-
-拖动滑块，看数学是怎么一步步变成图像的——纯 Canvas 绘制，秒开。
-
-<ClientOnly>
-  <MathVisualizer initial-tab="ransac" compact />
-</ClientOnly>
 
 > 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

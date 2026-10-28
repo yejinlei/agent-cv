@@ -1,5 +1,10 @@
 # SLIC 超像素
 
+## 🎮 真机互动
+
+<ClientOnly><OpencvPlayground initial-algo="slic" compact /></ClientOnly>
+
+
 <AlgorithmCard
   name="SLIC 超像素"
   enName="Simple Linear Iterative Clustering"

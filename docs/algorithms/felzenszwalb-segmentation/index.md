@@ -1,3 +1,7 @@
+## 🎮 真机互动
+
+<ClientOnly><OpencvPlayground initial-algo="felzenszwalb-segmentation" compact /></ClientOnly>
+
 ---
 layout: doc
 ---

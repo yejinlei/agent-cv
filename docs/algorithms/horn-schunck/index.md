@@ -1,5 +1,10 @@
 # Horn-Schunck 稠密光流
 
+## 🎮 真机互动
+
+<ClientOnly><OpencvPlayground initial-algo="horn-schunck" compact /></ClientOnly>
+
+
 <AlgorithmCard
   name="Horn-Schunck 稠密光流"
   enName="Horn-Schunck Optical Flow"

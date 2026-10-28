@@ -1,3 +1,7 @@
+## 🎮 真机互动
+
+<ClientOnly><OpencvPlayground initial-algo="essential-matrix" compact /></ClientOnly>
+
 ---
 layout: doc
 ---
