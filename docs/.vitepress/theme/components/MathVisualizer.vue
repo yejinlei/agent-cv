@@ -9,6 +9,13 @@
       <div v-if="current === 'pixel'" class="sub-vis">
         <h3>🧩 像素是什么？图像就是数字矩阵</h3>
         <p class="desc">图像是由一个个小格子（像素）组成的，每个格子存一个0~255的数字，0=黑，255=白，中间是灰。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="pixelCanvas" width="500" height="450" @mousemove="pixelHover" @mouseleave="pixelLeave"></canvas>
         <div class="ctrl-row">
           <label>鼠标悬停像素：坐标 ({{ hoverX }}, {{ hoverY }})，灰度值 = <b>{{ hoverVal }}</b></label>
@@ -19,6 +26,13 @@
       <div v-if="current === 'neighbor'" class="sub-vis">
         <h3>📍 4邻域、8邻域、欧氏距离</h3>
         <p class="desc">红色是中心像素，橙色是4邻域（上下左右，距离=1），黄色是8邻域（加对角，距离=√2）。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="neighborCanvas" width="500" height="400"></canvas>
         <div class="ctrl-row">
           <label>距离类型：</label>
@@ -34,6 +48,13 @@
       <div v-if="current === 'conv'" class="sub-vis">
         <h3>🔲 卷积：滑动的3×3小窗口，每个位置做加权求和</h3>
         <p class="desc">卷积核就是一个小数字矩阵，在原图上滑，每个位置把对应位置相乘再加起来，就得到新图像的一个像素。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="convCanvas" width="640" height="380"></canvas>
         <div class="ctrl-row">
           <label>卷积核：</label>
@@ -56,6 +77,13 @@
       <div v-if="current === 'grad'" class="sub-vis">
         <h3>📈 梯度：像素值变化有多快？边缘就是梯度大的地方</h3>
         <p class="desc">Sobel算子用两个3×3核，分别算x方向（左右变化）和y方向（上下变化）的梯度，合起来就是边缘强度。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="gradCanvas" width="600" height="300"></canvas>
         <div class="ctrl-row">
           <label>边缘方向：</label>
@@ -72,6 +100,13 @@
       <div v-if="current === 'thresh'" class="sub-vis">
         <h3>✂️ 阈值分割：一刀把图切成"前景"和"背景"</h3>
         <p class="desc">灰度值大于阈值设为白（前景），小于设为黑（背景）。拖动阈值滑块看效果。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="threshCanvas" width="600" height="300"></canvas>
         <div class="ctrl-row">
           <label>阈值 T = {{ threshT }}</label>
@@ -83,6 +118,13 @@
       <div v-if="current === 'hough'" class="sub-vis">
         <h3>📐 霍夫变换：每个点"投票"，得票最多的线就是真直线</h3>
         <p class="desc">直角坐标系里的一个点(x,y)，在极坐标(ρ,θ)空间里对应一条正弦曲线；很多条曲线交于一点，说明这些点都在同一条直线上。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="houghCanvas" width="640" height="300"></canvas>
         <div class="ctrl-row">
           <label>点的数量：{{ houghN }}</label>
@@ -95,6 +137,13 @@
       <div v-if="current === 'harris'" class="sub-vis">
         <h3>🔺 Harris角点：往任何方向小窗口一动，灰度都大变的点就是角点</h3>
         <p class="desc">平坦区：怎么动灰度都不变；边缘：沿边动不变、跨边动变；角点：往哪动都变 → 这就是我们要找的特征点。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="harrisCanvas" width="600" height="220"></canvas>
         <div class="ctrl-row">
           <label>窗口类型：</label>
@@ -110,6 +159,13 @@
       <div v-if="current === 'fourier'" class="sub-vis">
         <h3>🌊 傅里叶变换：任何图像都能拆成不同频率的正弦波叠加</h3>
         <p class="desc">低频=整体明暗/大色块（模糊的"底色"），高频=细节/边缘/噪声（尖锐的跳变）。拖动滑块看不同频率组合出的效果。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="fourierCanvas" width="640" height="300"></canvas>
         <div class="ctrl-row">
           <label>保留低频：保留前{{ freqCut }}个频率分量</label>
@@ -122,6 +178,13 @@
       <div v-if="current === 'ransac'" class="sub-vis">
         <h3>🎯 RANSAC：随机抽两个点画直线，看有多少点"站在这条线附近"，最多的就是真相</h3>
         <p class="desc">外点（噪声/错点）会干扰最小二乘法；RANSAC每次随机挑两个点试，谁支持的内点最多谁赢，对噪声超鲁棒。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="ransacCanvas" width="600" height="300"></canvas>
         <div class="ctrl-row">
           <button @click="ransacStep">点我试一次随机抽样</button>
@@ -134,6 +197,13 @@
       <div v-if="current === 'lk'" class="sub-vis">
         <h3>🏃 光流：同一个像素在相邻两帧之间移动了多少？</h3>
         <p class="desc">亮度恒定假设：同一个点在两帧里灰度一样；小运动假设：移动距离很小；邻域一致假设：小窗口里所有点动得一样。解Ax=b就能得到移动向量。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="lkCanvas" width="600" height="250"></canvas>
         <div class="ctrl-row">
           <label>物体移动速度：{{ lkSpeed }}</label>
@@ -145,6 +215,13 @@
       <div v-if="current === 'morph'" class="sub-vis">
         <h3>🧹 形态学：用小"刷子"（结构元）对二值图做腐蚀/膨胀</h3>
         <p class="desc">腐蚀：结构元贴住的区域必须全白才保留（毛刺被吃掉）；膨胀：只要有一点白就扩张（小洞被填上）；开运算=先腐后膨（去毛刺），闭运算=先膨后腐（填小洞）。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="morphCanvas" width="640" height="240"></canvas>
         <div class="ctrl-row">
           <label>操作：</label>
@@ -163,6 +240,13 @@
       <div v-if="current === 'gauss'" class="sub-vis">
         <h3>🔔 高斯函数：中间高、两边慢慢降的"钟形曲线"（最常用的权重）</h3>
         <p class="desc">离中心越近权重越大，越远越小。高斯模糊用它做加权平均，比均值模糊更自然，因为"近的像素更像"。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="gaussCanvas" width="600" height="280"></canvas>
         <div class="ctrl-row">
           <label>σ（平缓程度，越大越模糊）= {{ gaussSigma.toFixed(1) }}</label>
@@ -174,6 +258,13 @@
       <div v-if="current === 'color'" class="sub-vis">
         <h3>🎨 RGB / HSV 颜色空间：换一种"描述颜色"的方式</h3>
         <p class="desc">RGB是红/绿/蓝三盏灯的亮度；HSV是色相（什么颜色）、饱和度（鲜艳不鲜艳）、明度（亮不亮）——做颜色分割HSV更方便，因为颜色只由H决定。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="colorCanvas" width="600" height="260"></canvas>
         <div class="ctrl-row">
           <label>色相 H = {{ colorH }}°</label>
@@ -187,6 +278,13 @@
       <div v-if="current === 'hist'" class="sub-vis">
         <h3>📊 灰度直方图：统计每个灰度值在图里有多少像素</h3>
         <p class="desc">直方图均衡化就是"把挤在一起的直方图拉开"，让暗图亮起来、亮图暗下去，对比度自动增强。</p>
+        <div v-if="explains[current]" class="explain-card">
+          <div class="ec-head">🧓 老奶奶也能懂</div>
+          <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
+          <div class="ec-row"><b>💡 核心直觉：</b><span v-html="explains[current].intuition"></span></div>
+          <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
+          <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
+        </div>
         <canvas ref="histCanvas" width="640" height="280"></canvas>
         <div class="ctrl-row">
           <label>图像类型：</label>
@@ -231,6 +329,165 @@ const tabs = [
 ]
 const current = ref(tabs.some(t => t.id === props.initialTab) ? props.initialTab : 'pixel')
 const isMounted = ref(false)
+
+// ========== 🧓 老奶奶式讲解字典（每个概念：类比→直觉→步骤→口诀） ==========
+const explains = {
+  pixel: {
+    analogy: '你家客厅的瓷砖墙。远看是一幅画，走近看全是一块块小瓷砖，每块砖只有一种颜色。图像就是这样一面大墙，「像素」就是那一块砖，「灰度值」就是这块砖涂的颜料深浅——0=刷了黑漆，255=刷了白漆，中间是各种灰。',
+    intuition: '图像不是"画"，是一张<b>超大的数字表格</b>（矩阵）。所有"高级"操作（模糊、找边、识别人脸）追根究底，都是<b>对着这堆数字做加减乘除</b>。',
+    steps: [
+      '用手机拍一张照片 = 把现实中无数连续的颜色，硬切成几百万个小格子',
+      '每个格子只留一个数字（彩色是3个：R/G/B）',
+      '后面所有"智能"算法，本质都是在玩这堆数字',
+    ],
+    kicker: '图像 = 数字矩阵。你看到的画面，在计算机眼里就是 Excel 表格。',
+  },
+  neighbor: {
+    analogy: '一桌人吃饭，正中间是你。「4邻域」就是坐你<b>上下左右</b>的4个亲戚（爸、妈、哥、妹）；「8邻域」再加上<b>四个对角</b>坐的表兄弟；「欧氏距离」就是"拿尺子量你俩的直线距离"。',
+    intuition: '图像里几乎所有操作（模糊、找边、去噪）都不是"一个像素自己玩"，而是<b>一个像素拉着周围邻居一起算</b>——因为真实世界是连续的，一个像素的邻居才和它"最像"。',
+    steps: [
+      '4邻域（曼哈顿距离）：走直线+走直角，上下左右4格，适合棋盘式的网格计算',
+      '8邻域（切比雪夫距离）：斜着也算，共8格，找轮廓/连通域常用',
+      '欧氏距离：√(Δx²+Δy²)，就是生活中说的"直线距离"，最符合直觉',
+    ],
+    kicker: '做CV = 天天跟"邻居"打交道。「周围3×3」这9个格子，是90%传统算法的地盘。',
+  },
+  conv: {
+    analogy: '就像你眯着眼睛看 LED 显示屏——你不会只盯着一个灯泡看，而是<b>用一片视野里的灯泡一起"综合"出一个颜色</b>。卷积核就是你眯眼的方式：模糊=让周围都进来，锐化=把自己放大、邻居往反方向减。',
+    intuition: '一个小方块（3×3的数字矩阵，叫「核/kernel」），<b>在原图上一格一格滑</b>，每滑到一个位置，就把「核里的数字」和「底下对应的像素」<b>对应相乘再相加</b>，得到新图的一个像素。<b>换不同的核 = 换不同的"眼镜"，看到不同的东西</b>。',
+    steps: [
+      '把卷积核扣在当前像素上',
+      '对应位置相乘：核的每个数 × 底下像素的灰度值',
+      '9个乘积加起来，除以权重和（防止亮度跑偏）',
+      '得到的新数字就是输出图该位置的像素值；核向右滑一格重复',
+    ],
+    kicker: '卷积 = 滑动加权求和。换核 = 换滤镜，1 行代码就能变模糊/锐化/浮雕/找边。',
+  },
+  grad: {
+    analogy: '你站在山坡上，左脚踩在平地上、右脚踩在坑里——你能感觉到<b>"两边差很多"</b>，这就是「梯度大」，脚下就是<b>边缘</b>。如果两只脚都在平地上，梯度就是0，那就是天空/墙壁这种<b>平坦区</b>。',
+    intuition: '边缘 = 像素值在空间里的<b>突变</b>。Sobel 用两个小核：一个只比"左边 vs 右边"（看竖边），一个只比"上面 vs 下面"（看横边），再把两个结果按勾股定理合成，就能知道"边缘强度"和"边缘方向"。',
+    steps: [
+      '用 Gx 核（左右对比）算水平梯度：Gx = 右列-左列',
+      '用 Gy 核（上下对比）算垂直梯度：Gy = 下列-上列',
+      '合成：边缘强度 = √(Gx² + Gy²)，方向 θ = arctan(Gy/Gx)',
+      '强度越大，这个点越像边缘',
+    ],
+    kicker: '边缘 = 左右/上下邻居的差值。Sobel 不是"画图"，是在做减法。',
+  },
+  thresh: {
+    analogy: '公司发年终奖，领导画条线：≥80分的发奖金（变白，前景），<80分的不发（变黑，背景）。一刀切，简单粗暴，但非常好用。',
+    intuition: '阈值分割是最简单的<b>二值化</b>——把一张灰度图变成只有黑白两色，用来分离"想要的东西"和"不想要的东西"。阈值怎么选是门艺术：固定阈值、自适应阈值、Otsu 自动阈值……都是为了选对这条线。',
+    steps: [
+      '选一个阈值 T（通常128，或者让Otsu算法自动算）',
+      '遍历每个像素：灰度 ≥ T → 设为255（白）',
+      '灰度 < T → 设为0（黑）',
+      '输出一张只有黑白两色的二值图',
+    ],
+    kicker: '阈值 = 一刀切。大于T是白、小于T是黑。二值图是后续轮廓查找、OCR的起点。',
+  },
+  hough: {
+    analogy: '班级选班长：每个同学（边缘点）都可以"提名"自己支持的直线；大家都投票，<b>得票最多的那条线</b>，就是图像里真正的直线。即使有一些捣蛋鬼（噪声点）乱投，也挡不住大多数人的选择。',
+    intuition: '直角坐标系里的"一个点"，在 (ρ, θ) 极坐标参数空间里对应<b>一条正弦曲线</b>；如果几个点在同一条直线上，它们的正弦曲线就会<b>交于同一点</b>——交点的 (ρ,θ) 就是那条直线的参数。这叫"投票机制"，能从一堆散点里找出线、圆、椭圆。',
+    steps: [
+      '先用 Canny 找出所有边缘点（候选选民）',
+      '建一个"票数表"（累加器），行是θ、列是ρ',
+      '每个边缘点对所有可能的θ算对应的ρ，在票数表对应的格子投一票',
+      '找票数表里的"峰"——峰值高的格子对应的 (ρ,θ) 就是一条直线',
+    ],
+    kicker: '霍夫变换 = 让每个点"投票"，票最多的那根线就是答案。找直线、找圆都靠它。',
+  },
+  harris: {
+    analogy: '你桌上放一块小玻璃片。如果玻璃片下面是<b>平整的桌面</b>，你往任何方向推它，玻璃片里看到的花纹都<b>不变</b>——平坦区。如果玻璃片<b>跨过桌沿</b>，你沿着桌边推，花纹不变；但<b>垂直桌沿推</b>，花纹突然变了——这是边。如果玻璃片刚好盖在<b>桌角</b>上，你<b>往任何方向推</b>，花纹都会大变——这就是角点！',
+    intuition: '在图像上放一个小窗口，往任意方向挪一小段(u,v)，看窗里的亮度变化 E(u,v)。用泰勒展开把 E 近似成二次型 (u,v)·M·(u,v)ᵀ，M 就是<b>结构张量</b>（由梯度 Ix, Iy 在窗口里求和得到）。看 M 的两个<b>特征值 λ₁,λ₂</b>：两个都小=平坦；一个大一个小=边；两个都大=角点。',
+    steps: [
+      '对图像做高斯平滑，再用 Sobel 算出每个像素的水平梯度 Ix 和垂直梯度 Iy',
+      '对每个像素，在它周围的小窗口里累加三个量：ΣIx²、ΣIy²、ΣIxIy，组成 2×2 矩阵 M',
+      '算响应值 R = det(M) − k·tr(M)² = λ₁λ₂ − k(λ₁+λ₂)²，k 通常取 0.04~0.06',
+      'R 大且是局部极大值 → 角点',
+    ],
+    kicker: 'M 的两个特征值都大 → 角点。R 函数让我们不用解特征值就能判断，快到实时。',
+  },
+  fourier: {
+    analogy: '一盘菜端上来，傅里叶变换就是把它<b>拆回菜谱</b>——多少盐、多少糖、多少辣椒、火候多大。逆变换就是<b>按菜谱重新炒一盘</b>，炒出来的菜跟原来一模一样。低频=菜的主料（大色块、整体明暗），高频=调料和纹理（边缘、细节、噪声）。',
+    intuition: '任何图像（哪怕是一张猫脸）都能被拆成<b>无数张不同频率/方向/相位的"波纹图"叠加</b>。频率低=变化慢=大色块=模糊=底色；频率高=变化快=细边/噪点=锐利。只保留低频 = 模糊（高斯模糊本质就是低通滤波）；只保留高频 = 只剩边缘/噪点。',
+    steps: [
+      '把整张图做二维离散傅里叶变换 DFT，得到频谱图（复杂的数字阵列）',
+      '频谱中心是低频，外围是高频；亮度代表该频率的强度',
+      '想模糊就把高频部分"乘0"抹掉（低通滤波）；想找边就把低频"乘0"（高通滤波）',
+      '逆傅里叶变换回到图像域，得到处理后的图',
+    ],
+    kicker: '傅里叶 = 拆成波纹再拼回来。低频管"整体样子"，高频管"细节锐利"。',
+  },
+  ransac: {
+    analogy: '广场上站着 100 个人，其中 80 个整齐排一条直线（内点），20 个乱跑（外点/噪声）。你想找出那条直线。最小二乘法会被乱跑的人带歪；RANSAC 的做法：闭着眼<b>随机抓两个人，画一条穿过他俩的线</b>，然后数"多少人站在这条线附近"（支持者）。抓很多次，<b>支持者最多的那条线</b>就是答案。',
+    intuition: 'RANSAC = RANdom SAmple Consensus（随机抽样一致）。它的哲学是：<b>"真相"会被大多数内点支持</b>，外点是少数派。每次随机抽最小样本（直线抽2点、圆抽3点、单应矩阵抽4点）拟合模型，数内点，重复 N 次，取内点最多的模型。对超过 50% 外点的数据依然能拟合，这是最小二乘做不到的。',
+    steps: [
+      '随机抽最少数量的点（直线=2点，基础矩阵=8点）',
+      '用这些点拟合模型（一条线、一个矩阵……）',
+      '算所有其它点到模型的距离，距离小于阈值的算"内点"',
+      '如果内点数量刷新纪录，更新"当前最佳模型"',
+      '重复 N 次（通常几百~几千次），最终最佳模型就是答案',
+    ],
+    kicker: 'RANSAC = 闭着眼抽样→拟合→数支持者，重复很多次，票多的赢。专治各种外点/噪声。',
+  },
+  lk: {
+    analogy: '你在人群中找一个穿红衣服的朋友——他上一帧在画面左边，这一帧稍微动了一点。你<b>盯着他周围一个小窗口</b>（而不是整张图）找"最像的那块"，就找到他的新位置。窗口里所有人移动方向都差不多（邻域一致），所以能比较稳地定位。',
+    intuition: '光流 = 像素在相邻两帧之间的<b>位移向量 (u,v)</b>。Lucas-Kanade 做了三个假设：① 亮度恒定（同一个点移动时灰度不变）；② 小运动（位移很小，可以用泰勒一阶近似）；③ 邻域一致（一个小窗口里所有点移动方向相同）。用这三条把问题化成解一个 2×2 线性方程 AᵀA · d = Aᵀb。',
+    steps: [
+      '在第1帧用 Harris/Shi-Tomasi 找出好跟踪的特征点（角点）',
+      '对每个点，在它周围取一个小窗口（比如 15×15）',
+      '在第2帧同一个位置附近做小范围搜索，用梯度 Ix/Iy 和时间差 It 组方程',
+      '解 (u,v) = (AᵀA)⁻¹ Aᵀb，得到这个点的位移向量',
+      '把点挪到新位置，下一帧重复跟踪',
+    ],
+    kicker: 'LK光流 = 假设"小窗口里所有点一起动"，解一个2×2方程，就能知道每个角点跑哪儿去了。',
+  },
+  morph: {
+    analogy: '形态学操作就像<b>用橡皮/笔修改二值图</b>：腐蚀 = 把白色区域"啃掉一圈"（毛刺没了，字变细）；膨胀 = 把白色区域"胖一圈"（小洞补上，字变粗）；开运算=先啃再胖（去外面的白点）；闭运算=先胖再啃（填里面的黑洞）。',
+    intuition: '结构元（通常是3×3十字或方块）像个图章，在二值图上滑。腐蚀：图章下面必须<b>全白</b>才保留中心像素（否则变黑，白区缩小）；膨胀：图章下面<b>只要有一点白</b>就把中心设白（白区扩大）。两者组合就能去噪、填洞、连断线、分离粘连物体。',
+    steps: [
+      '选一个结构元（刷子形状+大小）',
+      '腐蚀：遍历每个像素，如果结构元内有任何黑像素，中心就变黑 → 毛刺消失',
+      '膨胀：遍历每个像素，如果结构元内有任何白像素，中心就变白 → 小缝补上',
+      '开运算（先腐后膨）：去小突起/孤立亮点，主体不变',
+      '闭运算（先膨后腐）：填小黑洞/窄裂缝，主体不变',
+    ],
+    kicker: '腐蚀瘦一圈、膨胀胖一圈；开运算去刺、闭运算填洞。二值图必备橡皮擦。',
+  },
+  gauss: {
+    analogy: '全班考试平均分，但<b>跟你坐得越近的同学分数对你的影响越大</b>——同桌占20%，前后桌占12%，隔两排的只占1%，隔三排以上几乎不算。这就是高斯权重——"近的更像你"。',
+    intuition: '一维高斯函数 G(x) = (1/√(2π)σ)·exp(−x²/(2σ²)) 画出来是个钟形：中心最高、往两边对称衰减。二维的就是个"小山包"。σ 越大，山包越平缓（越模糊，把更远的邻居也算进来）；σ 越小，山包越尖（几乎只看自己，没模糊效果）。高斯模糊是**唯一**能让图像"自然平滑"的核（不产生伪影、可分离加速、符合中心极限定理）。',
+    steps: [
+      '选 σ（平滑强度）和卷积核大小 ksize（通常是 6σ+1）',
+      '用高斯公式算出每个格子的权重，离中心越远权重越小',
+      '所有权重加起来必须=1（除以权重和，叫"归一化"），保证不会让图变亮或变暗',
+      '把这个核套在图像上做卷积——高斯模糊完成',
+    ],
+    kicker: '高斯 = 近大远小的加权平均。σ 越大越糊，σ=0 就是原图。Canny/SIFT/降噪都离不开它。',
+  },
+  color: {
+    analogy: 'RGB 是<b>三盏不同颜色的手电筒（红/绿/蓝）同时照在一面白墙上</b>——三盏都开到最亮就是白，都不开就是黑，调亮度组合出各种颜色。HSV 则像<b>画家调色盘</b>：色相（Hue）=你挤了哪种颜料（红？黄？蓝？），饱和度（Saturation）=颜料加了多少白色稀释（越饱和越鲜艳，加白多就变粉/变灰），明度（Value）=加了多少黑色（亮还是暗）。',
+    intuition: '在RGB里"同一个颜色"因为光照不同会出现在 R/G/B 三个通道各种位置，很难用一个范围框住。在HSV里，<b>"颜色是什么"只由H一个通道决定</b>（红=0°，绿=120°，蓝=240°），不管亮暗、鲜艳不鲜艳。所以做颜色分割（"找出图里所有红色的东西"）几乎必转HSV。',
+    steps: [
+      'RGB：每个像素 (R,G,B) 三个数0-255，分别表示三盏灯的亮度',
+      'HSV：H=色相（0-360°，在色环上的位置）；S=饱和度（0-100%，0=灰白，100%=最鲜艳）；V=明度（0-100%，0=黑，100%=最亮）',
+      '做颜色检测：把图像转HSV，对 H 做范围筛选（如 H<10 或 H>170 = 红）',
+      'S 和 V 也可以加范围（S不能太低否则白色灰色混进来，V不能太低否则黑色混进来）',
+    ],
+    kicker: 'RGB 适合显示（屏幕），HSV 适合"按颜色找东西"。做颜色分割 → 直接转 HSV。',
+  },
+  hist: {
+    analogy: '假设你在排队打饭，统计每个身高（0~255cm）各站了<b>多少人</b>——这就是直方图。如果所有人都挤在150~170cm这个小区间（低对比度），老师说"你们散开站！"把大家均匀铺满0~255，最矮的站0、最高的站255——这就是<b>直方图均衡化</b>。散开后，人与人之间的身高差变大，照片就"清楚"了。',
+    intuition: '灰度直方图 = 横轴是灰度值0-255，纵轴是该灰度值在图像里<b>出现的次数</b>。如果直方图"挤成一团"，说明图像对比度差（要么整体偏暗、要么整体偏亮、要么灰蒙蒙）。均衡化就是做一个灰度映射，让映射后的直方图<b>尽量均匀分布在0-255</b>，达到自动增强对比度的效果。',
+    steps: [
+      '统计256个灰度值各有多少像素，得到直方图 h[0..255]',
+      '计算累计分布 cdf[i] = h[0]+h[1]+...+h[i]（即灰度≤i的像素总数）',
+      '建立映射：新灰度[i] = (cdf[i] − cdf_min) / (总像素 − cdf_min) × 255',
+      '查表替换每个像素的灰度值 → 输出对比度增强的图',
+    ],
+    kicker: '直方图 = "各亮度有多少像素"。均衡化 = "把挤在一起的像素拉开"，暗图/灰图一秒变清晰。',
+  },
+}
 
 // ---- refs ----
 const pixelCanvas = ref(null), neighborCanvas = ref(null), convCanvas = ref(null), gradCanvas = ref(null)
@@ -1076,4 +1333,11 @@ onMounted(()=>{
 .ctrl-row input[type=range]{width:140px}
 .ctrl-row select{padding:4px 8px;border:1px solid #ccc;border-radius:4px}
 .calc{background:#fff3e0;padding:8px 12px;border-left:3px solid #ff9800;font-size:13px;color:#333;border-radius:4px;margin:10px 0}
+.explain-card{background:linear-gradient(135deg,#fff9e6 0%,#fff3c2 100%);border:1px solid #f0d978;border-left:4px solid #e6a700;border-radius:8px;padding:14px 18px;margin:10px 0 14px;font-size:13.5px;line-height:1.7;color:#3a2e00}
+.explain-card .ec-head{font-size:15px;font-weight:700;color:#a06e00;margin-bottom:8px}
+.explain-card .ec-row{margin:6px 0}
+.explain-card .ec-row b{color:#6b4f00;margin-right:4px}
+.explain-card .ec-steps{margin:4px 0 4px 20px;padding:0}
+.explain-card .ec-steps li{margin:3px 0}
+.explain-card .ec-kicker{display:inline-block;background:#fff;border:1px dashed #d4a017;padding:4px 10px;border-radius:4px;color:#8a5a00;font-weight:600;margin-top:2px}
 </style>
