@@ -1167,10 +1167,6 @@ async function copyCode() {
 
 function filtersByGroup(g) { return filters.filter(f => f.group === g) }
 
-onBeforeUnmount(() => {
-  if (cvUnsub) { cvUnsub(); cvUnsub = null }
-})
-
 async function loadHaar() {
   if (haarXml) return
   try {
