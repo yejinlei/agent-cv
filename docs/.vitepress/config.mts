@@ -35,19 +35,13 @@ export default defineConfig({
     siteTitle: 'agent-cv',
 
     nav: [
-      { text: '首页', link: '/' },
       { text: '🌱 小白入门', link: '/for-beginners' },
       {
         text: '🧭 学习路径',
         items: [
           { text: '学习路径地图（双轴）', link: '/learning-path' },
           { text: '🧪 原理实验室（看不懂公式点这）', link: '/math-lab/' },
-        ]
-      },
-      { text: '🎮 真机实验室（跑真实算法）', link: '/playgrounds/' },
-      {
-        text: '📚 章节体系（纵轴）',
-        items: [
+          { text: '—— 章节体系 · 纵轴视角 ——', link: '/chapters/' },
           { text: '总览：章体系地图（预备篇 + 13 章）', link: '/chapters/' },
           { text: '第 1–2 章 · 视觉与图像基础', link: '/chapters/ch01-foundation' },
           { text: '第 3 章 · 图像预处理', link: '/chapters/ch03-preprocessing' },
@@ -65,42 +59,47 @@ export default defineConfig({
           { text: '第 15 章 · 场景解释', link: '/chapters/ch15-scene' }
         ]
       },
-      { text: '场景反查', link: '/scenarios/' },
-      { text: '🧱 算子词典', link: '/operators/' },
+      { text: '🎮 真机实验室', link: '/playgrounds/' },
       {
-        text: '🌐 全局视图',
+        text: '🗺️ 知识图谱',
         items: [
-          { text: '家族树', link: '/global/family' },
-          { text: '系列演化', link: '/global/evolutions' },
-          { text: '演进故事', link: '/global/evolution-story' },
-          { text: '时间线', link: '/global/timeline' },
-          { text: '外部技术影响', link: '/global/external-techniques' }
-        ]
-      },
-      {
-        text: '🔧 横向使用页',
-        items: [
-          { text: '算法选型决策树', link: '/global/choose-algorithm' },
-          { text: '对比矩阵', link: '/global/compare-matrix' },
-          { text: '基准数据', link: '/global/benchmarks' },
-          { text: '数据流全景', link: '/global/data-flow' },
-          { text: '故障排查手册', link: '/global/troubleshooting' },
-          { text: '概念反向索引', link: '/global/concepts' }
-        ]
-      },
-      { text: '术语表', link: '/glossary' },
-      { text: '本体 Schema', link: '/ontology/schema' },
-      {
-        text: '🌿 技术分支（横轴）',
-        items: [
-          { text: '总览', link: '/branches/' },
+          { text: '—— 技术分支 · 横轴视角 ——', link: '/branches/' },
+          { text: '技术分支总览', link: '/branches/' },
           { text: '图像处理', link: '/branches/image-processing/' },
           { text: '特征检测', link: '/branches/feature-detection/' },
           { text: '特征匹配', link: '/branches/feature-matching/' },
           { text: '图像分割', link: '/branches/segmentation/' },
           { text: '目标检测', link: '/branches/detection/' },
           { text: '几何视觉', link: '/branches/geometry/' },
-          { text: '🔧 工程实现层', link: '/branches/engineering/' }
+          { text: '🔧 工程实现层', link: '/branches/engineering/' },
+          { text: '—— 全局视图 ——', link: '/global/family' },
+          { text: '家族树', link: '/global/family' },
+          { text: '系列演化', link: '/global/evolutions' },
+          { text: '演进故事', link: '/global/evolution-story' },
+          { text: '时间线', link: '/global/timeline' },
+          { text: '外部技术影响', link: '/global/external-techniques' },
+          { text: '—— 脉络与本体 ——', link: '/legacy/' },
+          { text: '传承脉络', link: '/legacy/' },
+          { text: '本体 Schema', link: '/ontology/schema' }
+        ]
+      },
+      {
+        text: '🧰 词典与工具',
+        items: [
+          { text: '🧱 算子词典', link: '/operators/' },
+          { text: '场景反查', link: '/scenarios/' },
+          { text: '术语表', link: '/glossary' },
+          { text: '—— 横向工具页 ——', link: '/global/choose-algorithm' },
+          { text: '算法选型决策树', link: '/global/choose-algorithm' },
+          { text: '对比矩阵', link: '/global/compare-matrix' },
+          { text: '基准数据', link: '/global/benchmarks' },
+          { text: '数据流全景', link: '/global/data-flow' },
+          { text: '故障排查手册', link: '/global/troubleshooting' },
+          { text: '概念反向索引', link: '/global/concepts' },
+          { text: '—— 案例与实现 ——', link: '/cases/' },
+          { text: '实战案例', link: '/cases/' },
+          { text: '衍生实现（OpenCV / HALCON / 嵌入式 / 现代继承）', link: '/derivatives/' },
+          { text: '🚧 路线预告', link: '/derivatives/roadmap' }
         ]
       },
       {
@@ -179,16 +178,7 @@ export default defineConfig({
           { text: '三角测量 Triangulation', link: '/algorithms/triangulation/' },
           { text: '光束法平差 Bundle Adjustment (2000)', link: '/algorithms/bundle-adjustment/' }
         ]
-      },
-      { text: '实战案例', link: '/cases/' },
-      {
-        text: '🔀 衍生实现',
-        items: [
-          { text: '衍生总览（OpenCV/HALCON/嵌入式/现代继承）', link: '/derivatives/' },
-          { text: '🚧 路线预告', link: '/derivatives/roadmap' }
-        ]
-      },
-      { text: '传承脉络', link: '/legacy/' }
+      }
     ],
 
     sidebar: {

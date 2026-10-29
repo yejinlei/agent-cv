@@ -204,7 +204,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 
 const props = defineProps({
   // 嵌入算法页时，指定默认选中的原理标签（如 'grad'）
@@ -1019,19 +1019,31 @@ function drawHist(){
 }
 
 // ========== 统一绘制调度 ==========
+// 每个 drawXXX 内部都会自行判空（const c = xxxCanvas.value; if(!c) return），
+// 所以这里绝不能用某个具体 canvas（如 pixelCanvas）是否存在当"总开关"：
+// 当页面初始 tab 不是 pixel（例如算法页用 initial-tab="lk" 嵌入）时，
+// pixelCanvas 因 v-if 根本没挂载，总守卫会让整个渲染直接退出，表现为"原理图一片空白"。
 function render(){
-  if(!pixelCanvas.value) return
   drawPixel(); drawNeighbor(); drawConv(); drawGrad()
   drawThresh(); drawHough(); drawHarris(); drawFourier()
   drawRansac(); drawLK(); drawMorph(); drawGauss()
   drawColor(); drawHist()
 }
 
+// tab 切换会先卸载旧 canvas、再挂载新 canvas，必须等 DOM 更新完再画：
+// nextTick 保证 v-if 已完成切换，rAF 再补一次以确保拿到稳定布局尺寸。
+function renderStable(){
+  nextTick(()=>{
+    render()
+    requestAnimationFrame(()=>render())
+  })
+}
+
 onMounted(()=>{
   ransacPoints.value = genRansacPoints()
-  render()
+  renderStable()
   // tab 切换后重绘
-  watch(current, ()=>setTimeout(render,50))
+  watch(current, ()=>renderStable())
   // state 变化重绘
   ;[distType,kernelType,convX,convY,edgeDir,threshT,houghN,harrisType,freqCut,
     lkSpeed,morphOp,morphK,gaussSigma,colorH,colorS,histType,histEq
