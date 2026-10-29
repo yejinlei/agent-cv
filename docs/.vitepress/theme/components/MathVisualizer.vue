@@ -107,10 +107,11 @@
           <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
           <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
         </div>
-        <canvas ref="threshCanvas" width="600" height="300"></canvas>
+        <canvas ref="threshCanvas" width="600" height="300" @mousedown="threshDown" @mousemove="threshMove" @mouseup="threshUp" @mouseleave="threshUp" style="cursor:ew-resize"></canvas>
         <div class="ctrl-row">
           <label>阈值 T = {{ threshT }}</label>
           <input type="range" min="0" max="255" v-model.number="threshT" />
+          <span style="margin-left:20px;color:#666">👆 <b>在画布上左右拖动红色虚线</b>也能调阈值</span>
         </div>
       </div>
 
@@ -505,7 +506,12 @@ const houghN = ref(8), houghPeak = ref(0)
 const harrisType = ref('corner')
 const freqCut = ref(5)
 const ransacIter = ref(0), ransacBest = ref(0), ransacPoints = ref([])
-const lkSpeed = ref(5)
+const ransacAuto = ref(false), ransacAutoTimer = ref(null)
+const ransacOutRatioPct = ref(40), ransacThresh = ref(8)
+const ransacCurrLine = ref(null)  // 本次抽样线（仅用于演示）
+const lkSpeed = ref(5), lkPlay = ref(false), lkN = ref(15), lkFrame = ref(0), lkTimer = ref(null)
+const neighborCx = ref(3), neighborCy = ref(3)
+const threshDragging = ref(false)
 const morphOp = ref('dilate'), morphK = ref(3)
 const gaussSigma = ref(1.5)
 const colorH = ref(0), colorS = ref(100)
@@ -557,12 +563,21 @@ function pixelHover(e){
 function pixelLeave(){ hoverVal.value=128 }
 
 // ========== 2. 邻域 ==========
+function neighborClick(e){
+  const c = neighborCanvas.value; if(!c) return
+  const rect = c.getBoundingClientRect()
+  const x = (e.clientX-rect.left)*(c.width/rect.width)
+  const y = (e.clientY-rect.top)*(c.height/rect.height)
+  const size=50, off=100
+  const gx=((x-off)/size)|0, gy=((y-off)/size)|0
+  if(gx>=0&&gx<7&&gy>=0&&gy<7){ neighborCx.value=gx; neighborCy.value=gy }
+}
 function drawNeighbor(){
   const c = neighborCanvas.value; if(!c) return
   const ctx = c.getContext('2d')
   const size=50, off=100
   ctx.clearRect(0,0,c.width,c.height)
-  const cx=3, cy=3
+  const cx=neighborCx.value, cy=neighborCy.value
   for(let y=0;y<7;y++)for(let x=0;x<7;x++){
     let color='#f5f5f5'
     if(x===cx&&y===cy) color='#ff6b6b'
@@ -570,12 +585,19 @@ function drawNeighbor(){
     else if(distType.value==='8' && Math.max(Math.abs(x-cx),Math.abs(y-cy))===1) color='#ffd43b'
     else if(distType.value==='e'){
       const d = Math.hypot(x-cx,y-cy)
-      if(d===1) color='#ffa94d'
+      if(d<1.01) color='#ffa94d'
       else if(d<=1.5) color='#ffd43b'
     }
     ctx.fillStyle = color
     ctx.fillRect(off+x*size, off+y*size, size-2, size-2)
     ctx.strokeStyle='#ccc';ctx.strokeRect(off+x*size, off+y*size, size-2, size-2)
+    // 显示距离数值
+    ctx.fillStyle='#666';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle'
+    const d = Math.hypot(x-cx,y-cy)
+    if(color!=='#f5f5f5' && !(x===cx&&y===cy)){
+      ctx.fillStyle='#333'
+      ctx.fillText(d.toFixed(2), off+x*size+(size-2)/2, off+y*size+(size-2)/2)
+    }
   }
   // 标注
   ctx.fillStyle='#333';ctx.font='15px sans-serif';ctx.textAlign='left'
@@ -585,8 +607,9 @@ function drawNeighbor(){
     distType.value==='8'?'橙色+黄色：8邻域（加对角，共8个）':
     '橙色：距离=1；黄色：距离≈√2≈1.414',
     '欧氏距离 = √((x1-x2)²+(y1-y2)²)  就是普通直线距离',
+    '格子里的数字 = 该格到中心的欧氏距离',
   ]
-  labels.forEach((t,i)=>ctx.fillText(t, off+8*size, off+i*30+30))
+  labels.forEach((t,i)=>ctx.fillText(t, off+8*size, off+i*26+30))
 }
 
 // ========== 3. 卷积 ==========
@@ -675,6 +698,16 @@ function drawConv(){
   ctx.fillText(formula, ox, oy+7*ks+30)
   ctx.font='12px monospace'
   for(let i=0;i<parts.length;i+=3) ctx.fillText(parts.slice(i,i+3).join(' + '), ox, oy+7*ks+55+(i/3)*20)
+}
+function convClick(e){
+  const c = convCanvas.value; if(!c) return
+  const rect = c.getBoundingClientRect()
+  const x = (e.clientX-rect.left)*(c.width/rect.width)
+  const y = (e.clientY-rect.top)*(c.height/rect.height)
+  const ks=50, ox=30, oy=30
+  const gx=((x-ox)/ks)|0, gy=((y-oy)/ks)|0
+  // 只有 0..4 是合法卷积中心位置（因为 7x7 里 3x3 窗口起点范围 0~4）
+  if(gx>=0&&gx<=4&&gy>=0&&gy<=4){ convX.value=gx; convY.value=gy }
 }
 
 // ========== 4. 梯度 Sobel ==========
@@ -780,6 +813,20 @@ function drawThresh(){
   ctx.lineTo(hx+threshT.value*hw/256, hy+hh)
   ctx.stroke()
 }
+function threshDown(e){ threshDragging.value=true; threshMove(e) }
+function threshMove(e){
+  if(!threshDragging.value) return
+  const c = threshCanvas.value; if(!c) return
+  const rect = c.getBoundingClientRect()
+  const x = (e.clientX-rect.left)*(c.width/rect.width)
+  // drawThresh 中：原图 w=200, scale=1.2；直方图起点 hx=oox=ox+w*scale+60 = 330；hw=w*scale=240
+  const hx=330, hw=240
+  let v = Math.round(((x-hx)/hw)*255)
+  v = Math.max(0, Math.min(255, v))
+  threshT.value = v
+}
+function threshUp(){ threshDragging.value=false }
+
 
 // ========== 6. 霍夫 ==========
 function drawHough(){
@@ -950,114 +997,229 @@ function drawFourier(){
 }
 
 // ========== 9. RANSAC ==========
+const ransacW=560, ransacH=300, ransacOx=20, ransacOy=20
 function genRansacPoints(){
   const pts=[]
-  // 30个内点
-  for(let i=0;i<30;i++){
-    const x=Math.random()*500+50
-    const y=0.5*x+80+(Math.random()-0.5)*20
+  const ratio = ransacOutRatioPct.value/100
+  const N=50
+  const nOut = Math.round(N*ratio/(1-ratio))  // 按比例算出外点数
+  const nIn = N
+  // 真值线：y = 0.45x + 60（斜线，比之前的0.5更明显）
+  for(let i=0;i<nIn;i++){
+    const x=Math.random()*(ransacW-40)+20
+    const y=0.45*x+60+(Math.random()-0.5)*20
     pts.push({x,y,inlier:true})
   }
-  // 20个外点
-  for(let i=0;i<20;i++){
-    pts.push({x:Math.random()*560+20, y:Math.random()*240+20, inlier:false})
+  for(let i=0;i<nOut;i++){
+    pts.push({x:Math.random()*ransacW+ransacOx-ransacOx, y:Math.random()*ransacH+ransacOy-ransacOy, inlier:false})
   }
   return pts
 }
-function ransacStep(){
+function ransacFitTwoPoints(){
   const pts=ransacPoints.value
-  // 随机挑2点
-  let i1=0,i2=0
-  while(i1===i2){i1=(Math.random()*pts.length)|0;i2=(Math.random()*pts.length)|0}
+  if(pts.length<2) return null
+  let i1=0,i2=0,tries=0
+  while(i1===i2 && tries<20){i1=(Math.random()*pts.length)|0;i2=(Math.random()*pts.length)|0;tries++}
+  if(i1===i2) return null
   const p1=pts[i1],p2=pts[i2]
-  // 线 ax+by+c=0
+  if(Math.hypot(p2.x-p1.x,p2.y-p1.y)<20) return null  // 两点太近，跳过
   const a=p2.y-p1.y, b=p1.x-p2.x, c=p2.x*p1.y-p1.x*p2.y
   const n=Math.hypot(a,b)
-  let inliers=0
-  const thresh=8
-  pts.forEach(p=>{
-    const d=Math.abs(a*p.x+b*p.y+c)/n
-    if(d<thresh) inliers++
+  return {a,b,c,n,p1,p2}
+}
+function ransacCountInliers(line){
+  if(!line) return 0
+  const {a,b,c,n}=line
+  let cnt=0; const th=ransacThresh.value
+  ransacPoints.value.forEach(p=>{
+    if(Math.abs(a*p.x+b*p.y+c)/n < th) cnt++
   })
+  return cnt
+}
+function ransacStep(){
+  const c = ransacCanvas.value; if(!c) return
+  const line = ransacFitTwoPoints()
+  if(!line) return
+  const inliers = ransacCountInliers(line)
+  ransacCurrLine.value = line
   if(inliers>ransacBest.value){
     ransacBest.value=inliers
-    ransacCanvas.value._best={a,b,c,n}
+    c._best=line
   }
   ransacIter.value++
-  drawRansac()
 }
 function ransacReset(){
   ransacPoints.value=genRansacPoints()
   ransacIter.value=0
   ransacBest.value=0
-  ransacCanvas.value._best=null
-  drawRansac()
+  ransacCurrLine.value=null
+  if(ransacCanvas.value) ransacCanvas.value._best=null
+}
+function ransacClick(e){
+  const c = ransacCanvas.value; if(!c) return
+  const rect = c.getBoundingClientRect()
+  const x = (e.clientX-rect.left)*(c.width/rect.width) - ransacOx
+  const y = (e.clientY-rect.top)*(c.height/rect.height) - ransacOy
+  if(x<0||x>ransacW||y<0||y>ransacH) return
+  // 靠近已有外点：删除；否则加一个外点
+  let hit=-1
+  ransacPoints.value.forEach((p,i)=>{
+    if(!p.inlier && Math.hypot(p.x-x,p.y-y)<8) hit=i
+  })
+  if(hit>=0) ransacPoints.value.splice(hit,1)
+  else ransacPoints.value.push({x,y,inlier:false})
+  // 重新评估最佳（点数变了）
+  ransacIter.value=0; ransacBest.value=0; ransacCurrLine.value=null
+  c._best=null
+  // 快速跑 50 步，立刻给出新最佳
+  for(let k=0;k<80;k++){
+    const line=ransacFitTwoPoints()
+    if(!line) continue
+    const n=ransacCountInliers(line)
+    if(n>ransacBest.value){ransacBest.value=n; c._best=line}
+    ransacIter.value++
+  }
 }
 function drawRansac(){
   const c = ransacCanvas.value; if(!c) return
   const ctx = c.getContext('2d')
   ctx.clearRect(0,0,c.width,c.height)
-  const ox=20,oy=20,w=560,h=240
-  ctx.strokeStyle='#ccc';ctx.strokeRect(ox,oy,w,h)
+  const {ox:ox0,oy:oy0,w,h} = {ox:ransacOx,oy:ransacOy,w:ransacW,h:ransacH}
+  // 画布区域
+  ctx.fillStyle='#fafbfc';ctx.fillRect(ox0,oy0,w,h)
+  ctx.strokeStyle='#ccc';ctx.strokeRect(ox0,oy0,w,h)
   ctx.fillStyle='#333';ctx.font='14px sans-serif';ctx.textAlign='left'
-  ctx.fillText('🔵 内点（在真线上） + 🔴 外点（噪声/错配点）', ox+10, oy-5)
+  ctx.fillText('🔵 内点（在真线上） + 🔴 外点（噪声/错配点）', ox0+10, oy0-5)
+  // 真值线（淡灰虚线）
+  ctx.save()
+  ctx.strokeStyle='rgba(150,150,150,0.5)';ctx.setLineDash([5,5]);ctx.lineWidth=1
+  ctx.beginPath()
+  const y0=0.45*0+60, y1=0.45*w+60
+  ctx.moveTo(ox0,oy0+y0);ctx.lineTo(ox0+w,oy0+y1);ctx.stroke()
+  ctx.restore()
+  // 本次抽样线（橙色虚线，只有单步时显示一下）
+  if(ransacCurrLine.value){
+    const {a,b,c:n}=ransacCurrLine.value
+    ctx.save()
+    ctx.strokeStyle='rgba(255,152,0,0.8)';ctx.setLineDash([6,4]);ctx.lineWidth=2
+    const ly0=(-n-a*0)/b, ly1=(-n-a*w)/b
+    if(isFinite(ly0)&&isFinite(ly1)){
+      ctx.beginPath();ctx.moveTo(ox0,oy0+ly0);ctx.lineTo(ox0+w,oy0+ly1);ctx.stroke()
+    }
+    ctx.restore()
+  }
+  // 点
   ransacPoints.value.forEach(p=>{
     ctx.fillStyle=p.inlier?'#2196f3':'#ff5252'
-    ctx.beginPath();ctx.arc(ox+p.x,oy+p.y,3,0,Math.PI*2);ctx.fill()
+    ctx.beginPath();ctx.arc(ox0+p.x,oy0+p.y,p.inlier?3.5:4,0,Math.PI*2);ctx.fill()
   })
+  // 最佳线（绿色粗线）
   if(c._best){
-    const {a,b,c}=c._best
+    const {a,b,c:n}=c._best
     ctx.strokeStyle='#4caf50';ctx.lineWidth=3
-    const y0=(-c-a*0)/b, y1=(-c-a*w)/b
-    ctx.beginPath();ctx.moveTo(ox,oy+y0);ctx.lineTo(ox+w,oy+y1);ctx.stroke()
+    const ly0=(-n-a*0)/b, ly1=(-n-a*w)/b
+    if(isFinite(ly0)&&isFinite(ly1)){
+      ctx.beginPath();ctx.moveTo(ox0,oy0+ly0);ctx.lineTo(ox0+w,oy0+ly1);ctx.stroke()
+    }
     ctx.fillStyle='#4caf50';ctx.font='bold 14px sans-serif'
-    ctx.fillText(`最佳拟合线（${ransacBest.value}个点支持）`, ox+10, oy+h+20)
+    ctx.fillText(`✅ 最佳拟合线（${ransacBest.value}个点支持，内点率 ${(ransacBest.value/ransacPoints.value.length*100)|0}%）`, ox0+10, oy0+h+22)
+  }else{
+    ctx.fillStyle='#999';ctx.font='13px sans-serif'
+    ctx.fillText('还没找到最佳线，点"单步"或"自动跑"开始吧。', ox0+10, oy0+h+22)
   }
-  ctx.fillStyle='#666';ctx.font='13px sans-serif'
-  ctx.fillText('每次"点我试一次"=随机抽2个点画一条线，数附近有多少点支持它，多轮后得票最高即真相。最小二乘会被红点带歪，RANSAC不会！', ox+10, oy+h+45)
+  ctx.fillStyle='#666';ctx.font='12px sans-serif'
+  ctx.fillText('灰色虚线=真实直线；橙色虚线=本次随机抽样；绿色粗线=目前找到的最佳线。外点比例越高越难，试拉到 60% 看看 RANSAC 还能不能找对。', ox0+10, oy0+h+46)
 }
 
 // ========== 10. LK光流 ==========
-let lkFrame=0
 function drawLK(){
   const c = lkCanvas.value; if(!c) return
   const ctx = c.getContext('2d')
   ctx.clearRect(0,0,c.width,c.height)
-  const w=250,h=200,oy=30
-  // 帧1
-  ctx.strokeStyle='#ccc';ctx.strokeRect(20,oy,w,h)
-  ctx.fillStyle='#333';ctx.font='13px';ctx.textAlign='center'
-  ctx.fillText('帧 t', 20+w/2, oy-10)
-  ctx.fillStyle='#e0e0e0';ctx.fillRect(20,oy,w,h)
-  const bx=80,by=80,bw=60,bh=60
-  ctx.fillStyle='#2196f3';ctx.fillRect(20+bx,oy+by,bw,bh)
-  ctx.strokeStyle='#ff4757';ctx.lineWidth=2;ctx.strokeRect(20+bx-5,oy+by-5,bw+10,bh+10)
-  ctx.fillStyle='#ff4757';ctx.font='11px';ctx.fillText('跟踪窗口', 20+bx+bw/2, oy+by-10)
-  // 帧2 移动
-  const dx=lkSpeed.value, dy=0
-  ctx.strokeStyle='#ccc';ctx.strokeRect(20+w+40,oy,w,h)
-  ctx.fillText('帧 t+1', 20+w+40+w/2, oy-10)
-  ctx.fillStyle='#e0e0e0';ctx.fillRect(20+w+40,oy,w,h)
-  ctx.fillStyle='#2196f3';ctx.fillRect(20+w+40+bx+dx,oy+by+dy,bw,bh)
-  // 原始窗口位置（虚）
-  ctx.strokeStyle='#ff4757';ctx.setLineDash([4,4]);ctx.strokeRect(20+w+40+bx-5,oy+by-5,bw+10,bh+10)
-  ctx.setLineDash([])
-  // 位移箭头
-  ctx.strokeStyle='#4caf50';ctx.lineWidth=3
-  ctx.beginPath()
-  ctx.moveTo(20+w+40+bx+bw/2, oy+by+bh/2)
-  ctx.lineTo(20+w+40+bx+bw/2+dx, oy+by+bh/2+dy)
-  ctx.stroke()
-  ctx.fillStyle='#4caf50';ctx.font='bold 14px sans-serif';ctx.textAlign='left'
-  ctx.fillText(`位移 = (${dx}, ${dy}) 像素`, 20+w*2+70, oy+40)
-  ctx.fillStyle='#333';ctx.font='13px'
-  ctx.fillText('三个假设：', 20+w*2+70, oy+70)
-  ctx.fillText('① 亮度恒定（点的灰度不变）', 20+w*2+70, oy+90)
-  ctx.fillText('② 运动小（相邻帧位移小）', 20+w*2+70, oy+110)
-  ctx.fillText('③ 邻域一致（窗口内点动得一样）', 20+w*2+70, oy+130)
-  ctx.fillText('解 Ix·u + Iy·v = -It 得(u,v)', 20+w*2+70, oy+150)
-  ctx.fillStyle='#999';ctx.font='12px'
-  ctx.fillText('Ix/Iy = x/y方向梯度  It = 时间差', 20+w*2+70, oy+170)
+  const W=420, H=220, ox=20, oy=25
+  // 画一帧场景
+  ctx.strokeStyle='#ccc';ctx.strokeRect(ox,oy,W,H)
+  ctx.fillStyle='#f5f5f5';ctx.fillRect(ox,oy,W,H)
+  // 时间标题
+  ctx.fillStyle='#333';ctx.font='13px sans-serif';ctx.textAlign='left'
+  ctx.fillText(lkPlay.value?`▶ 第 ${lkFrame.value} 帧（方块在动，绿箭头=LK算出来的光流向量）`:'⏸ 暂停中（点播放看动画）', ox+5, oy-8)
+  // 蓝色运动方块
+  const bw=50, bh=50
+  let bx, by
+  if(lkPlay.value){
+    const t = lkFrame.value
+    bx = 40 + ((t*lkSpeed.value)%(W-bw-80))
+    by = 80 + Math.sin(t*0.15)*40
+  }else{
+    bx = 80; by = 100
+  }
+  // 背景静态纹理（给特征点附着的"角点"环境）
+  ctx.fillStyle='#d0d0d0'
+  for(let i=0;i<20;i++){
+    const rx=(i*53+20)%(W-10), ry=(i*37+40)%(H-10)
+    ctx.fillRect(ox+rx,oy+ry,6,6)
+  }
+  // 蓝色方块
+  ctx.fillStyle='#2196f3';ctx.fillRect(ox+bx,oy+by,bw,bh)
+  ctx.strokeStyle='#1565c0';ctx.lineWidth=1;ctx.strokeRect(ox+bx,oy+by,bw,bh)
+  // 生成 N 个特征点（均匀撒在场景里，其中在方块上的点会"跟动"）
+  const N = lkN.value
+  const dx = lkPlay.value? lkSpeed.value : 0
+  const dy = lkPlay.value? Math.cos(lkFrame.value*0.15)*40*0.15 : 0  // 瞬时dy
+  const feats = []
+  for(let i=0;i<N;i++){
+    // 随机分布：一部分附着在方块上，一部分附着在静态背景
+    const onBox = i%3!==0  // 2/3 点在方块上跟着动
+    let px, py
+    if(onBox){
+      px = bx + ((i*17)%bw)
+      py = by + ((i*23)%bh)
+    }else{
+      px = 20 + (i*41)%(W-40)
+      py = 20 + (i*29)%(H-40)
+      // 避开方块区域以免歧义
+      if(px>bx&&px<bx+bw&&py>by&&py<py+bh){ px = 20+(px+80)%(W-40) }
+    }
+    feats.push({px,py,onBox,u:onBox?dx:0, v:onBox?dy:0})
+  }
+  // 画特征点+光流箭头
+  feats.forEach(f=>{
+    // 旧位置（黄点）
+    ctx.fillStyle='#ffc107'
+    ctx.beginPath();ctx.arc(ox+f.px-f.u, oy+f.py-f.v, 2.5, 0, Math.PI*2);ctx.fill()
+    // 新位置（绿点）
+    ctx.fillStyle='#4caf50'
+    ctx.beginPath();ctx.arc(ox+f.px, oy+f.py, 3, 0, Math.PI*2);ctx.fill()
+    // 箭头
+    if(Math.abs(f.u)+Math.abs(f.v)>0.5){
+      ctx.strokeStyle='#4caf50';ctx.lineWidth=1.5
+      ctx.beginPath()
+      ctx.moveTo(ox+f.px-f.u, oy+f.py-f.v)
+      ctx.lineTo(ox+f.px, oy+f.py)
+      ctx.stroke()
+      // 箭头尖
+      const ang=Math.atan2(f.v,f.u)
+      ctx.beginPath()
+      ctx.moveTo(ox+f.px, oy+f.py)
+      ctx.lineTo(ox+f.px-5*Math.cos(ang-0.5), oy+f.py-5*Math.sin(ang-0.5))
+      ctx.lineTo(ox+f.px-5*Math.cos(ang+0.5), oy+f.py-5*Math.sin(ang+0.5))
+      ctx.closePath();ctx.fillStyle='#4caf50';ctx.fill()
+    }
+  })
+  // 右侧文字解释
+  const tx=ox+W+30
+  ctx.fillStyle='#333';ctx.font='13px sans-serif';ctx.textAlign='left'
+  ctx.fillText('🟡 上一帧位置（t）', tx, oy+20)
+  ctx.fillText('🟢 这一帧位置（t+1）', tx, oy+40)
+  ctx.fillText('绿箭头 = LK 算出的位移向量', tx, oy+60)
+  ctx.fillStyle='#1976d2';ctx.font='bold 13px'
+  ctx.fillText(`速度 = ${lkSpeed.value} px/帧`, tx, oy+90)
+  ctx.fillStyle='#333';ctx.font='12px'
+  ctx.fillText('三个假设：', tx, oy+115)
+  ctx.fillText('① 亮度恒定（点的灰度不变）', tx, oy+135)
+  ctx.fillText('② 运动小（相邻帧位移小）', tx, oy+155)
+  ctx.fillText('③ 邻域一致（窗口内点同方向）', tx, oy+175)
+  ctx.fillText('解 AᵀA·d = Aᵀb 得每个点的(u,v)', tx, oy+195)
 }
 
 // ========== 11. 形态学 ==========
@@ -1304,15 +1466,32 @@ onMounted(()=>{
   renderStable()
   setTimeout(renderStable, 50)
   setTimeout(renderStable, 200)
-  // 周期兜底重绘（200ms 一次），保证 canvas 不白屏
-  const timer = setInterval(render, 200)
+  // 周期兜底重绘（100ms 一次），保证 canvas 不白屏 + LK/RANSAC 动画流畅
+  const timer = setInterval(()=>{
+    // LK 播放：推进帧
+    if(lkPlay.value && current.value==='lk'){
+      lkFrame.value++
+    }
+    // RANSAC 自动跑：每 tick 走 3 步
+    if(ransacAuto.value && current.value==='ransac'){
+      for(let k=0;k<3;k++) ransacStep()
+    }
+    render()
+  }, 100)
   // tab 切换后重绘
-  watch(current, ()=>renderStable())
+  watch(current, ()=>{ renderStable() })
   // state 变化重绘
   ;[distType,kernelType,convX,convY,edgeDir,threshT,houghN,harrisType,freqCut,
-    lkSpeed,morphOp,morphK,gaussSigma,colorH,colorS,histType,histEq
+    lkSpeed,lkN,morphOp,morphK,gaussSigma,colorH,colorS,histType,histEq,
+    neighborCx,neighborCy,ransacThresh,ransacOutRatioPct,ransacIter,ransacBest,ransacPoints
   ].forEach(s=>watch(s, render))
-  onBeforeUnmount(()=>{ clearInterval(timer) })
+  // 外点比例变化 → 重新生成点
+  watch(ransacOutRatioPct, ()=>{ ransacReset() })
+  onBeforeUnmount(()=>{
+    clearInterval(timer)
+    if(ransacAutoTimer.value){ clearInterval(ransacAutoTimer.value); ransacAutoTimer.value=null }
+    if(lkTimer.value){ clearInterval(lkTimer.value); lkTimer.value=null }
+  })
 })
 </script>
 
@@ -1332,6 +1511,9 @@ onMounted(()=>{
 .ctrl-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:13px;color:#333}
 .ctrl-row input[type=range]{width:140px}
 .ctrl-row select{padding:4px 8px;border:1px solid #ccc;border-radius:4px}
+.ctrl-row button{padding:5px 12px;border:1px solid #1976d2;background:#fff;color:#1976d2;border-radius:6px;cursor:pointer;font-size:13px;transition:.2s}
+.ctrl-row button:hover{background:#e3f2fd}
+.tip-row{font-size:12.5px;color:#666;background:#f5f9ff;border-left:3px solid #90caf9;padding:6px 12px;border-radius:4px;margin:8px 0 4px;line-height:1.6}
 .calc{background:#fff3e0;padding:8px 12px;border-left:3px solid #ff9800;font-size:13px;color:#333;border-radius:4px;margin:10px 0}
 .explain-card{background:linear-gradient(135deg,#fff9e6 0%,#fff3c2 100%);border:1px solid #f0d978;border-left:4px solid #e6a700;border-radius:8px;padding:14px 18px;margin:10px 0 14px;font-size:13.5px;line-height:1.7;color:#3a2e00}
 .explain-card .ec-head{font-size:15px;font-weight:700;color:#a06e00;margin-bottom:8px}

@@ -37,93 +37,62 @@ export default defineConfig({
     nav: [
       { text: '🌱 小白入门', link: '/for-beginners' },
       {
-        text: '🧭 学习路径',
+        text: '🧭 学习',
         items: [
+          // ═══ 一图看懂全貌 ═══
+          { text: '── 一图看懂全貌 ──', link: '/learning-path' },
           { text: '🗺️ 学习路径地图（双轴）', link: '/learning-path' },
-          { text: '🧪 原理实验室（看不懂公式点这）', link: '/math-lab/' },
-          { text: '—— 章节体系 · 纵轴视角 ——', link: '/chapters/' },
-          { text: '📚 总览：章体系地图（预备篇 + 13 章）', link: '/chapters/' },
-          { text: '🟦 第 1–2 章 · 视觉与图像基础', link: '/chapters/ch01-foundation' },
-          { text: '🟦 第 3 章 · 图像预处理', link: '/chapters/ch03-preprocessing' },
-          { text: '🟦 第 4 章 · 基元检测', link: '/chapters/ch04-primitives' },
-          { text: '🟩 第 5 章 · 目标分割', link: '/chapters/ch05-segmentation' },
-          { text: '🟩 第 6 章 · 目标表达和描述', link: '/chapters/ch06-representation' },
-          { text: '🟩 第 7 章 · 纹理分析', link: '/chapters/ch07-texture' },
-          { text: '🟩 第 8 章 · 形状分析', link: '/chapters/ch08-shape' },
-          { text: '🟥 第 9 章 · 立体视觉', link: '/chapters/ch09-stereo' },
-          { text: '🟥 第 10 章 · 三维景物恢复', link: '/chapters/ch10-3d-recovery' },
-          { text: '🟥 第 11 章 · 运动分析', link: '/chapters/ch11-motion' },
-          { text: '🟥 第 12 章 · 景物识别', link: '/chapters/ch12-recognition' },
-          { text: '🟥 第 13 章 · 广义匹配', link: '/chapters/ch13-matching' },
-          { text: '🟥 第 14 章 · 时空行为理解', link: '/chapters/ch14-activity' },
-          { text: '🟥 第 15 章 · 场景解释', link: '/chapters/ch15-scene' }
-        ]
-      },
-      { text: '🎮 真机实验室', link: '/playgrounds/' },
-      {
-        text: '🗺️ 知识图谱',
-        items: [
-          { text: '—— 技术分支 · 横轴视角 ——', link: '/branches/' },
-          { text: '🌿 技术分支总览', link: '/branches/' },
-          { text: '🔵 ① 图像处理', link: '/branches/image-processing/' },
-          { text: '🟢 ② 特征检测', link: '/branches/feature-detection/' },
-          { text: '🟠 ③ 特征匹配', link: '/branches/feature-matching/' },
-          { text: '🟣 ④ 图像分割', link: '/branches/segmentation/' },
-          { text: '🔴 ⑤ 目标检测', link: '/branches/detection/' },
-          { text: '🩵 ⑥ 几何视觉', link: '/branches/geometry/' },
-          { text: '🔧 工程实现层', link: '/branches/engineering/' },
-          { text: '—— 全局视图 ——', link: '/global/family' },
-          { text: '🌳 家族树', link: '/global/family' },
-          { text: '🧬 系列演化', link: '/global/evolutions' },
-          { text: '📖 演进故事', link: '/global/evolution-story' },
-          { text: '⏳ 时间线', link: '/global/timeline' },
-          { text: '🌐 外部技术影响', link: '/global/external-techniques' },
-          { text: '—— 脉络与本体 ——', link: '/legacy/' },
+          { text: '🌳 算法家族树', link: '/global/family' },
+          { text: '⏳ 演进时间线', link: '/global/timeline' },
           { text: '🧬 传承脉络', link: '/legacy/' },
-          { text: '📐 本体 Schema', link: '/ontology/schema' }
-        ]
-      },
-      {
-        text: '🧰 词典与工具',
-        items: [
-          { text: '🧱 算子词典', link: '/operators/' },
-          { text: '🎯 场景反查', link: '/scenarios/' },
-          { text: '📖 术语表', link: '/glossary' },
-          { text: '—— 横向工具页 ——', link: '/global/choose-algorithm' },
-          { text: '🌳 算法选型决策树', link: '/global/choose-algorithm' },
-          { text: '📊 对比矩阵', link: '/global/compare-matrix' },
-          { text: '📏 基准数据', link: '/global/benchmarks' },
-          { text: '🌊 数据流全景', link: '/global/data-flow' },
-          { text: '🚨 故障排查手册', link: '/global/troubleshooting' },
-          { text: '🔍 概念反向索引', link: '/global/concepts' },
-          { text: '—— 案例与实现 ——', link: '/cases/' },
-          { text: '💼 实战案例', link: '/cases/' },
-          { text: '🔀 衍生实现（OpenCV / HALCON / 嵌入式 / 现代继承）', link: '/derivatives/' },
-          { text: '🚧 路线预告', link: '/derivatives/roadmap' }
-        ]
-      },
-      {
-        text: '📚 经典算法速查',
-        items: [
-          { text: '📋 版本总览 / 对比大表（59 个算法全在这）', link: '/versions/' },
-          { text: '—— 按分支直达 ——', link: '/branches/' },
+          // ═══ 搞懂数学原理 ═══
+          { text: '── 搞懂数学原理 ──', link: '/math-lab/' },
+          { text: '🧪 原理实验室（看不懂公式点这）', link: '/math-lab/' },
+          // ═══ 按顺序学 · 纵轴 ═══
+          { text: '── 按学习顺序 · 纵轴（15章）──', link: '/chapters/' },
+          { text: '📚 章节体系总览（预备篇 + 15章）', link: '/chapters/' },
+          // ═══ 按分支查 · 横轴 ═══
+          { text: '── 按算法分支 · 横轴（6大分支）──', link: '/branches/' },
           { text: '🔵 ① 图像处理', link: '/branches/image-processing/' },
           { text: '🟢 ② 特征检测', link: '/branches/feature-detection/' },
           { text: '🟠 ③ 特征匹配', link: '/branches/feature-matching/' },
           { text: '🟣 ④ 图像分割', link: '/branches/segmentation/' },
           { text: '🔴 ⑤ 目标检测与跟踪', link: '/branches/detection/' },
           { text: '🩵 ⑥ 几何视觉', link: '/branches/geometry/' },
-          { text: '—— 高频率算法直达 ——', link: '/algorithms/canny/' },
+          { text: '🔧 工程实现层', link: '/branches/engineering/' },
+          // ═══ 高频算法直达 ═══
+          { text: '── 高频算法直达 ──', link: '/versions/' },
           { text: '🔵 Canny 边缘检测', link: '/algorithms/canny/' },
-          { text: '🔵 霍夫直线/圆检测', link: '/algorithms/hough/' },
           { text: '🟢 Harris 角点', link: '/algorithms/harris/' },
           { text: '🟢 SIFT 特征', link: '/algorithms/sift/' },
-          { text: '🟢 SURF / ORB / AKAZE / BRISK', link: '/algorithms/orb/' },
           { text: '🟠 RANSAC 外点剔除', link: '/algorithms/ransac/' },
           { text: '🩵 Lucas-Kanade 光流', link: '/algorithms/lucas-kanade/' },
-          { text: '🟣 GrabCut 交互式抠图', link: '/algorithms/grabcut/' },
-          { text: '🔴 Viola-Jones 人脸检测', link: '/algorithms/viola-jones/' },
-          { text: '🩵 张氏相机标定', link: '/algorithms/zhang-calibration/' }
+          { text: '🔴 Viola-Jones 人脸', link: '/algorithms/viola-jones/' },
+          { text: '🩵 张氏相机标定', link: '/algorithms/zhang-calibration/' },
+          { text: '📋 59 算法对比大表', link: '/versions/' }
+        ]
+      },
+      { text: '🎮 真机实验室', link: '/playgrounds/' },
+      {
+        text: '🧰 工具',
+        items: [
+          { text: '── 查词 ──', link: '/operators/' },
+          { text: '🧱 算子词典（14个核心算子）', link: '/operators/' },
+          { text: '🎯 场景反查（要做XX用哪个算法）', link: '/scenarios/' },
+          { text: '📖 术语表', link: '/glossary' },
+          { text: '🔍 概念反向索引', link: '/global/concepts' },
+          { text: '── 选型与对比 ──', link: '/global/choose-algorithm' },
+          { text: '🌳 算法选型决策树', link: '/global/choose-algorithm' },
+          { text: '📊 对比矩阵', link: '/global/compare-matrix' },
+          { text: '📏 基准数据', link: '/global/benchmarks' },
+          { text: '🌊 数据流全景', link: '/global/data-flow' },
+          { text: '🚨 故障排查手册', link: '/global/troubleshooting' },
+          { text: '── 案例与扩展 ──', link: '/cases/' },
+          { text: '💼 实战案例', link: '/cases/' },
+          { text: '🔀 衍生实现（OpenCV/HALCON/嵌入式）', link: '/derivatives/' },
+          { text: '📖 演进故事', link: '/global/evolution-story' },
+          { text: '🌐 外部技术影响', link: '/global/external-techniques' },
+          { text: '📐 本体 Schema', link: '/ontology/schema' }
         ]
       }
     ],
