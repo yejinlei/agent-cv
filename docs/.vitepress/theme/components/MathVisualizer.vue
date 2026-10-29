@@ -1,5 +1,5 @@
 <template>
-  <div class="math-vis">
+  <div v-if="isMounted" class="math-vis">
     <div class="tab-bar">
       <button v-for="t in tabs" :key="t.id" :class="['tab-btn', {active: current === t.id}]" @click="current = t.id">{{ t.name }}</button>
     </div>
@@ -204,7 +204,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 
 const props = defineProps({
   // 嵌入算法页时，指定默认选中的原理标签（如 'grad'）
@@ -230,6 +230,7 @@ const tabs = [
   {id:'hist', name:'直方图'},
 ]
 const current = ref(tabs.some(t => t.id === props.initialTab) ? props.initialTab : 'pixel')
+const isMounted = ref(false)
 
 // ---- refs ----
 const pixelCanvas = ref(null), neighborCanvas = ref(null), convCanvas = ref(null), gradCanvas = ref(null)
@@ -1040,14 +1041,21 @@ function renderStable(){
 }
 
 onMounted(()=>{
+  isMounted.value = true
   ransacPoints.value = genRansacPoints()
+  // 多重保险：nextTick / rAF / 50ms / 200ms 共 4 次，应对水合时序、v-if 切换
   renderStable()
+  setTimeout(renderStable, 50)
+  setTimeout(renderStable, 200)
+  // 周期兜底重绘（200ms 一次），保证 canvas 不白屏
+  const timer = setInterval(render, 200)
   // tab 切换后重绘
   watch(current, ()=>renderStable())
   // state 变化重绘
   ;[distType,kernelType,convX,convY,edgeDir,threshT,houghN,harrisType,freqCut,
     lkSpeed,morphOp,morphK,gaussSigma,colorH,colorS,histType,histEq
   ].forEach(s=>watch(s, render))
+  onBeforeUnmount(()=>{ clearInterval(timer) })
 })
 </script>
 
