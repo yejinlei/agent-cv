@@ -1097,12 +1097,9 @@ async function bootLoader(force = false) {
     const cvMod = await loadOpenCV({
       force,
       onStage: (stage) => {
-        if (stage === 'prewarming') {
-          status.value = 'prewarming'
-          statusText.value = '正在通过独立通道预热 OpenCV.js（避开页面脚本排队）…'
-        } else if (stage === 'loading') {
+        if (stage === 'loading') {
           status.value = 'loading'
-          statusText.value = '正在加载 OpenCV.js（走浏览器缓存，通常 1~2 秒）…'
+          statusText.value = '正在从本站下载 OpenCV.js（首次约 3.5 MB，下载后缓存）…'
         } else if (stage === 'initializing') {
           status.value = 'initializing'
           statusText.value = '正在你的浏览器里编译 WebAssembly（首次约 5~10 秒）…'
