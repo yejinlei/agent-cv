@@ -13,7 +13,7 @@
     </div>
 
     <!-- 加载中：简单 spinner + 阶段文字，不做任何进度条，交给浏览器自身加载 -->
-    <div v-else-if="status === 'loading' || status === 'initializing'" class="ocv-loading">
+    <div v-else-if="status === 'prewarming' || status === 'loading' || status === 'initializing'" class="ocv-loading">
       <div class="ocv-spinner"></div>
       <p class="ocv-status-text">{{ statusText }}</p>
       <p v-if="!compact" class="ocv-tip">
@@ -1025,7 +1025,7 @@ const languages = ['Python', 'C++', 'JavaScript']
 // 初始状态是 idle（未启动）：必须用户点击「启动真机实验」按钮才会开始下载 opencv.js，
 // 避免首屏就自动下载 3.5MB，也避免后台预取堵并发连接。
 // 加载方案：最朴素的 <script src> 追加，与"地址栏直接打开 opencv.js"行为一致。
-const status = ref('idle') // 'idle' | 'loading' | 'initializing' | 'ready' | 'error'
+const status = ref('idle') // 'idle' | 'prewarming' | 'loading' | 'initializing' | 'ready' | 'error'
 const statusText = ref('')
 const errorMsg = ref('')
 const srcCanvas = ref(null)
@@ -1097,9 +1097,12 @@ async function bootLoader(force = false) {
     const cvMod = await loadOpenCV({
       force,
       onStage: (stage) => {
-        if (stage === 'loading') {
+        if (stage === 'prewarming') {
+          status.value = 'prewarming'
+          statusText.value = '正在通过独立通道预热 OpenCV.js（避开页面脚本排队）…'
+        } else if (stage === 'loading') {
           status.value = 'loading'
-          statusText.value = '正在加载 OpenCV.js…'
+          statusText.value = '正在加载 OpenCV.js（走浏览器缓存，通常 1~2 秒）…'
         } else if (stage === 'initializing') {
           status.value = 'initializing'
           statusText.value = '正在你的浏览器里编译 WebAssembly（首次约 5~10 秒）…'
