@@ -75,7 +75,7 @@ export default {
       'layout-bottom': () => h(MermaidGlobal)
     })
   },
-  enhanceApp({ app }) {
+  enhanceApp({ app, router }) {
     app.component('FamilyTree', FamilyTree)
     app.component('AlgorithmCard', AlgorithmCard)
     app.component('OpencvPlayground', OpencvPlayground)
@@ -83,5 +83,13 @@ export default {
     app.component('ConvDemo', ConvDemo)
     app.component('AlgoVisualizer', AlgoVisualizer)
     app.component('VideoLab', VideoLab)
+    // 页面一打开就后台静默预下载 opencv.js（不阻塞渲染、不显示 UI），
+    // 等用户点"▶ 启动真机实验"时文件大概率已经在 HTTP 缓存里了
+    if (typeof window !== 'undefined') {
+      // 首屏 paint 完再开始（延迟 1.5 秒）
+      setTimeout(() => {
+        import('./lib/opencv-loader.js').then(m => { m.warmupOpenCV && m.warmupOpenCV() }).catch(() => {})
+      }, 1500)
+    }
   }
 } satisfies Theme

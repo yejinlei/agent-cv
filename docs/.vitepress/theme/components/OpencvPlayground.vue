@@ -41,12 +41,13 @@
         </p>
       </div>
       <p v-if="!compact" class="ocv-tip">
-        通过 fetch 下载 OpenCV.js（约 11 MB 源码，GitHub Pages 通常会自动 gzip 到 3.5 MB 传输）。<br/>
-        下载后所有运算完全在你本地浏览器里完成（WebAssembly），图片不会上传到任何服务器。<br/>
-        下载过一次后浏览器会缓存，再次打开秒开。如果等待超过 5 分钟，点下方"重试"或换个网络。
+        OpenCV.js 源码约 11 MB（GitHub Pages 会自动 gzip 到约 3.5 MB 传输）。<br/>
+        下载完成后所有运算完全在你本地浏览器里完成（WebAssembly），图片/视频不会上传到任何服务器。<br/>
+        下载过一次后浏览器会缓存，再次打开秒开。如果一直转圈或提示失败，点下方「🔗 直链预热」先单独打开一次再重试。
       </p>
-      <div style="margin-top:12px;">
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
         <button class="ocv-retry-btn" @click="cancelAndRetry" style="background:var(--vp-c-bg-soft);color:var(--vp-c-text-2);border:1px solid var(--vp-c-divider);">🔄 重试</button>
+        <button class="ocv-retry-btn" @click="prewarm" style="background:var(--vp-c-bg-soft);color:var(--vp-c-text-2);border:1px solid var(--vp-c-divider);">🔗 直链预热（单独打开一次）</button>
       </div>
     </div>
 
@@ -55,7 +56,10 @@
       <div class="ocv-err-icon">⚠️</div>
       <p class="ocv-status-text">OpenCV.js 加载失败</p>
       <p class="ocv-hint">{{ errorMsg }}</p>
-      <button class="ocv-retry-btn" @click="retry">🔄 重新加载</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+        <button class="ocv-retry-btn" @click="retry">🔄 重新加载</button>
+        <button class="ocv-retry-btn" @click="prewarm" style="background:var(--vp-c-bg-soft);color:var(--vp-c-text-2);border:1px solid var(--vp-c-divider);">🔗 先直链预热</button>
+      </div>
     </div>
 
     <template v-else>
@@ -1037,7 +1041,7 @@ filters.forEach(f => {
 
 const groups = [...new Set(filters.map((f) => f.group))]
 
-import { loadOpenCV, isCVReady, getCVIfReady, resetCV } from '../lib/opencv-loader'
+import { loadOpenCV, isCVReady, getCVIfReady, resetCV, openCVUrl, getCVUrl } from '../lib/opencv-loader'
 
 const languages = ['Python', 'C++', 'JavaScript']
 
@@ -1110,6 +1114,18 @@ function cancelAndRetry() {
 
 function retry() {
   cancelAndRetry()
+}
+
+// 直链预热：新标签打开 opencv.js（你亲测这种方式秒开），
+// 让浏览器把文件写进 HTTP 缓存，回本页再点启动就秒加载。
+function prewarm() {
+  try { openCVUrl() } catch (_) {
+    const a = document.createElement('a')
+    a.href = getCVUrl()
+    a.target = '_blank'
+    a.rel = 'noopener'
+    a.click()
+  }
 }
 
 async function bootLoader(force = false) {
