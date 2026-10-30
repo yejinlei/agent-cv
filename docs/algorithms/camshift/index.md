@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # CamShift 连续自适应 MeanShift
 
 <!-- VIDEOLAB-AUTO: 视频真机实验，嵌入在算法首页最顶部 -->

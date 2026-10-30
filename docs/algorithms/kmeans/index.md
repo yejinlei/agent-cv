@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # K-Means 颜色聚类
 
 <AlgorithmCard

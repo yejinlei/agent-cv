@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # 单应矩阵
 
 <AlgorithmCard

@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Canny 边缘检测
 
 <AlgorithmCard

@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="triangulation" />
-
 ---
 layout: doc
 ---
+# 三角化 Triangulation
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="triangulation" />
 
 ## 🚀 动手体验
 

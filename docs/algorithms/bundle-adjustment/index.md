@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="bundle-adjustment" />
-
 ---
 layout: doc
 ---
+# 光束法平差 Bundle Adjustment
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="bundle" />
 
 ## 🚀 动手体验
 

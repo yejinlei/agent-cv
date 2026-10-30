@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # SLIC 超像素
 
 <ClientOnly>

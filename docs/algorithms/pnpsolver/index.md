@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # PnP 位姿估计
 
 <ClientOnly>

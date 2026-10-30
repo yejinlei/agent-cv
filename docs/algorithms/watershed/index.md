@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # 分水岭分割
 
 <AlgorithmCard

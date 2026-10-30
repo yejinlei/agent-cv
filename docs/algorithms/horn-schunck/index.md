@@ -1,13 +1,17 @@
+---
+layout: doc
+---
+## 🧪 原理互动演示
+
+<MathVisualizer initial-tab="lk" compact />
+
 # Horn-Schunck 稠密光流
 
 <ClientOnly>
   <AlgoVisualizer type="lkflow" />
 </ClientOnly>
 
-
 ## 🎮 真机互动
-
-
 
 <AlgorithmCard
   name="Horn-Schunck 稠密光流"
@@ -77,7 +81,6 @@ LK 光流像一个独立办案的刑警，每个小窗口自己算自己的；Ho
 - 返回 [六大分支总览](/branches/)
 - [Horn-Schunck 稠密光流所在分支](/branches/geometry/)
 - [算法档案总览](/algorithms/)
-
 
 ---
 

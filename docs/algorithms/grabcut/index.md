@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # GrabCut 抠图
 
 ## 🧪 原理互动演示

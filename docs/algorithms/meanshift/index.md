@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # MeanShift 均值漂移
 
 <!-- VIDEOLAB-AUTO: 视频真机实验，嵌入在算法首页最顶部 -->

@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="freak" />
-
 ---
 layout: doc
 ---
+# FREAK 快速视网膜关键点描述子
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="freak" />
 
 ## 🚀 动手体验
 

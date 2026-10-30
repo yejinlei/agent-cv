@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Lucas-Kanade 光流（KLT 稀疏光流）（1981）
 
 <!-- VIDEOLAB-AUTO: 视频真机实验，嵌入在算法首页最顶部 -->
@@ -120,12 +124,3 @@ p1, st, err = cv2.calcOpticalFlowPyrLK(old_gray, new_gray, p0, None,
   <MathVisualizer initial-tab="lk" compact />
 </ClientOnly>
 
-### 🎮 再跑真机：在浏览器里真跑 Lucas-Kanade 光流
-
-换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
-
-<ClientOnly>
-  <OpencvPlayground initial-algo="lkflow" compact />
-</ClientOnly>
-
-> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

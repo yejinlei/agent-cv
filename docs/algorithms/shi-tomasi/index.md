@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Shi-Tomasi 角点 (GFTT)
 
 <AlgorithmCard

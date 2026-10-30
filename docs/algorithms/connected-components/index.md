@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="连通域分析（Two-Pass）"
   enName="Connected Components Labeling"

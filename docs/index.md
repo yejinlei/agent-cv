@@ -11,19 +11,19 @@ hero:
   actions:
     - theme: brand
       text: 🌱 小白入门（5 页看懂）
-      link: /for-beginners
+      link: /for-beginners/
     - theme: brand
-      text: 🧭 开始学习路径
+      text: 🧭 学习路径地图
       link: /learning-path
     - theme: alt
-      text: 📦 版本对比大表
-      link: /versions/
+      text: 🎮 真机实验室（浏览器直接跑算法）
+      link: /playgrounds/
     - theme: alt
-      text: 🌿 六分支总览
-      link: /branches/
+      text: 🧪 原理实验室（看懂公式）
+      link: /math-lab/
     - theme: alt
-      text: 📄 Canny 样板
-      link: /algorithms/canny/
+      text: 🧰 工具箱（算子词典/选型/排错）
+      link: /operators/
 
 features:
   - icon: 🧭

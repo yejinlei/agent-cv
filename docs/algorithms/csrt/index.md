@@ -1,3 +1,8 @@
+---
+layout: doc
+---
+# CSRT 判别式相关滤波跟踪
+
 ## 🧪 原理互动演示
 
 <AlgoVisualizer type="csrt" />
@@ -25,7 +30,6 @@
   :pros='["精度是 OpenCV 传统跟踪器里最高的一档（VOT 2016/2017 冠军）", "支持非矩形空间掩膜", "多通道可靠性加权", "对遮挡/形变比 KCF 鲁棒", "OpenCV contrib 原生支持"]'
   :cons='["速度比 KCF 慢（CPU 约 25–50 FPS vs KCF 150+ FPS）", "需要 opencv-contrib-python 才有 TrackerCSRT", "参数比 KCF 多", "长时全遮挡仍会飘（需配检测器重检）"]'
 />
-
 
 ## 一分钟速览
 

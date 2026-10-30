@@ -1,14 +1,17 @@
+---
+layout: doc
+---
+# 本质矩阵 Essential Matrix
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="epipolar" />
 
 <ClientOnly>
   <AlgoVisualizer type="epipolar" />
 </ClientOnly>
 
 ## 🎮 真机互动
-
-
----
-layout: doc
----
 
 <AlgorithmCard
   name="本质矩阵估计"

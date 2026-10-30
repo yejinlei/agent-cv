@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # MSER 最大稳定极值区域
 
 <AlgorithmCard

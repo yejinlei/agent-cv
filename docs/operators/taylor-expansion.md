@@ -28,7 +28,7 @@ outline: deep
 </svg>
 
 <p style="margin:8px 0 0;font-size:13px;color:#555;">
-👉 <a href="/agent-cv/math-lab/?tab=gauss" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+👉 <a href="/agent-cv/math-lab/?tab=grad" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
 </p>
 </div>
 

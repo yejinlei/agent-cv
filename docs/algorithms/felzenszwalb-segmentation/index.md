@@ -1,14 +1,17 @@
+---
+layout: doc
+---
+# Felzenszwalb 图割分割
+
+## 🧪 原理互动演示
+
+<MathVisualizer initial-tab="morph" compact />
 
 <ClientOnly>
   <AlgoVisualizer type="slic" />
 </ClientOnly>
 
 ## 🎮 真机互动
-
-
----
-layout: doc
----
 
 <AlgorithmCard
   name="Felzenszwalb 图分割"

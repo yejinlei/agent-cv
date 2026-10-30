@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="BRISK 二进制鲁棒不变可伸缩关键点"
   enName="Binary Robust Invariant Scalable Keypoints"

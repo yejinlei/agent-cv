@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Viola-Jones 人脸检测器
 
 ## 🧪 原理互动演示

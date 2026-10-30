@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Sobel 边缘算子
 
 <AlgorithmCard

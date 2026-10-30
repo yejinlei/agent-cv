@@ -31,7 +31,7 @@ outline: deep
 </svg>
 
 <p style="margin:8px 0 0;font-size:13px;color:#555;">
-👉 <a href="/agent-cv/math-lab/?tab=ransac" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
+👉 <a href="/agent-cv/math-lab/?tab=hist" target="_blank">去「原理实验室」拖滑块亲手调这个算子 ▸</a>
 </p>
 </div>
 
@@ -72,11 +72,18 @@ import cv2
 
 ## 属性速览
 
-
+| 属性 | 值 |
+|---|---|
+| 类型 | 集成学习 · Boosting 家族 |
+| 核心思想 | 串行训练多个弱分类器，每轮把错分样本权重加大 |
+| 弱分类器 | 通常是决策树桩（单层决策树） |
+| 权重更新 | α = ½·ln((1−ε)/ε)，错分乘 e^α，正确乘 e^(−α) |
+| 复杂度 | O(T·N)，T=弱分类器个数，N=样本数 |
+| OpenCV 调用 | `cv2.ml.Boost_create()`（传统）；现代推荐 sklearn/GBDT/XGBoost |
 
 ## 被哪些算法使用
 
-- [→ algo-viola-jones](/branches/detection/viola-jones)
+- [→ Viola-Jones 人脸检测](/algorithms/viola-jones/)（核心弱分类器）
 
 
 ## 典型使用场景

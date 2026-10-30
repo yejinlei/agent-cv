@@ -1,14 +1,17 @@
+---
+layout: doc
+---
+# KNN 背景建模
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="mog2" />
 
 <ClientOnly>
   <AlgoVisualizer type="mog2" />
 </ClientOnly>
 
 ## 🎮 真机互动
-
-
----
-layout: doc
----
 
 <AlgorithmCard
   name="KNN 背景建模"

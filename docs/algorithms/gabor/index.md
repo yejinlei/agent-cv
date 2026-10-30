@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="Gabor 滤波器"
   enName="Gabor Filter / Gabor Wavelet"

@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="flann" />
-
 ---
 layout: doc
 ---
+# FLANN 快速近似最近邻
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="flann" />
 
 ## 🚀 动手体验
 

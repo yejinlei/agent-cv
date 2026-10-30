@@ -88,7 +88,8 @@ import cv2
 
 - [→ algo-hog-svm](/algorithms/hog-svm/)
 - [→ algo-otsu](/branches/image-processing/thresholding#otsu)
-- [→ algo-canny](/algorithms/canny/)
+- [→ CLAHE 自适应直方图均衡](/algorithms/clahe/)
+- [→ CamShift/MeanShift 跟踪](/algorithms/camshift/)（反向投影核心）
 
 
 ## 典型使用场景

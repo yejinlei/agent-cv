@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="距离变换"
   enName="Distance Transform"

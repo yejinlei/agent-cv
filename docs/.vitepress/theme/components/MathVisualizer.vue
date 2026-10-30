@@ -25,7 +25,7 @@
       <!-- 2. 邻域与距离 -->
       <div v-if="current === 'neighbor'" class="sub-vis">
         <h3>📍 4邻域、8邻域、欧氏距离</h3>
-        <p class="desc">红色是中心像素，橙色是4邻域（上下左右，距离=1），黄色是8邻域（加对角，距离=√2）。</p>
+        <p class="desc">图像里几乎所有操作都不是"一个像素自己玩"，而是拉着周围邻居一起算。点击画布上任意格子，可以把中心点挪过去观察距离变化。</p>
         <div v-if="explains[current]" class="explain-card">
           <div class="ec-head">🧓 老奶奶也能懂</div>
           <div class="ec-row"><b>🍳 生活类比：</b><span v-html="explains[current].analogy"></span></div>
@@ -33,14 +33,15 @@
           <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
           <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
         </div>
-        <canvas ref="neighborCanvas" width="500" height="400"></canvas>
+        <canvas ref="neighborCanvas" width="720" height="320" @click="neighborClick"></canvas>
         <div class="ctrl-row">
           <label>距离类型：</label>
           <select v-model="distType">
-            <option value="4">4邻域（曼哈顿距离，走直角）</option>
-            <option value="8">8邻域（切比雪夫距离，可以斜走）</option>
-            <option value="e" selected>欧氏距离（直线距离）</option>
+            <option value="4">4邻域（上下左右，曼哈顿距离1）</option>
+            <option value="8">8邻域（加对角，切比雪夫距离）</option>
+            <option value="e" selected>欧氏距离（直线距离 √(Δx²+Δy²)）</option>
           </select>
+          <span style="margin-left:16px;color:#666">👆 点击画布上任意格子，把红色中心点挪过去</span>
         </div>
       </div>
 
@@ -55,7 +56,7 @@
           <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
           <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
         </div>
-        <canvas ref="convCanvas" width="640" height="380"></canvas>
+        <canvas ref="convCanvas" width="640" height="400" @click="convClick"></canvas>
         <div class="ctrl-row">
           <label>卷积核：</label>
           <select v-model="kernelType">
@@ -69,6 +70,7 @@
           <input type="range" min="0" max="4" v-model.number="convX" />
           <label>y:</label>
           <input type="range" min="0" max="4" v-model.number="convY" />
+          <span style="margin-left:16px;color:#666">👆 点击左侧原图任意格子，红色3×3窗口跳过去</span>
         </div>
         <p class="calc">当前输出像素 = 加权求和 = <b>{{ convResult.toFixed(1) }}</b>（归一化后）</p>
       </div>
@@ -186,11 +188,19 @@
           <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
           <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
         </div>
-        <canvas ref="ransacCanvas" width="600" height="300"></canvas>
+        <canvas ref="ransacCanvas" width="640" height="380" @click="ransacClick" style="cursor:crosshair"></canvas>
         <div class="ctrl-row">
-          <button @click="ransacStep">点我试一次随机抽样</button>
-          <span style="margin-left:20px">已迭代 {{ ransacIter }} 次，最佳内点数 = <b>{{ ransacBest }}</b></span>
-          <button @click="ransacReset" style="margin-left:20px">重置</button>
+          <button @click="ransacStep">🎯 单步：抽2点试一次</button>
+          <button @click="ransacAuto=!ransacAuto">{{ ransacAuto ? '⏸ 暂停自动' : '▶️ 自动跑100次' }}</button>
+          <button @click="ransacReset" style="margin-left:8px">🔄 换一批点</button>
+          <span style="margin-left:16px">迭代 <b>{{ ransacIter }}</b> 次，最佳内点 = <b>{{ ransacBest }}</b> / {{ ransacPoints.length }}</span>
+        </div>
+        <div class="ctrl-row">
+          <label>外点比例（噪声强度）：{{ ransacOutRatioPct }}%</label>
+          <input type="range" min="0" max="70" v-model.number="ransacOutRatioPct" />
+          <label style="margin-left:20px">内点容差（多近算"站在线上"）：{{ ransacThresh }}px</label>
+          <input type="range" min="3" max="30" v-model.number="ransacThresh" />
+          <span style="margin-left:16px;color:#666">👆 点击画布空白处=加红点（外点捣乱）；点已有的红点=删除</span>
         </div>
       </div>
 
@@ -205,10 +215,17 @@
           <div class="ec-row"><b>👣 分几步：</b><ol class="ec-steps"><li v-for="st in explains[current].steps" :key="st">{{ st }}</li></ol></div>
           <div class="ec-row"><b>📌 记住一句话：</b><span class="ec-kicker" v-html="explains[current].kicker"></span></div>
         </div>
-        <canvas ref="lkCanvas" width="600" height="250"></canvas>
+        <canvas ref="lkCanvas" width="640" height="280"></canvas>
         <div class="ctrl-row">
-          <label>物体移动速度：{{ lkSpeed }}</label>
+          <button @click="lkPlay=!lkPlay">{{ lkPlay ? '⏸ 暂停' : '▶️ 播放帧动画' }}</button>
+          <button @click="lkFrame=0; lkPlay=false" style="margin-left:8px">⏮ 回到起点</button>
+          <label style="margin-left:16px">物体移动速度：{{ lkSpeed }} px/帧</label>
           <input type="range" min="1" max="10" v-model.number="lkSpeed" />
+        </div>
+        <div class="ctrl-row">
+          <label>跟踪特征点数量：{{ lkN }}</label>
+          <input type="range" min="5" max="40" v-model.number="lkN" />
+          <span style="margin-left:16px;color:#666">2/3 的点附着在移动的蓝方块上跟着动，1/3 在静态背景上；绿箭头是 LK 算出的位移向量</span>
         </div>
       </div>
 

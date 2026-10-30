@@ -1,9 +1,15 @@
+---
+layout: doc
+---
+## 🧪 原理互动演示
+
+<MathVisualizer initial-tab="grad" compact />
+
 # HOG+SVM 行人检测
 
 <ClientOnly>
   <AlgoVisualizer type="dpm" />
 </ClientOnly>
-
 
 <AlgorithmCard
   name="HOG + SVM 行人检测"
@@ -100,7 +106,6 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 rects, weights = hog.detectMultiScale(img, winStride=(8,8), padding=(8,8), scale=1.05)
 ```
 
-
 ---
 
 ## 🚀 动手体验（浏览器里直接玩，不用装环境）
@@ -110,7 +115,6 @@ rects, weights = hog.detectMultiScale(img, winStride=(8,8), padding=(8,8), scale
 ### 🎮 再跑真机：在浏览器里真跑 HOG + SVM 行人检测
 
 换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
-
 
 > 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。
 

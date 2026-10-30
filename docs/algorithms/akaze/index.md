@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="AKAZE 加速 KAZE 特征"
   enName="Accelerated-KAZE"

@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Otsu 大津阈值法
 
 <AlgorithmCard

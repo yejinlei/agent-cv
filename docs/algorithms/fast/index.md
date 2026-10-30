@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # FAST 角点检测
 
 <AlgorithmCard

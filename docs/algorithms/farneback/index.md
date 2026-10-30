@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # Farnebäck 稠密光流
 
 <!-- VIDEOLAB-AUTO: 视频真机实验，嵌入在算法首页最顶部 -->
@@ -96,12 +100,3 @@ flowchart LR
   <MathVisualizer initial-tab="lk" compact />
 </ClientOnly>
 
-### 🎮 再跑真机：在浏览器里真跑 Farnebäck 稠密光流
-
-换成你自己的照片也行；下面还会**实时生成**对应的 Python / C++ / JavaScript 代码，拖参数时代码同步更新。
-
-<ClientOnly>
-  <OpencvPlayground initial-algo="gradient-flow" compact />
-</ClientOnly>
-
-> 想换示例图、上传自己的照片、或切换别的算法？去 [🎮 真机实验室](/playgrounds/)；想看完整的 14 个数学原理互动？去 [🧪 原理实验室](/math-lab/)。

@@ -65,11 +65,20 @@ import cv2
 
 ## 属性速览
 
-
+| 属性 | 值 |
+|---|---|
+| 类型 | 局部自适应阈值 |
+| 复杂度 | O(N)，每个像素做局部均值/加权均值 |
+| 抗光照不均 | ✅ 强（每个块自己定阈值） |
+| 常用核大小 | blockSize = 11~51（必须是奇数） |
+| 常用偏移C | 2~10（块均值减去C作为局部阈值） |
+| OpenCV 调用 | `cv2.adaptiveThreshold(img,255,ADAPTIVE_THRESH_GAUSSIAN_C,THRESH_BINARY,blockSize,C)` |
 
 ## 被哪些算法使用
 
-- [→ algo-canny](/algorithms/canny/)
+- [→ 文档/阴影场景二值化](/scenarios/ocr-document/)
+- [→ 工业/尺寸测量预处理](/scenarios/measurement/)
+- Canny 算法的「双阈值」用的是硬阈值，本算子主要用于光照不均场景
 
 
 ## 典型使用场景

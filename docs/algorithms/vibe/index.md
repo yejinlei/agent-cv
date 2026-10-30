@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="vibe" />
-
 ---
 layout: doc
 ---
+# ViBe 视觉背景提取器
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="vibe" />
 
 ## 🚀 动手体验
 

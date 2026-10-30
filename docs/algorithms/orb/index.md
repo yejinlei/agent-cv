@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 # ORB 实时特征点
 
 <AlgorithmCard

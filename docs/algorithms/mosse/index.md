@@ -1,10 +1,11 @@
-## 🧪 原理互动演示
-
-<AlgoVisualizer type="mosse" />
-
 ---
 layout: doc
 ---
+# MOSSE 最小输出平方和误差跟踪
+
+## 🧪 原理互动演示
+
+<AlgoVisualizer type="mosse" />
 
 ## 🚀 动手体验
 

@@ -1,3 +1,7 @@
+---
+layout: doc
+---
+
 <AlgorithmCard
   name="CLAHE 限制对比度自适应直方图均衡"
   enName="Contrast Limited Adaptive Histogram Equalization"
